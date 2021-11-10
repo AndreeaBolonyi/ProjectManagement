@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sprint {
+public class Sprint extends Entity{
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;

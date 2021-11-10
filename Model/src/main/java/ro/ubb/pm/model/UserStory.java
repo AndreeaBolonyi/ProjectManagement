@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserStory {
+public class UserStory extends Entity{
     private String title;
     private String description;
     private User assignedTo;
