@@ -1,13 +1,30 @@
 package ro.ubb.pm.model;
 
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sprint extends Entity{
+@javax.persistence.Entity
+@Table(name = "sprints")
+public class Sprint extends Entity {
+
+    @NotNull
+    @Column(name = "title")
     private String title;
+
+    @NotNull
+    @Column(name = "start_date")
     private LocalDate startDate;
+
+    @NotNull
+    @Column(name = "end_date")
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "sprint")
     private List<UserStory> userStories = new ArrayList<>();
 
     public Sprint() {}

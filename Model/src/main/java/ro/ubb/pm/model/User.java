@@ -1,10 +1,32 @@
 package ro.ubb.pm.model;
 
-public class User extends Entity{
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+@javax.persistence.Entity
+@Table(name = "users")
+public class User extends Entity {
+
+    @NotNull
+    @Column(name = "last_name")
     private String lastName;
+
+    @NotNull
+    @Column(name = "first_name")
     private String firstName;
+
+    @NotNull
+    @Email
+    @Column(name = "email")
     private String email;
+
+    @NotNull
+    @Column(name = "password")
     private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     public User() {}

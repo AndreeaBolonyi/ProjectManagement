@@ -1,13 +1,28 @@
 package ro.ubb.pm.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Epic extends Entity{
+@javax.persistence.Entity
+@Table(name = "epics")
+public class Epic extends Entity {
+
+    @NotNull
+    @Column(name = "title")
     private String title;
+
+    @NotNull
+    @Column(name = "created")
     private LocalDate created;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(mappedBy = "epic")
     private List<UserStory> userStories = new ArrayList<>();
 
     public Epic() {}

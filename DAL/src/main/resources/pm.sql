@@ -1,81 +1,99 @@
--- Database: ProjectManagement
+CREATE TABLE roles(
+	id serial,
+	title varchar(255),
+	CONSTRAINT pk_roles PRIMARY KEY(id)
+);
 
--- DROP DATABASE "ProjectManagement";
 
-CREATE TABLE Projects(
-	ID int,
-	Title varchar(255),
-	CONSTRAINT PK_Projects PRIMARY KEY(ID)
-)
+CREATE TABLE remember_me_tokens(
+	id serial,
+	email varchar(255),
+	password varchar(255),
+	constraint remember_me_tokens_email_un unique (email),
+	CONSTRAINT pk_remember_me_tokens PRIMARY KEY(id)
+);
 
-CREATE TABLE Epics(
-	ID int,
-	Title varchar(255),
-	Created date,
-	ProjectId int,
-	CONSTRAINT FK_Epics_Projects FOREIGN KEY(ProjectId) REFERENCES Projects(ID),
-	CONSTRAINT PK_Epics PRIMARY KEY(ID)
-)
 
-CREATE TABLE Sprints(
-	ID int,
-	Title varchar(255),
-	StartDate date,
-	EndDate date,
-	CONSTRAINT PK_Sprints PRIMARY KEY(ID)
-)
+CREATE TABLE users(
+	id serial,
+	last_name varchar(255),
+	first_name varchar(255),
+	email varchar(255),
+	constraint users_email_un unique (email),
+	password varchar(255),
+	role_id int,
+	CONSTRAINT fk_users_roles FOREIGN KEY(role_id) REFERENCES roles(id),
+	CONSTRAINT pk_users PRIMARY KEY(id)
+);
 
-CREATE TABLE UserStories(
-	ID int,
-	Title varchar(255),
-	Description varchar(255),
-	Status varchar(255),
-	Created date,
-	AssignedToId int,
-	CreatedById int,
-	EpicId int,
-	SprintId int,
-	CONSTRAINT FK_UserStories_Users_Assigned FOREIGN KEY(AssignedToId) REFERENCES Users(ID),
-	CONSTRAINT FK_UserStories_Users_Created FOREIGN KEY(CreatedById) REFERENCES Users(ID),
-	CONSTRAINT FK_UserStories_Epics FOREIGN KEY(EpicId) REFERENCES Epics(ID),
-	CONSTRAINT FK_UserStories_Sprints FOREIGN KEY(SprintId) REFERENCES Sprints(ID),
-	CONSTRAINT PK_UserStories PRIMARY KEY(ID)
-)
 
-CREATE TABLE Users(
-	ID int,
-    LastName varchar(255),
-    FirstName varchar(255),
-    Email varchar(255),
-	constraint Users_Email_UN unique (Email),
-    Password varchar(255),
-	RoleID int,
-	CONSTRAINT FK_Users_Roles FOREIGN KEY(RoleID) REFERENCES Roles(ID),
-	CONSTRAINT PK_Users PRIMARY KEY(ID)
-)
+CREATE TABLE projects(
+	id serial,
+	title varchar(255),
+	CONSTRAINT pk_projects PRIMARY KEY(id)
+);
 
-CREATE TABLE Tasks(
-	ID int,
-	Title varchar(255),
-	Description varchar(255),
-	AssignedToId int,
-	CreatedById int,
-	UserStoryId int,
-	CONSTRAINT FK_Tasks_Users_Assigned FOREIGN KEY(AssignedToId) REFERENCES Users(ID),
-	CONSTRAINT FK_Tasks_Users_Created FOREIGN KEY(CreatedById) REFERENCES Users(ID),
-	CONSTRAINT PK_Tasks PRIMARY KEY(ID)
-)
 
-CREATE TABLE Roles(
-	ID int,
-    Title varchar(255),
-	CONSTRAINT PK_Roles PRIMARY KEY(ID)
-)
+CREATE TABLE epics(
+	id serial,
+	title varchar(255),
+	created date,
+	project_id int,
+	CONSTRAINT fk_epics_projects FOREIGN KEY(project_id) REFERENCES projects(id),
+	CONSTRAINT pk_epics PRIMARY KEY(id)
+);
 
-CREATE TABLE RememberMeTokens(
-	ID int,
-	Email varchar(255),
-    Password varchar(255),
-	constraint RememberMeTokens_Email_UN unique (Email),
-	CONSTRAINT PK_RememberMeTokens PRIMARY KEY(ID)
-)
+
+CREATE TABLE sprints(
+	id serial,
+	title varchar(255),
+	start_date date,
+	end_date date,
+	CONSTRAINT pk_sprints PRIMARY KEY(id)
+);
+
+
+CREATE TABLE user_stories(
+	id serial,
+	title varchar(255),
+	description varchar(255),
+	status varchar(255),
+	created date,
+	assigned_to_id int,
+	created_by_id int,
+	epic_id int,
+	sprint_id int,
+	CONSTRAINT fk_user_stories_users_assigned FOREIGN KEY(assigned_to_id) REFERENCES users(id),
+	CONSTRAINT fk_user_stories_users_created FOREIGN KEY(created_by_id) REFERENCES users(id),
+	CONSTRAINT fk_user_stories_epics FOREIGN KEY(epic_id) REFERENCES epics(id),
+	CONSTRAINT fk_user_stories_sprints FOREIGN KEY(sprint_id) REFERENCES sprints(id),
+	CONSTRAINT pk_user_stories PRIMARY KEY(id)
+);
+
+
+CREATE TABLE tasks(
+	id serial,
+	title varchar(255),
+	description varchar(255),
+	created DATE,
+	assigned_to_id int,
+	created_by_id int,
+	user_story_id int,
+	CONSTRAINT fk_tasks_users_assigned FOREIGN KEY(assigned_to_id) REFERENCES users(id),
+	CONSTRAINT fk_tasks_users_created FOREIGN KEY(created_by_id) REFERENCES users(id),
+	CONSTRAINT pk_tasks PRIMARY KEY(id)
+);
+
+/*
+drop table remember_me_tokens;
+drop table tasks;
+drop table user_stories;
+drop table sprints;
+drop table epics;
+drop table projects;
+drop table users;
+drop table roles;
+*/
+
+
+
