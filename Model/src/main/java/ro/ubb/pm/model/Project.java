@@ -1,10 +1,19 @@
 package ro.ubb.pm.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project extends Entity{
+@javax.persistence.Entity
+@Table(name = "projects")
+public class Project extends Entity {
+
+    @NotNull
+    @Column(name = "title")
     private String title;
+
+    @OneToMany(mappedBy = "project")
     private List<Epic> epics = new ArrayList<>();
 
     public Project() {}

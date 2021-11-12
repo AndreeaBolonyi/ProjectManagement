@@ -1,6 +1,15 @@
 package ro.ubb.pm.model;
 
-public class Role extends Entity{
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@javax.persistence.Entity
+@Table(name = "roles")
+public class Role extends Entity {
+
+    @NotNull
+    @Column(name = "title")
     private String title;
 
     public Role() {}

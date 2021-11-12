@@ -1,13 +1,35 @@
 package ro.ubb.pm.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class Task extends Entity{
+@javax.persistence.Entity
+@Table(name = "tasks")
+public class Task extends Entity {
+
+    @NotNull
+    @Column(name = "title")
     private String title;
+
+    @NotNull
+    @Column(name = "description")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_to_id")
     private User assignedTo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_id")
     private User createdBy;
+
+    @NotNull
+    @Column(name = "Created")
     private LocalDate created;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_story_id")
     private UserStory userStory;
 
     public Task() {}
