@@ -84,16 +84,5 @@ CREATE TABLE tasks(
 	CONSTRAINT pk_tasks PRIMARY KEY(id)
 );
 
-/*
-drop table remember_me_tokens;
-drop table tasks;
-drop table user_stories;
-drop table sprints;
-drop table epics;
-drop table projects;
-drop table users;
-drop table roles;
-*/
-
 
 

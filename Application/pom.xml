@@ -26,21 +26,6 @@
             <version>42.2.14</version>
             <scope>runtime</scope>
         </dependency>
-
-        <!-- DELETE -->
-        <dependency>
-            <groupId>ro.ubb.pm</groupId>
-            <artifactId>Model</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ro.ubb.pm</groupId>
-            <artifactId>DAL</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
