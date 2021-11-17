@@ -69,8 +69,6 @@ CREATE TABLE user_stories(
 	CONSTRAINT fk_user_stories_sprints FOREIGN KEY(sprint_id) REFERENCES sprints(id),
 	CONSTRAINT pk_user_stories PRIMARY KEY(id)
 );
-
-
 CREATE TABLE tasks(
 	id serial,
 	title varchar(255),
@@ -81,8 +79,11 @@ CREATE TABLE tasks(
 	user_story_id int,
 	CONSTRAINT fk_tasks_users_assigned FOREIGN KEY(assigned_to_id) REFERENCES users(id),
 	CONSTRAINT fk_tasks_users_created FOREIGN KEY(created_by_id) REFERENCES users(id),
+	CONSTRAINT fk_tasks_user_stories FOREIGN KEY(user_story_id) REFERENCES user_stories(id),
 	CONSTRAINT pk_tasks PRIMARY KEY(id)
 );
+
+
 
 
 
