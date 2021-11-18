@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidatorUser implements Validator<User> {
+
     @Override
     public void validate(User u) throws ValidationException {
         List<String> msj = new ArrayList<>();

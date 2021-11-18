@@ -1,6 +1,6 @@
 package ro.ubb.pm.bll;
 
-import ro.ubb.pm.dal.SprintsRepository;
+import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.TasksRepository;
 import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
@@ -9,6 +9,7 @@ import ro.ubb.pm.model.UserStory;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TaskBLL {
 
     private TasksRepository tasksRepository;
