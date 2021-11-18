@@ -22,7 +22,7 @@ public class Epic extends Entity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "epic")
+    @OneToMany(mappedBy = "epic", fetch = FetchType.LAZY)
     private List<UserStory> userStories = new ArrayList<>();
 
     public Epic() {}
