@@ -1,11 +1,12 @@
 package ro.ubb.pm.bll;
 
+import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.UserStoriesRepository;
 import ro.ubb.pm.model.UserStory;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class UserStoryBLL {
 
     private UserStoriesRepository userStoriesRepository;

@@ -32,6 +32,7 @@ public class UserStory extends Entity {
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "status")
     private Status status;
