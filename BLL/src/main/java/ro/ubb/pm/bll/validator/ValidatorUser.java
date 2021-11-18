@@ -1,10 +1,12 @@
 package ro.ubb.pm.bll.validator;
 
+import org.springframework.stereotype.Component;
 import ro.ubb.pm.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ValidatorUser implements Validator<User> {
     @Override
     public void validate(User u) throws ValidationException {
