@@ -1,6 +1,7 @@
 package ro.ubb.pm.bll;
 
-import ro.ubb.pm.dal.SprintsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.TasksRepository;
 import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
@@ -9,17 +10,16 @@ import ro.ubb.pm.model.UserStory;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TaskBLL {
 
     private TasksRepository tasksRepository;
     private UserStoryBLL userStoryBLL;
     private SprintBLL sprintBLL;
 
-    public TaskBLL(TasksRepository tasksRepository) {
+    @Autowired
+    public void setTasksRepository(TasksRepository tasksRepository, UserStoryBLL userStoryBLL, SprintBLL sprintBLL) {
         this.tasksRepository = tasksRepository;
-    }
-
-    public void setBLL(UserStoryBLL userStoryBLL, SprintBLL sprintBLL){
         this.userStoryBLL = userStoryBLL;
         this.sprintBLL = sprintBLL;
     }
@@ -38,4 +38,6 @@ public class TaskBLL {
 
         return taskList;
     }
+
+    public List<Task> getAllTasks(){ return tasksRepository.findAll();}
 }
