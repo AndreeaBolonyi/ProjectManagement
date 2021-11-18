@@ -44,7 +44,7 @@ public class UserStory extends Entity {
     @JoinColumn(name = "epic_id")
     private Epic epic;
 
-    @OneToMany(mappedBy = "userStory")
+    @OneToMany(mappedBy = "userStory", fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 
     public UserStory() {}

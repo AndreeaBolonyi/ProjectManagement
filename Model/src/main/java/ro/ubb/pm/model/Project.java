@@ -13,7 +13,7 @@ public class Project extends Entity {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Epic> epics = new ArrayList<>();
 
     public Project() {}
