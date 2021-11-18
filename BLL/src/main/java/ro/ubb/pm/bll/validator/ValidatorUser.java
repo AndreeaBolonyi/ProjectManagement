@@ -11,11 +11,13 @@ public class ValidatorUser implements Validator<User> {
         List<String> msj = new ArrayList<>();
         StringBuilder message= new StringBuilder();
 
+        if(u == null)
+            throw new ValidationException("User-ul nu poate fi null!");
 
-        if(u.getEmail().length() < 11)
+        if(u.getEmail().length() < 11 || u.getEmail().isEmpty())
             msj.add("Adresa de e-mail este invalida!");
 
-        if(u.getPassword().equals(""))
+        if(u.getPassword().isEmpty())
             msj.add("Parola este invalida!");
 
         for(String s : msj)
