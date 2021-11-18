@@ -11,6 +11,7 @@ public class ValidatorUser implements Validator<User> {
         List<String> msj = new ArrayList<>();
         StringBuilder message= new StringBuilder();
 
+
         if(u.getEmail().length() < 11)
             msj.add("Adresa de e-mail este invalida!");
 
