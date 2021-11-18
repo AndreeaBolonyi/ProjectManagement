@@ -21,14 +21,8 @@ public class UserBLL {
 
     public void login(User user) throws ProjectException, ValidationException {
         validatorUser.validate(user);
-        User u = new User();
-        for(User us : getAllUsers())
-            if(user.getEmail().equals(us.getEmail()) && user.getPassword().equals(us.getPassword())){
-                u = user;
-                break;
-            }
-
-        if(u.getLastName() == null)
+        User u = usersRepository.findByEmail(user.getEmail());
+        if(u == null)
             throw new ProjectException("The credentials are incorrect!");
     }
 
