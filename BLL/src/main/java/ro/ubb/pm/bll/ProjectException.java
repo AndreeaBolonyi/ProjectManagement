@@ -1,5 +1,8 @@
 package ro.ubb.pm.bll;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ProjectException extends Exception{
     public ProjectException() {
     }

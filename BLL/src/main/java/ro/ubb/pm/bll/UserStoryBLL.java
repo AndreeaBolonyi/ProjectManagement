@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.UserStoriesRepository;
 import ro.ubb.pm.model.UserStory;
-
 import java.util.List;
 
 @Component
