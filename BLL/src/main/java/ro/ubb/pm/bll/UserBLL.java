@@ -1,5 +1,6 @@
 package ro.ubb.pm.bll;
 
+import ro.ubb.pm.bll.validator.ValidationException;
 import ro.ubb.pm.bll.validator.Validator;
 import ro.ubb.pm.bll.validator.ValidatorUser;
 import ro.ubb.pm.dal.*;
@@ -13,11 +14,12 @@ public class UserBLL {
     private UsersRepository usersRepository;
     private ValidatorUser validatorUser;
 
-    public UserBLL(UsersRepository usersRepository) {
+    public UserBLL(UsersRepository usersRepository, ValidatorUser validatorUser) {
         this.usersRepository = usersRepository;
+        this.validatorUser = validatorUser;
     }
 
-    public void login(User user) throws Exception {
+    public void login(User user) throws ProjectException, ValidationException {
         validatorUser.validate(user);
         User u = new User();
         for(User us : getAllUsers())
