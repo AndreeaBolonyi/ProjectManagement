@@ -3,11 +3,8 @@ package ro.ubb.pm.bll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.TasksRepository;
-import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
-import ro.ubb.pm.model.UserStory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -32,20 +29,7 @@ public class TaskBLL {
         this.sprintBLL = sprintBLL;
     }
 
-    public List<Task> getAllTasksForASprint(int id){
-        List<Task> taskList = new ArrayList<>();
-        List<UserStory> userSList = new ArrayList<>();
-
-        for(Sprint s : sprintBLL.getAllSprintsForUser(id))
-            if(s.getId() == id){
-                userSList = userStoryBLL.getAllUserStoriesSprint(s.getId());
-            }
-
-        for(UserStory us : userSList)
-            taskList.addAll(us.getTasks());
-
-        return taskList;
+    public List<Task> getAllTasksForAUserStoryId(int userStoryId){
+        return tasksRepository.findAllByUserStoryId(userStoryId);
     }
-
-    public List<Task> getAllTasks(){ return tasksRepository.findAll();}
 }
