@@ -1,12 +1,10 @@
 package ro.ubb.pm.bll;
 
 import ro.ubb.pm.bll.validator.ValidationException;
-import ro.ubb.pm.bll.validator.Validator;
 import ro.ubb.pm.bll.validator.ValidatorUser;
 import ro.ubb.pm.dal.*;
 import ro.ubb.pm.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserBLL {

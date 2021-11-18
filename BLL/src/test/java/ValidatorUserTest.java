@@ -1,30 +1,39 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.junit4.SpringRunner;
 import ro.ubb.pm.bll.validator.ValidationException;
-import ro.ubb.pm.bll.validator.ValidatorUser;
+import ro.ubb.pm.bll.validator.Validator;
 import ro.ubb.pm.model.User;
 
+//@SpringBootTest
+//@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
+@ComponentScan({"ro.ubb.pm.bll"})
 public class ValidatorUserTest {
 
-    ValidatorUser validator;
+    @Autowired
+    Validator<User> validator;
+
     User user;
 
     @Before
     public void initData(){
-        validator = new ValidatorUser();
+       // validator = new ValidatorUser();
         user = new User();
     }
 
     @Test
     public void testValidator(){
 
-         Throwable exception;
-//       exception = Assert.assertThrows(ValidationException.class,
-//                ()->{ validator.validate(user);} );
-//        System.out.println(exception.getMessage());
-//        Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!Parola este invalida!");
-//
+        Throwable exception;
+       exception = Assert.assertThrows(ValidationException.class,
+                ()->{ validator.validate(user);} );
+        Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!Parola este invalida!");
+
 
         user.setEmail("test");
         user.setPassword("notanemptypassword");
