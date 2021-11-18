@@ -1,5 +1,6 @@
 package ro.ubb.pm.bll;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.bll.validator.ValidationException;
 import ro.ubb.pm.bll.validator.ValidatorUser;
@@ -14,7 +15,8 @@ public class UserBLL {
     private UsersRepository usersRepository;
     private ValidatorUser validatorUser;
 
-    public UserBLL(UsersRepository usersRepository, ValidatorUser validatorUser) {
+    @Autowired
+    public void setUsersRepository(UsersRepository usersRepository, ValidatorUser validatorUser) {
         this.usersRepository = usersRepository;
         this.validatorUser = validatorUser;
     }
