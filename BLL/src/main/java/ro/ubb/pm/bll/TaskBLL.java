@@ -18,9 +18,17 @@ public class TaskBLL {
     private SprintBLL sprintBLL;
 
     @Autowired
-    public void setTasksRepository(TasksRepository tasksRepository, UserStoryBLL userStoryBLL, SprintBLL sprintBLL) {
+    public void setTasksRepository(TasksRepository tasksRepository) {
         this.tasksRepository = tasksRepository;
+    }
+
+    @Autowired
+    public void setUserStoryBLL(UserStoryBLL userStoryBLL) {
         this.userStoryBLL = userStoryBLL;
+    }
+
+    @Autowired
+    public void setSprintBLL(SprintBLL sprintBLL) {
         this.sprintBLL = sprintBLL;
     }
 
