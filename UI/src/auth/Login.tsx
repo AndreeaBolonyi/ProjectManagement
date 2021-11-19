@@ -1,47 +1,59 @@
-import React, { useState } from "react";
-import { useAuth, UserProps } from "./AuthProvider";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthProvider";
 import { getLogger } from "../core";
-import { Link } from "react-router-dom";
 import LoginFoot from "../images/foot.svg";
 
 const log = getLogger("Login");
 
+interface LoginState {
+  email?: string;
+  password?: string;
+}
+
 const Login: React.FC = () => {
   const {
     isAuthenticated,
+    isAuthenticating,
     authenticationError,
     login,
   } = useAuth();
-  const [user, setUser] = useState<UserProps>();
+  const [state, setState] = useState<LoginState>({});
+  const { email, password } = state;
+  const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     log("handleSubmit");
-    const currentUser = user ? { ...user } : {};
-    login?.(currentUser);
+    login?.(email, password);
   };
 
-  if (isAuthenticated) {
-    return <Link to="/" />;
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      log("isAuthenticated true");
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="hero is-fullheight has-background-dark">
+      <div />
       <div className="columns has-text-centered is-centered mt-6">
         <div className="column is-one-third"></div>
         <div className="column is-one-fifth mt-6">
           <div className="mt-6">
             <h1 className="title has-text-white is-size-1 pb-5">Log in</h1>
             <h2 className="subtitle has-text-white is-size-5">
-              Start planning your next big project
+              Start planning your next big project!
             </h2>
             <form onSubmit={handleSubmit} className="form">
               <div className="field py-2">
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Username"
                   className="input has-background-info border-info has-text-white"
                   onChange={(e) =>
-                    setUser({ ...user, username: e.currentTarget.value || "" })
+                    setState({ ...state, email: e.currentTarget.value || "" })
                   }
                   required
                 />
@@ -52,36 +64,38 @@ const Login: React.FC = () => {
                   placeholder="Password"
                   className="input has-background-info border-info has-text-white"
                   onChange={(e) =>
-                    setUser({ ...user, password: e.currentTarget.value || "" })
+                    setState({
+                      ...state,
+                      password: e.currentTarget.value || "",
+                    })
                   }
                   required
                 />
               </div>
               <div className="field py-2">
-                <div className="columns">
-                  <div className="column">
-                    <div className="control">
-                      <label className="checkbox has-text-white">
-                        <input className="mr-2" type="checkbox" />
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-                  <div className="column">
-                    <Link to="/forgot" className="has-text-primary">
-                      Forgot password?
-                    </Link>
-                  </div>
-                </div>
+                <Link to="/forgot" className="has-text-primary">
+                  Forgot password?
+                </Link>
               </div>
+              <button className="button is-primary is-fullwidth">Log in</button>
               <div className="py-2">
                 {authenticationError && (
-                  <div>
-                    {authenticationError.message || "Failed to authenticate"}
+                  <div className="info has-text-white mt-2">
+                    {"Wrong credentials"}{" "}
+                    <br />
+                    Please retry
                   </div>
                 )}
               </div>
-              <button className="button is-primary is-fullwidth">Log in</button>
+              {isAuthenticating && (
+                <div className="columns is-fullwidth is-centered">
+                  <div className="column is-one-third" />
+                  <div className="column is-one-fifth mt-2">
+                    <div className="control is-loading"></div>
+                  </div>
+                  <div className="column is-one-third" />
+                </div>
+              )}
             </form>
           </div>
         </div>

@@ -17,6 +17,7 @@ import ro.ubb.pm.model.dtos.UserDTO;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/project_management")
 public class Controller {
     @Autowired

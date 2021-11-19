@@ -1,5 +1,3 @@
-export const baseUrl = "http://localhost:3000";
-
 export const getLogger: (tag: string) => (args: any) => void = (tag) => (
   args
 ) => console.log(tag, args);
@@ -7,5 +5,6 @@ export const getLogger: (tag: string) => (args: any) => void = (tag) => (
 export const config = {
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
   },
 };

@@ -1,16 +1,19 @@
 import axios from "axios";
-import { baseUrl, config, getLogger } from "../core";
-import { UserProps } from "./AuthProvider";
+import { config, getLogger } from "../core";
+import { UserProps } from "../model/UserProps";
+import { projectBaseUrl } from "../utils/generalConstants";
 
 const log = getLogger("userApi");
 
-export interface AuthProps {
-  token: string;
-}
+const authUrl = `${projectBaseUrl}login`;
 
-export const loginApi: (user?: UserProps) => Promise<AuthProps> = (user) => {
+export const loginApi: (
+  email?: string,
+  password?: string
+) => Promise<UserProps> = (email, password) => {
+  log(`loginApi with ${email} and ${password}`);
   return axios
-    .post(baseUrl, { user }, config)
+    .post(authUrl, { email, password }, config)
     .then((res) => {
       log(`login - succeeded`);
       return Promise.resolve(res.data);

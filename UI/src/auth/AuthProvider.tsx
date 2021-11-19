@@ -11,14 +11,13 @@ import { loginApi } from "./authApi";
 
 const log = getLogger("AuthContext");
 
-type LoginFn = (user: UserProps) => void;
+type LoginFn = (email?: string, password?: string) => void;
 
 const initialState: AuthState = {
   isAuthenticated: false,
   isAuthenticating: false,
   authenticationError: null,
   pendingAuthentication: false,
-  user: undefined,
   token: "",
 };
 
@@ -27,14 +26,10 @@ export interface AuthState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   pendingAuthentication?: boolean;
-  user?: UserProps;
+  email?: string;
+  password?: string;
   token: string;
   login?: LoginFn;
-}
-
-export interface UserProps {
-  username?: string;
-  password?: string;
 }
 
 const AuthContext = createContext(initialState);
@@ -55,27 +50,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     authenticationError,
     pendingAuthentication,
     token,
-    user,
   } = state;
   const login = useCallback<LoginFn>(loginCallback, [state]);
-  useEffect(authenticationEffect, [pendingAuthentication, state]);
+  useEffect(authenticationEffect, [pendingAuthentication]);
   const value = {
     isAuthenticated,
     isAuthenticating,
     authenticationError,
     token,
-    user,
     login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 
-  function loginCallback(user?: UserProps): void {
+  function loginCallback(email?: string, password?: string): void {
     log("login");
     setState({
       ...state,
       pendingAuthentication: true,
-      user,
+      email,
+      password,
     });
   }
 
@@ -97,8 +91,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           ...state,
           isAuthenticating: true,
         });
-        const { user } = state;
-        const { token } = await loginApi(user);
+        const { email, password } = state;
+        const user = await loginApi(email, password);
+        log(`authenticated with user ${user.id}`);
         if (canceled) {
           return;
         }
