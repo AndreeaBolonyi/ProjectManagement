@@ -87,7 +87,7 @@ class UserStoryBLLTest {
     void findUserStoryById() {
         assertEquals(1, userStoryBLL.findUserStoryById(1).getId());
 
-        // check if sprintBLL getById rethrows when exception encountered in repository
+        // check if userStoryBll getById rethrows when exception encountered in repository
         try {
             userStoryBLL.findUserStoryById(10);
             fail();

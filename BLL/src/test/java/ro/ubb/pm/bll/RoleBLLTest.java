@@ -50,7 +50,7 @@ class RoleBLLTest {
         allRoles.add(role2);
         allRoles.add(role3);
 
-        // mock the behaviour for get all sprints and get by id
+        // mock the behaviour for get all
         Mockito.when(roleRepository.findAll()).thenReturn(allRoles);
     }
 
