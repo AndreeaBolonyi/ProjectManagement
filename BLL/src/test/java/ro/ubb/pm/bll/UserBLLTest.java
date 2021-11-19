@@ -20,7 +20,7 @@ public class UserBLLTest {
         User user = new User();
         user.setEmail("cristina@yahoo.com");
         user.setPassword("christine");
-        Throwable exception = Assert.assertThrows(ServerException.class, ()->{ userBLL.login(user); } );
+        Throwable exception = Assert.assertThrows(ServerException.class, ()->{ userBLL.login(user.getEmail(),user.getPassword()); } );
         Assert.assertEquals(exception.getMessage(), "The password you've entered is incorrect!");
     }
 

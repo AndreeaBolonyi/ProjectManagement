@@ -70,8 +70,7 @@ public class Controller {
     @RequestMapping(value = "/login/{email}")
     public ResponseEntity<HttpStatus> loginUser(@PathVariable String email) {
         try {
-            User user = new User("", "", email, email.substring(0, email.indexOf("@")), null);
-            userBLL.login(user);
+            userBLL.login(email, email.substring(0, email.indexOf("@")));
         } catch (Exception ex) {
             return (ResponseEntity<HttpStatus>) ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         }

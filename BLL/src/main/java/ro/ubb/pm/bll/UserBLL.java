@@ -23,7 +23,10 @@ public class UserBLL {
         this.validatorUser = validatorUser;
     }
 
-    public void login(User user) throws ServerException, ValidationException {
+    public void login(String email, String password) throws ServerException, ValidationException {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
         validatorUser.validate(user);
         User u = usersRepository.findByEmail(user.getEmail());
         if(u == null)
