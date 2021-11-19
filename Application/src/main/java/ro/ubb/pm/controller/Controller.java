@@ -1,10 +1,8 @@
 package ro.ubb.pm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.SprintBLL;
 import ro.ubb.pm.bll.TaskBLL;
@@ -12,12 +10,10 @@ import ro.ubb.pm.bll.UserBLL;
 import ro.ubb.pm.bll.UserStoryBLL;
 import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
+import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/urest")
@@ -74,13 +70,14 @@ public class Controller {
     @RequestMapping(value = "/login/{email}")
     public ResponseEntity<HttpStatus> loginUser(@PathVariable String email) {
         try {
-            userBLL.login(email, email.substring(0, email.indexOf("@")));
+            User user = new User("", "", email, email.substring(0, email.indexOf("@")), null);
+            userBLL.login(user);
         } catch (Exception ex) {
             return (ResponseEntity<HttpStatus>) ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         }
 
-            return ResponseEntity.ok(HttpStatus.OK);
-        }
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     /**
      * Retrieves all the user stories.
@@ -91,5 +88,4 @@ public class Controller {
         List<UserStory> userStories = userStoryBLL.getAllUserStories();
         return userStories.toArray(new UserStory[userStories.size()]);
     }
-
 }
