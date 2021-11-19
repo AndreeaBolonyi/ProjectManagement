@@ -12,13 +12,13 @@ import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
+import ro.ubb.pm.model.dtos.UserDTO;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/urest")
+@RequestMapping("/project_management")
 public class Controller {
-    private static final String template = "Hello, %s!";
     @Autowired
     private SprintBLL sprintBLL;
     @Autowired
@@ -29,21 +29,11 @@ public class Controller {
     private UserStoryBLL userStoryBLL;
 
     /**
-     *
-     * @param name
-     * @return
-     */
-    @RequestMapping("/greeting")
-    public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return String.format(template, name);
-    }
-
-    /**
      * Retrieves all the sprints.
      * @return
      */
     @RequestMapping(value = "/sprint", method = RequestMethod.GET)
-    public Sprint[] getAllSprint() {
+    public Sprint[] getAllSprints() {
         List<Sprint> sprints = sprintBLL.getAllSprints();
         return sprints.toArray(new Sprint[sprints.size()]);
     }
@@ -54,28 +44,26 @@ public class Controller {
      * @return
      */
     @RequestMapping(value = "/task/{sprintID}", method = RequestMethod.GET)
-    public Sprint[] getTaskBySprint(@PathVariable String sprintID) {
+    public Sprint[] getTasksBySprint(@PathVariable String sprintID) {
         List<Task> tasksBySprint = taskBLL.getAllTasksForASprint(Integer.getInteger(sprintID));
         return tasksBySprint.toArray(new Sprint[tasksBySprint.size()]);
     }
 
     /**
      * Executes the login operation for an user.
-     * @param email - the email associated to the user account
+     * @param
      * @return
      */
-    /*
-    TO DO: Implement secure connection and delete this mock logic.
-     */
-    @RequestMapping(value = "/login/{email}")
-    public ResponseEntity<HttpStatus> loginUser(@PathVariable String email) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        User userFound;
         try {
-            userBLL.login(email, email.substring(0, email.indexOf("@")));
+            userFound = userBLL.login(userDTO.getEmail(), userDTO.getPassword());
         } catch (Exception ex) {
-            return (ResponseEntity<HttpStatus>) ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(userFound, HttpStatus.OK);
     }
 
     /**
@@ -83,7 +71,7 @@ public class Controller {
       * @return
      */
     @RequestMapping(value = "/userstory", method = RequestMethod.GET)
-    public UserStory[] getAllUserStory() {
+    public UserStory[] getAllUserStories() {
         List<UserStory> userStories = userStoryBLL.getAllUserStories();
         return userStories.toArray(new UserStory[userStories.size()]);
     }
