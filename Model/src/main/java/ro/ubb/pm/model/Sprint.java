@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ public class Sprint extends Entity {
     private List<UserStory> userStories = new ArrayList<>();
 
     public Sprint() {}
+
+    @Override
+    public String toString() {
+        return "Sprint{" +
+                "title='" + title + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", userStories=" + userStories +
+                '}';
+    }
 
     public Sprint(String title, LocalDate startDate, LocalDate endDate, List<UserStory> userStories) {
         this.title = title;
