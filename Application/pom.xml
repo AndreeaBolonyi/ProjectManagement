@@ -38,18 +38,6 @@
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>ro.ubb.pm</groupId>
-            <artifactId>BLL</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ro.ubb.pm</groupId>
-            <artifactId>BLL</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
 
     </dependencies>
 
