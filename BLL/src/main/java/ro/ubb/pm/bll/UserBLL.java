@@ -23,10 +23,12 @@ public class UserBLL {
         this.validatorUser = validatorUser;
     }
 
-    public void login(User user) throws ProjectException, ValidationException {
+    public void login(User user) throws ServerException, ValidationException {
         validatorUser.validate(user);
         User u = usersRepository.findByEmail(user.getEmail());
         if(u == null)
-            throw new ProjectException("The credentials are incorrect!");
+            throw new ServerException("The email you've entered is incorrect!");
+        if(!u.getPassword().equals(user.getPassword()))
+            throw new ServerException("The password you've entered is incorrect!");
     }
 }
