@@ -12,18 +12,14 @@
     <artifactId>BLL</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>ro.ubb.pm</groupId>
             <artifactId>DAL</artifactId>
             <version>${project.parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ro.ubb.pm</groupId>
-            <artifactId>Model</artifactId>
-            <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
