@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TasksRepository extends JpaRepository<Task, Integer> {
 
-    @Query("FROM Task task WHERE task.userStory.id =: userStoryId")
+    @Query("FROM Task task WHERE task.userStory.id = :userStoryId")
     List<Task> findAllByUserStoryId(int userStoryId);
 }
