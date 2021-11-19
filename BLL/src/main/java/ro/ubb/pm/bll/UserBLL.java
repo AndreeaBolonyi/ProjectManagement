@@ -1,36 +1,40 @@
 package ro.ubb.pm.bll;
 
-import ro.ubb.pm.bll.validator.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ro.ubb.pm.bll.validator.ValidationException;
 import ro.ubb.pm.bll.validator.ValidatorUser;
 import ro.ubb.pm.dal.*;
 import ro.ubb.pm.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Component
 public class UserBLL {
 
     private UsersRepository usersRepository;
     private ValidatorUser validatorUser;
 
-    public UserBLL(UsersRepository usersRepository) {
+    @Autowired
+    public void setUsersRepository(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
-    public void login(User user) throws Exception {
-        validatorUser.validate(user);
-        User u = new User();
-        for(User us : getAllUsers())
-            if(user.getEmail().equals(us.getEmail()) && user.getPassword().equals(us.getPassword())){
-                u = user;
-                break;
-            }
-
-        if(u.getLastName() == null)
-            throw new ProjectException("The credentials are incorrect!");
+    @Autowired
+    public void setValidatorUser(ValidatorUser validatorUser) {
+        this.validatorUser = validatorUser;
     }
 
-    public List<User> getAllUsers(){
-        return usersRepository.findAll();
+    public User login(String email, String password) throws ServerException, ValidationException {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        validatorUser.validate(user);
+
+        User userFound = usersRepository.findByEmail(user.getEmail());
+        if(userFound == null)
+            throw new ServerException("The email you've entered is incorrect!");
+        if(!userFound.getPassword().equals(user.getPassword()))
+            throw new ServerException("The password you've entered is incorrect!");
+
+        return userFound;
     }
 }

@@ -1,0 +1,7 @@
+.border-info {
+  border-color: #224957;
+}
+
+.input::placeholder {
+  color: #fff;
+}
