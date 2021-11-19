@@ -3,6 +3,7 @@ package ro.ubb.pm.bll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.UserStoriesRepository;
+import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 import java.util.List;
 
@@ -18,5 +19,13 @@ public class UserStoryBLL {
 
     public List<UserStory> getAllUserStoriesBySprintId(int id){
         return userStoriesRepository.findAllBySprintId(id);
+    }
+
+    public List<UserStory> getAllUserStories() {
+        return userStoriesRepository.findAll();
+    }
+
+    public UserStory findUserStoryById(int userStoryId) {
+        return userStoriesRepository.getById(userStoryId);
     }
 }
