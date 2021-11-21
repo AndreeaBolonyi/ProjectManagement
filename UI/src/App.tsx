@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthProvider";
 import Login from "./auth/Login";
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from "./Dashboard/dashboard";
 import "./styles/bulma.css";
 import "./styles/custom.css";
 

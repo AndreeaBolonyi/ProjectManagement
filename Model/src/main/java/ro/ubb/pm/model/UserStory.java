@@ -4,13 +4,14 @@ import ro.ubb.pm.model.enums.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "user_stories")
-public class UserStory extends Entity {
+public class UserStory extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "title")
@@ -20,11 +21,11 @@ public class UserStory extends Entity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_to_id")
     private User assignedTo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 

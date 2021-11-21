@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface UserStoriesRepository extends JpaRepository<UserStory, Integer> {
 
-    @Query("FROM UserStory userStory WHERE userStory.sprint.id =: id")
+    @Query("FROM UserStory userStory WHERE userStory.sprint.id = :id")
     List<UserStory> findAllBySprintId(int id);
 }

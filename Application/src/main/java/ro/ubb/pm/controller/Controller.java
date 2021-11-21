@@ -2,14 +2,13 @@ package ro.ubb.pm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.SprintBLL;
-import ro.ubb.pm.bll.TaskBLL;
 import ro.ubb.pm.bll.UserBLL;
 import ro.ubb.pm.bll.UserStoryBLL;
 import ro.ubb.pm.model.Sprint;
-import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.UserDTO;
@@ -20,14 +19,24 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/project_management")
 public class Controller {
-    @Autowired
     private SprintBLL sprintBLL;
-    @Autowired
-    private TaskBLL taskBLL;
-    @Autowired
     private UserBLL userBLL;
-    @Autowired
     private UserStoryBLL userStoryBLL;
+
+    @Autowired
+    public void setSprintBLL(SprintBLL sprintBLL) {
+        this.sprintBLL = sprintBLL;
+    }
+
+    @Autowired
+    public void setUserBLL(UserBLL userBLL) {
+        this.userBLL = userBLL;
+    }
+
+    @Autowired
+    public void setUserStoryBLL(UserStoryBLL userStoryBLL) {
+        this.userStoryBLL = userStoryBLL;
+    }
 
     /**
      * Retrieves all the sprints.
@@ -42,18 +51,25 @@ public class Controller {
     /**
      * Retrieves all the tasks associated to a sprint.
      * @param sprintID - id of the sprint
-     * @return
+     * @return userStories - List<UserStory> if everything it's ok, otherwise HttpStatus.BAD_REQUEST
      */
-    @RequestMapping(value = "/task/{sprintID}", method = RequestMethod.GET)
-    public Sprint[] getTasksBySprint(@PathVariable String sprintID) {
-        List<Task> tasksBySprint = taskBLL.getAllTasksForASprint(Integer.getInteger(sprintID));
-        return tasksBySprint.toArray(new Sprint[tasksBySprint.size()]);
+    @RequestMapping(value = "/sprint/userstories/{sprintID}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserStoriesBySprint(@PathVariable int sprintID) {
+        List<UserStory> userStories;
+        try {
+            userStories = userStoryBLL.getAllUserStoriesBySprintId(sprintID);
+        }
+        catch(Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(userStories, HttpStatus.OK);
     }
 
     /**
      * Executes the login operation for an user.
-     * @param
-     * @return
+     * @param userDTO - UserDTO object which contains email and password
+     * @return userFound - User if credentials are ok, otherwise HttpStatus.BAD_REQUEST
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {

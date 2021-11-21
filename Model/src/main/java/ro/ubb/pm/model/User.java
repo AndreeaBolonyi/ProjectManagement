@@ -3,10 +3,11 @@ package ro.ubb.pm.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @javax.persistence.Entity
 @Table(name = "users")
-public class User extends Entity {
+public class User extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "last_name")

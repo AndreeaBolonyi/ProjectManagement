@@ -4,15 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "sprints")
-public class Sprint extends Entity {
+public class Sprint extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "title")
@@ -26,7 +26,7 @@ public class Sprint extends Entity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sprint", fetch = FetchType.EAGER)
     private List<UserStory> userStories = new ArrayList<>();
 
     public Sprint() {}
