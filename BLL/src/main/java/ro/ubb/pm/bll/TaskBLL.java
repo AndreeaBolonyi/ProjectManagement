@@ -49,4 +49,8 @@ public class TaskBLL {
         }
         return null;
     }
+
+    public List<Task> getAllTasksForAUserStory(int userStoryId){
+        return tasksRepository.findAllByUserStoryId(userStoryId);
+    }
 }
