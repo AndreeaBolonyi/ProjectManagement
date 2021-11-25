@@ -7,6 +7,7 @@ import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.UserStory;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,16 +32,25 @@ public class TaskBLL {
         this.sprintBLL = sprintBLL;
     }
 
+    @Transactional
     public List<Task> getAllTasksForASprint(int sprintId){
         Sprint currentSprint = sprintBLL.getSprintById(sprintId);
-        List<UserStory> userStories = currentSprint.getUserStories();
-        List<Task> tasksForCurrentSprint = new ArrayList<>();
+        System.out.println(currentSprint);
+        if(currentSprint != null) {
+            List<UserStory> userStories = currentSprint.getUserStories();
+            List<Task> tasksForCurrentSprint = new ArrayList<>();
 
-        for(UserStory userStory : userStories) {
-            List<Task> tasks = tasksRepository.findAllByUserStoryId(userStory.getId());
-            tasksForCurrentSprint.addAll(tasks);
+            for (UserStory userStory : userStories) {
+                List<Task> tasks = tasksRepository.findAllByUserStoryId(userStory.getId());
+                tasksForCurrentSprint.addAll(tasks);
+            }
+
+            return tasksForCurrentSprint;
         }
+        return null;
+    }
 
-        return tasksForCurrentSprint;
+    public List<Task> getAllTasksForAUserStory(int userStoryId){
+        return tasksRepository.findAllByUserStoryId(userStoryId);
     }
 }

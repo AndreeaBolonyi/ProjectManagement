@@ -23,12 +23,18 @@ public class UserBLL {
         this.validatorUser = validatorUser;
     }
 
-    public void login(User user) throws ServerException, ValidationException {
+    public User login(String email, String password) throws ServerException, ValidationException {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
         validatorUser.validate(user);
-        User u = usersRepository.findByEmail(user.getEmail());
-        if(u == null)
+
+        User userFound = usersRepository.findByEmail(user.getEmail());
+        if(userFound == null)
             throw new ServerException("The email you've entered is incorrect!");
-        if(!u.getPassword().equals(user.getPassword()))
+        if(!userFound.getPassword().equals(user.getPassword()))
             throw new ServerException("The password you've entered is incorrect!");
+
+        return userFound;
     }
 }
