@@ -34,15 +34,6 @@ public class Task extends Entity {
 
     public Task() {}
 
-    public Task(String title, String description, User assignedTo, User createdBy, LocalDate created, UserStory userStory) {
-        this.title = title;
-        this.description = description;
-        this.assignedTo = assignedTo;
-        this.createdBy = createdBy;
-        this.created = created;
-        this.userStory = userStory;
-    }
-
     public String getTitle() {
         return title;
     }

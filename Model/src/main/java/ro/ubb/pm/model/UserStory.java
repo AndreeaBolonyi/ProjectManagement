@@ -41,26 +41,10 @@ public class UserStory extends Entity {
     @Column(name = "created")
     private LocalDate created;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "epic_id")
-    private Epic epic;
-
     @OneToMany(mappedBy = "userStory", fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 
     public UserStory() {}
-
-    public UserStory(String title, String description, User assignedUser, User createdByUser, Sprint sprint, Status status, LocalDate created, Epic epic, List<Task> tasks) {
-        this.title = title;
-        this.description = description;
-        this.assignedTo = assignedUser;
-        this.createdBy = createdByUser;
-        this.status = status;
-        this.sprint = sprint;
-        this.created = created;
-        this.epic = epic;
-        this.tasks = tasks;
-    }
 
     public Sprint getSprint() {
         return sprint;
@@ -116,14 +100,6 @@ public class UserStory extends Entity {
 
     public void setCreated(LocalDate created) {
         this.created = created;
-    }
-
-    public Epic getEpic() {
-        return epic;
-    }
-
-    public void setEpic(Epic epic) {
-        this.epic = epic;
     }
 
     public List<Task> getTasks() {

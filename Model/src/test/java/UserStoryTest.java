@@ -90,7 +90,7 @@ public class UserStoryTest {
     /**
      * Tests the Epic field
      */
-    @Test
+    /*@Test
     public void testEpic(){
         Assert.assertNull(userStory.getEpic());
         userStory.setEpic(epic);
@@ -98,7 +98,7 @@ public class UserStoryTest {
         epic.setTitle("EpicTitle");
         Assert.assertNotNull(userStory.getEpic());
         Assert.assertEquals("EpicTitle",userStory.getEpic().getTitle());
-    }
+    }*/
 
 
     /**

@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll;
+package ro.ubb.pm.bll.epics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

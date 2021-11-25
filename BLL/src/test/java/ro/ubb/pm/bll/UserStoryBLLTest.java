@@ -8,13 +8,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ro.ubb.pm.dal.SprintsRepository;
+import ro.ubb.pm.bll.userstories.UserStoryBLL;
 import ro.ubb.pm.dal.UserStoriesRepository;
 import ro.ubb.pm.model.Sprint;
-import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

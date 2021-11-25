@@ -7,8 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.validator.ValidationException;
-import ro.ubb.pm.model.User;
+import ro.ubb.pm.bll.exceptions.ExceptionMessages;
+import ro.ubb.pm.bll.exceptions.InternalServerException;
+import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
+import ro.ubb.pm.bll.users.UserBLL;
+import ro.ubb.pm.model.dtos.UserDTO;
 
 @SpringBootTest(classes = BLLTest.class)
 @RunWith(SpringRunner.class)
@@ -17,12 +20,12 @@ public class UserBLLTest {
     @Autowired
     UserBLL userBLL;
 
-    User user;
+    UserDTO userDTO;
     boolean foundException;
 
     @Before
     public void initData(){
-        user = new User();
+        UserDTO userDTO = new UserDTO();
         foundException = false;
     }
 
@@ -30,24 +33,24 @@ public class UserBLLTest {
     public void testLogin() {
 
         //invalid user
-        Throwable exception = Assert.assertThrows(ValidationException.class, ()->{
-            userBLL.login(user.getEmail(),user.getPassword()); } );
-        Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!Parola este invalida!");
+        Throwable exception = Assert.assertThrows(InvalidCredentialsException.class, ()->{
+            userBLL.login(userDTO); } );
+        Assert.assertEquals(exception.getMessage(), ExceptionMessages.invalidEmailMessage + ExceptionMessages.invalidPasswordMessage);
 
 
         //invalid password
 
-        user.setEmail("cristina@yahoo.com");
-        user.setPassword("notmypass");
-        exception = Assert.assertThrows(ServerException.class, ()->{
-            userBLL.login(user.getEmail(),user.getPassword()); } );
-        Assert.assertEquals(exception.getMessage(), "The password you've entered is incorrect!");
+        userDTO.setEmail("cristina@yahoo.com");
+        userDTO.setPassword("notmypass");
+        exception = Assert.assertThrows(InternalServerException.class, ()->{
+            userBLL.login(userDTO); } );
+        Assert.assertEquals(exception.getMessage(), ExceptionMessages.incorrectPasswordMessage);
 
         //correct
-        user.setPassword("cristina");
+        userDTO.setPassword("cristina");
         try{
-            userBLL.login(user.getEmail(), user.getPassword());
-        } catch (ServerException e) {
+            userBLL.login(userDTO);
+        } catch (InvalidCredentialsException e) {
             this.foundException = true;
         }
 

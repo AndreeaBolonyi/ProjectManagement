@@ -10,7 +10,6 @@
         <module>BLL</module>
         <module>UI</module>
         <module>Application</module>
-        <module>RESTServices</module>
     </modules>
 
     <parent>

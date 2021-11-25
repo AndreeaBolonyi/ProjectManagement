@@ -23,16 +23,9 @@ public class Epic extends Entity {
     private Project project;
 
     @OneToMany(mappedBy = "epic", fetch = FetchType.LAZY)
-    private List<UserStory> userStories = new ArrayList<>();
+    private List<Sprint> sprints = new ArrayList<>();
 
     public Epic() {}
-
-    public Epic(String title, LocalDate created, Project project, List<UserStory> userStories) {
-        this.title = title;
-        this.created = created;
-        this.project = project;
-        this.userStories = userStories;
-    }
 
     public String getTitle() {
         return title;
@@ -58,11 +51,11 @@ public class Epic extends Entity {
         this.project = project;
     }
 
-    public List<UserStory> getUserStories() {
-        return userStories;
+    public List<Sprint> getSprints() {
+        return sprints;
     }
 
-    public void setUserStories(List<UserStory> userStories) {
-        this.userStories = userStories;
+    public void setSprints(List<Sprint> sprints) {
+        this.sprints = sprints;
     }
 }
