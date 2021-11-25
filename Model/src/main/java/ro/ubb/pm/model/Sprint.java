@@ -1,10 +1,6 @@
 package ro.ubb.pm.model;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.transaction.Transactional;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,6 +24,10 @@ public class Sprint extends Entity {
 
     @OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY)
     private List<UserStory> userStories = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "epic_id")
+    private Epic epic;
 
     public Sprint() {}
 
@@ -78,5 +78,13 @@ public class Sprint extends Entity {
 
     public void setUserStories(List<UserStory> userStories) {
         this.userStories = userStories;
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 }

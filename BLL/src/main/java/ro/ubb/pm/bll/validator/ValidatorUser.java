@@ -1,6 +1,8 @@
 package ro.ubb.pm.bll.validator;
 
 import org.springframework.stereotype.Component;
+import ro.ubb.pm.bll.exceptions.ExceptionMessages;
+import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
 import ro.ubb.pm.model.User;
 
 import java.util.ArrayList;
@@ -10,23 +12,23 @@ import java.util.List;
 public class ValidatorUser implements Validator<User> {
 
     @Override
-    public void validate(User u) throws ValidationException {
-        List<String> msj = new ArrayList<>();
-        StringBuilder message= new StringBuilder();
+    public void validate(User user) throws InvalidCredentialsException {
 
-        if(u == null)
-            throw new ValidationException("User-ul nu poate fi null!");
+        List<String> errors = new ArrayList<>();
+        System.out.println(user.getEmail() + " " + user.getPassword());
+        if(user.getEmail() == null || user.getEmail().trim().equals(""))
+            errors.add(ExceptionMessages.invalidEmailMessage);
 
-        if( u.getEmail() == null || u.getEmail().length() < 11 )
-            msj.add("Adresa de e-mail este invalida!");
+        if(user.getPassword() == null || user.getPassword().trim().equals(""))
+            errors.add(ExceptionMessages.invalidPasswordMessage);
 
-        if(u.getPassword() == null || u.getPassword().isEmpty())
-            msj.add("Parola este invalida!");
+        String errorMessage = errors
+                .stream()
+                .reduce("", String::concat);
 
-        for(String s : msj)
-            message.append(s);
+        if(!errorMessage.isEmpty()) {
+            throw new InvalidCredentialsException(errorMessage);
+        }
 
-        if(message.length() > 0)
-            throw new ValidationException(message.toString());
     }
 }

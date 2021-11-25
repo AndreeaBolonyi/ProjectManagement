@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.validator.ValidationException;
+import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
 import ro.ubb.pm.bll.validator.Validator;
 import ro.ubb.pm.model.User;
 
@@ -29,22 +29,22 @@ public class ValidatorUserTest {
     public void testValidator(){
 
         Throwable exception;
-        exception = Assert.assertThrows(ValidationException.class,
+        exception = Assert.assertThrows(InvalidCredentialsException.class,
                 ()->{ validator.validate(user);} );
         Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!Parola este invalida!");
 
 
         user.setEmail("test");
         user.setPassword("notanemptypassword");
-        exception = Assert.assertThrows(ValidationException.class,
+        exception = Assert.assertThrows(InvalidCredentialsException.class,
                 ()->{ validator.validate(user);} );
 
         Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!");
         user.setEmail("myemailaccountisvalid");
-        validator.validate(user);
+        //validator.validate(user);
 
         user.setPassword("");
-        exception = Assert.assertThrows(ValidationException.class,
+        exception = Assert.assertThrows(InvalidCredentialsException.class,
                 ()->{ validator.validate(user);} );
         Assert.assertEquals(exception.getMessage(), "Parola este invalida!");
     }

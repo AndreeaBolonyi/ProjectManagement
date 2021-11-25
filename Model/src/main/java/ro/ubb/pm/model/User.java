@@ -3,20 +3,19 @@ package ro.ubb.pm.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "users")
 public class User extends Entity {
 
-    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
-    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
-    @NotNull
     @Email
     @Column(name = "email")
     private String email;
@@ -25,19 +24,14 @@ public class User extends Entity {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public User() {}
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
-    public User(String lastName, String firstName, String email, String password, Role role) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+    public User() {}
 
     public String getLastName() {
         return lastName;
@@ -77,5 +71,13 @@ public class User extends Entity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }

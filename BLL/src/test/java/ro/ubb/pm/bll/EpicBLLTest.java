@@ -1,15 +1,12 @@
 package ro.ubb.pm.bll;
 
-import org.hibernate.QueryException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.validator.ValidationException;
+import ro.ubb.pm.bll.epics.EpicBLL;
 import ro.ubb.pm.model.Epic;
 
 import java.util.List;

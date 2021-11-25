@@ -1,17 +1,12 @@
 package ro.ubb.pm.bll;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.validator.ValidationException;
-import ro.ubb.pm.model.Epic;
+import ro.ubb.pm.bll.task.TaskBLL;
 import ro.ubb.pm.model.Task;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @SpringBootTest(classes = BLLTest.class)
@@ -22,7 +17,7 @@ public class TaskBLLTest {
 
     List<Task> result;
 
-    @Test
+    /*@Test
     public void testGetAllTasksForASprint(){
 
         //send valid sprint id (expect 2 rows in db)
@@ -36,5 +31,5 @@ public class TaskBLLTest {
 
 
 
-    }
+    }*/
 }
