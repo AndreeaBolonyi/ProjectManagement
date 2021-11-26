@@ -87,19 +87,6 @@ public class UserStoryTest {
     }
 
 
-    /**
-     * Tests the Epic field
-     */
-    /*@Test
-    public void testEpic(){
-        Assert.assertNull(userStory.getEpic());
-        userStory.setEpic(epic);
-        Assert.assertEquals(0, userStory.getEpic().getId());
-        epic.setTitle("EpicTitle");
-        Assert.assertNotNull(userStory.getEpic());
-        Assert.assertEquals("EpicTitle",userStory.getEpic().getTitle());
-    }*/
-
 
     /**
      * Tests the Sprint field
