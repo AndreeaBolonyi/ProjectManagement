@@ -8,7 +8,7 @@ import ro.ubb.pm.bll.userstories.UserStoryBLL;
 @RequestMapping(UserStoryController.BASE_URL)
 public class UserStoryController {
 
-    protected static final String BASE_URL = "project-management";
+    protected static final String BASE_URL = "project_management";
 
     private final UserStoryBLL userStoryBLL;
 

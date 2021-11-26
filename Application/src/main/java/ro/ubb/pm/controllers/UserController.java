@@ -12,7 +12,7 @@ import ro.ubb.pm.model.dtos.UserDTO;
 @RequestMapping(UserController.BASE_URL)
 public class UserController {
 
-    protected static final String BASE_URL = "project-management";
+    protected static final String BASE_URL = "project_management";
 
     private final UserBLL userBLL;
 

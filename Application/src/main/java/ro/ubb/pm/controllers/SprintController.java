@@ -10,7 +10,7 @@ import ro.ubb.pm.bll.sprints.SprintBLL;
 @RequestMapping(SprintController.BASE_URL)
 public class SprintController {
 
-    protected static final String BASE_URL = "project-management";
+    protected static final String BASE_URL = "project_management";
 
     private final SprintBLL sprintBLL;
 

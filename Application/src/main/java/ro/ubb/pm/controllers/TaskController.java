@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(TaskController.BASE_URL)
 public class TaskController {
 
-    protected static final String BASE_URL = "project-management/tasks";
+    protected static final String BASE_URL = "project_management/tasks";
 
     private final TaskBLL taskBLL;
 
