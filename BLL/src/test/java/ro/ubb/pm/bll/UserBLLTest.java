@@ -39,7 +39,6 @@ public class UserBLLTest {
 
 
         //invalid password
-
         userDTO.setEmail("cristina@yahoo.com");
         userDTO.setPassword("notmypass");
         exception = Assert.assertThrows(InternalServerException.class, ()->{

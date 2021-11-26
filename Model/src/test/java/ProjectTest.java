@@ -62,7 +62,6 @@ public class ProjectTest {
 
         Assert.assertNotNull(project.getEpics());
         Assert.assertEquals(2,project.getEpics().size());
-        //Assert.assertEquals(new ArrayList<>(), epicList.get(1).getUserStories());
         epicList.get(0).setProject(project);
         Assert.assertEquals(project, epicList.get(0).getProject());
     }
