@@ -1,18 +1,14 @@
 package ro.ubb.pm.model;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "sprints")
-public class Sprint extends Entity implements Serializable {
+public class Sprint extends Entity {
 
     @NotNull
     @Column(name = "title")
@@ -26,8 +22,12 @@ public class Sprint extends Entity implements Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "sprint", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY)
     private List<UserStory> userStories = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "epic_id")
+    private Epic epic;
 
     public Sprint() {}
 
@@ -78,5 +78,13 @@ public class Sprint extends Entity implements Serializable {
 
     public void setUserStories(List<UserStory> userStories) {
         this.userStories = userStories;
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 }

@@ -1,15 +1,14 @@
 package ro.ubb.pm.bll;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.validator.ValidationException;
-import ro.ubb.pm.model.Epic;
+import ro.ubb.pm.bll.task.TaskBLL;
 import ro.ubb.pm.model.Task;
+import ro.ubb.pm.model.dtos.TaskDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -20,19 +19,22 @@ public class TaskBLLTest {
     @Autowired
     TaskBLL taskBLL;
 
-    List<Task> result;
+    List<TaskDTO> result;
 
     @Test
     public void testGetAllTasksForASprint(){
 
-        //send valid sprint id (expect 2 rows in db)
-        result= taskBLL.getAllTasksForASprint(1);
-        Assert.assertEquals(2, result.size());
+        //send valid user story id, that does not have data in db
+        result= taskBLL.getAllTasksForAUserStory(1);
+        Assert.assertEquals(0, result.size());
 
-        //invalid sprint id(there is no sprint with this id)
-        Throwable exception = Assert.assertThrows(EntityNotFoundException.class, ()->{
-            taskBLL.getAllTasksForASprint(-1); } );
-        Assert.assertEquals(exception.getMessage(), "Unable to find ro.ubb.pm.model.Sprint with id -1");
+        //invalid sprint id(there is no user story with this id)
+        result= taskBLL.getAllTasksForAUserStory(-1);
+        Assert.assertEquals(0, result.size());
+
+        //send valid user story id, with 2 rows in db
+        result= taskBLL.getAllTasksForAUserStory(2);
+        Assert.assertEquals(2, result.size());
 
 
 

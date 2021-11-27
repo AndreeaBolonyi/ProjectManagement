@@ -17,6 +17,9 @@ public class Project extends Entity implements Serializable {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Epic> epics = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<Enrollment> enrollments = new ArrayList<>();
+
     public Project() {}
 
     public Project(String title, List<Epic> epics) {
@@ -38,5 +41,13 @@ public class Project extends Entity implements Serializable {
 
     public void setEpics(List<Epic> epics) {
         this.epics = epics;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }

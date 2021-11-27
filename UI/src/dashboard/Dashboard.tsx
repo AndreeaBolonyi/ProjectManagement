@@ -1,22 +1,14 @@
-import { DetailsList } from "@fluentui/react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { getLogger } from "../core";
-import { UserStory } from "../model/UserStory";
+import LoginFoot from "../images/foot.svg";
 
 const log = getLogger("Dashboard");
-const TITLE_COLUMN: string = "Title";
-const DESCRIPTION_COLUMN: string = "Description";
-const ASSIGNED_TO_COLUMN: string = "Assigned to";
-const CREATED_BY_COLUMN: string = "Created by";
 
-const Dashboard = (): JSX.Element => {
+const Dashboard = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [items, setItems] = useState<UserStory[]>([]);
-  
-  const columns: String[] = [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN];
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -27,7 +19,25 @@ const Dashboard = (): JSX.Element => {
 
   log("render");
   return (
-    <DetailsList items={ [... items, ... columns] } />
+      <div className="hero is-fullheight has-background-dark">
+          <header>
+          <h1 className="title has-text-white is-size-5 has-text-left marginFH1">Projects / Intelligent Eagles</h1>
+          <h2 className="subtitle has-text-white is-size-3 marginFH2">
+              Backlog
+          </h2>
+    </header>
+          <div/>
+        <div className="has-text-left">
+          <div className="column">
+            <div> </div>
+          </div>
+        </div>
+        <div className="hero-foot">
+          <figure className="image is-fullwidth">
+            <img src={LoginFoot} alt="Homepage" className="" />
+          </figure>
+        </div>
+      </div>
   );
 };
 

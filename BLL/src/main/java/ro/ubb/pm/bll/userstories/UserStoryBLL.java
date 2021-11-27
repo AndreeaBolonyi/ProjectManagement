@@ -1,9 +1,8 @@
-package ro.ubb.pm.bll;
+package ro.ubb.pm.bll.userstories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.UserStoriesRepository;
-import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 import java.util.List;
 
