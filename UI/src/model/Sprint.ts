@@ -7,5 +7,4 @@ export interface Sprint {
     startDate: Date;
     endDate: Date;
     epic: Epic;
-    userStories: UserStory[];
 }

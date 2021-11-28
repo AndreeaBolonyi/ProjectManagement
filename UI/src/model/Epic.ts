@@ -6,5 +6,4 @@ export interface Epic {
     title: string;
     created: Date;
     project: Project;
-    sprints: Sprint[];
 }

@@ -11,5 +11,4 @@ export interface UserStory {
     sprint: Sprint;
     status: string;
     created: Date;
-    tasks: Task[];
 }
