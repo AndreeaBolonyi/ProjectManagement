@@ -1,4 +1,4 @@
-import { createTheme, IDetailsColumnStyles, IStackTokens, Theme } from "@fluentui/react";
+import { createTheme, IDetailsColumnStyles, IStackTokens, mergeStyles, Theme } from "@fluentui/react";
 
 export const setGapBetweenHeaders: IStackTokens = {
     childrenGap: "2vw"
@@ -17,7 +17,7 @@ export const detailsListColumnStyle: Partial<IDetailsColumnStyles> = {
         borderTop: "0.2vh groove",
         borderBottom: "0.2vh groove",
         borderRight: "0.2vh groove",
-        borderImage: "linear-gradient( to right, gray, transparent ) 1"
+        borderLeft: "0.2vh groove"
     }
 };
 
@@ -28,4 +28,12 @@ export const transparentTheme: Theme = createTheme({
       neutralLight: '#0',         
       neutralQuaternaryAlt: '#0'   
     }
-  });
+});
+
+export const itemStyle = mergeStyles({ 
+    color: "white", 
+    fontSize: "16px",
+    height: '100%', 
+    display: 'block',
+    borderRight: "0.2vh groove"
+});

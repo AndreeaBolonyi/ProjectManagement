@@ -1,7 +1,7 @@
-import { DetailsList, IColumn,Stack, StackItem, ThemeProvider } from "@fluentui/react";
+import { DetailsList, IColumn, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { config, getLogger } from "../core";
@@ -12,7 +12,7 @@ import { UserStoryDetailsListItem } from "../model/UserStoryDetailsListItem";
 import { getDummySprint, getDummyUserStory } from "../utils/dummyData";
 import { SprintsService } from "../utils/service";
 import { getDefaultSprint, formatDate, getViewportAsPixels } from "../utils/utilsMethods";
-import { detailsListColumnStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
+import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
 
 const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
@@ -37,11 +37,15 @@ const getColumnName = (title: string, description: string, assignedTo: string, c
   return name === title ? title : name === description ? description : name === assignedTo ? assignedTo : name === createdBy ? createdBy : name;
 };
 
+const getFieldName = (columnName: string): string => {
+  return columnName === TITLE_COLUMN ? "title" :  columnName === DESCRIPTION_COLUMN ? "description" : columnName === ASSIGNED_TO_COLUMN ? "assignedTo" : columnName === CREATED_BY_COLUMN ? "createdBy" : "";
+};
+
 const getColumn = (pageWidth: number, name: string): IColumn => {
   return {
       key: name,
       name: getColumnName(TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN, name),
-      fieldName: name,
+      fieldName: getFieldName(name),
       minWidth: getViewportAsPixels(pageWidth, 25),
       maxWidth: getViewportAsPixels(pageWidth, 30),
       isResizable: true,
@@ -60,12 +64,23 @@ const getListItemFromUserStory = (userStory: UserStory): UserStoryDetailsListIte
     assignedTo: `${userStory.assignedTo.firstName}${" "}${userStory.assignedTo.lastName}`,
     createdBy: `${userStory.createdBy.firstName}${" "}${userStory.createdBy.lastName}`
   };
-}
+};
+
+const renderItemColumn = (item: any, index?: number, column?: IColumn): React.ReactFragment => {
+  const fieldContent = item[column!.fieldName as keyof UserStoryDetailsListItem] as string;
+
+  return (
+    <React.Fragment>
+      <span className={itemStyle}>{fieldContent}</span>
+    </React.Fragment>
+  );
+};
 
 const Dashboard = (props: IDashboardProps): JSX.Element => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [currentSprint, setCurrentSprint] = useState<Sprint>(getDefaultSprint());
+  const [items, setItems] = useState<UserStoryDetailsListItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<Object[] | undefined>(undefined);
   const [selection] = useState<Selection>(() => new Selection({
     onSelectionChanged: () => {
@@ -83,6 +98,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
   useEffect(() => {
     getCurrentSprint();
+    setItems(getUserStoriesForCurrentSprint());
   }, []);
 
   const getCurrentSprint = async () => {
@@ -92,7 +108,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const getUserStoriesForCurrentSprint = (): UserStoryDetailsListItem[] => {
-    const dummyUserStories: UserStory[] = [ getDummyUserStory() ];
+    const dummyUserStories: UserStory[] = [ getDummyUserStory(), getDummyUserStory() ];
     return dummyUserStories.map((item) => getListItemFromUserStory(item) );
   };
 
@@ -119,12 +135,14 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
         <StackItem>
         <ThemeProvider theme={transparentTheme}>
             <DetailsList className="hero is-fullheight has-background-dark" 
-                        items={getUserStoriesForCurrentSprint()} 
+                        items={items} 
+                        setKey="set"
                         columns={columns}
                         selectionMode={SelectionMode.single}
                         layoutMode={DetailsListLayoutMode.justified}
                         selection={selection}
-                        selectionPreservedOnEmptyClick={true}>
+                        selectionPreservedOnEmptyClick={true}
+                        onRenderItemColumn={renderItemColumn}>
             </DetailsList>
           </ThemeProvider>
         </StackItem>
