@@ -2,11 +2,12 @@ package ro.ubb.pm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @javax.persistence.Entity
 @Table(name = "tasks")
-public class Task extends Entity {
+public class Task extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "title")

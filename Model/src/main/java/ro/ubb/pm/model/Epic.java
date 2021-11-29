@@ -2,13 +2,14 @@ package ro.ubb.pm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "epics")
-public class Epic extends Entity {
+public class Epic extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "title")

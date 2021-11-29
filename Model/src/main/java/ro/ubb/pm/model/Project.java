@@ -2,12 +2,13 @@ package ro.ubb.pm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "projects")
-public class Project extends Entity {
+public class Project extends Entity implements Serializable {
 
     @NotNull
     @Column(name = "title")

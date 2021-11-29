@@ -2,9 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+window.onload = () => {
+  const rootElement: HTMLElement = document.getElementById("root") as HTMLInputElement;
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <App pageWidth={rootElement.clientWidth} pageHeight={rootElement.clientHeight} />
+    </React.StrictMode>, 
+    rootElement
+  );
+};
