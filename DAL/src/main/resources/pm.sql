@@ -1,6 +1,6 @@
 /*Run all the DROP statements below in order to recreate all the tables*/
 
-/*drop table remember_me_tokens;
+drop table remember_me_tokens;
 drop table enrollments;
 drop table tasks;
 drop table user_stories;
@@ -8,7 +8,7 @@ drop table sprints;
 drop table epics;
 drop table projects;
 drop table users;
-drop table roles;*/
+drop table roles;
 
 
 CREATE TABLE roles(
