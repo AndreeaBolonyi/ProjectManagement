@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ro.ubb.pm.model.Epic;
 import ro.ubb.pm.model.Project;
+import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.UserStory;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class EpicTest {
 
     Epic epic;
     Project project;
-    List<UserStory> userStoryList;
+    List<Sprint> sprintList;
 
 
     /**
@@ -27,8 +28,8 @@ public class EpicTest {
     @Before
     public void initData(){
         epic = new Epic();
-        userStoryList = new ArrayList<>();
         project=new Project();
+        sprintList = new ArrayList<>();
     }
 
 
@@ -57,6 +58,7 @@ public class EpicTest {
         Assert.assertEquals("EpicName", epic.getTitle());
 
 
+
     }
 
 
@@ -80,22 +82,21 @@ public class EpicTest {
 
 
     /**
-     * Tests the UserStory list attribute
+     * Tests the Sprints list attribute
      */
-    /*@Test
-    public void testUserStories(){
+    @Test
+    public void testSprintsList(){
 
-        epic.setUserStories(null);
-        Assert.assertNull(epic.getUserStories());
+        epic.setSprints(null);
+        Assert.assertNull(epic.getSprints());
 
-        for(int i =0 ;i <3;i++){
-            userStoryList.add(new UserStory());
+        for(int i =0 ;i <4;i++){
+            sprintList.add(new Sprint());
         }
 
-        epic.setUserStories(userStoryList);
-        Assert.assertEquals(3,epic.getUserStories().size());
-        Assert.assertNull(epic.getUserStories().get(0).getCreated());
-        userStoryList.get(1).setTitle("US1");
-        Assert.assertEquals("US1",epic.getUserStories().get(1).getTitle());
-    }*/
+        epic.setSprints(sprintList);
+        Assert.assertEquals(4,epic.getSprints().size());
+        Assert.assertNull(epic.getSprints().get(0).getTitle());
+
+    }
 }
