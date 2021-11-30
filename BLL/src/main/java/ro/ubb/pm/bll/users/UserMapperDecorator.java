@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll.user;
+package ro.ubb.pm.bll.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.ubb.pm.dal.RolesRepository;

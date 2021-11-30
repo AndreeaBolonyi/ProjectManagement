@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectFactory {
 
     @Bean
-    public ProjectMapper taskMapper() {
+    public ProjectMapper projectMapper() {
         return new ProjectMapperImpl();
     }
 }

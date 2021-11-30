@@ -19,7 +19,7 @@ public class Epic extends Entity implements Serializable {
     @Column(name = "created")
     private LocalDate created;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
 

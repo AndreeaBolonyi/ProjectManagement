@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.bll.exceptions.ExceptionMessages;
 import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
-import ro.ubb.pm.bll.user.UserMapper;
 import ro.ubb.pm.bll.validator.ValidatorUser;
 import ro.ubb.pm.dal.*;
 import ro.ubb.pm.model.*;

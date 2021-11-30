@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll.user;
+package ro.ubb.pm.bll.users;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

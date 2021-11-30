@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.exceptions.ResourceNotFoundException;
 import ro.ubb.pm.bll.sprints.SprintBLL;
-import ro.ubb.pm.model.Sprint;
+import ro.ubb.pm.model.dtos.SprintDTO;
 
 @RestController
 @CrossOrigin
@@ -24,9 +24,13 @@ public class SprintController {
      * get current sprint based on startDate and endDate
      * @return ResponseEntity<Sprint>
      */
-    @RequestMapping(value = "/get-current-sprint", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/get-current-sprint", method = RequestMethod.GET)
     public ResponseEntity<Sprint> getCurrentSprint() throws ResourceNotFoundException {
         Sprint sprint = sprintBLL.getCurrentSprint();
         return new ResponseEntity<>(sprint, HttpStatus.OK);
+    }*/
+    @RequestMapping(value = "/get-current-sprint", method = RequestMethod.GET)
+    public ResponseEntity<SprintDTO> getCurrentSprint() throws ResourceNotFoundException {
+        return new ResponseEntity<>(sprintBLL.getCurrentSprintDTO(), HttpStatus.OK);
     }
 }
