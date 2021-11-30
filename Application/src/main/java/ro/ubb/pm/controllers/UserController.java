@@ -2,6 +2,7 @@ package ro.ubb.pm.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.users.UserBLL;
 import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
@@ -27,7 +28,7 @@ public class UserController {
      * @throws InvalidCredentialsException - if the entered credentials are incorrect
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) throws InvalidCredentialsException {
+    public ResponseEntity<UserDTO> login(@Validated @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
         UserDTO userFound;
         try {
             userFound = userBLL.login(userDTO);

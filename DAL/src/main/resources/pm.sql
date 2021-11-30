@@ -1,6 +1,6 @@
 /*Run all the DROP statements below in order to recreate all the tables*/
-/*
-drop table remember_me_tokens;
+
+/*drop table remember_me_tokens;
 drop table enrollments;
 drop table tasks;
 drop table user_stories;
@@ -8,8 +8,7 @@ drop table sprints;
 drop table epics;
 drop table projects;
 drop table users;
-drop table roles;
-*/
+drop table roles;*/
 
 
 CREATE TABLE roles(
@@ -87,9 +86,11 @@ CREATE TABLE user_stories(
 	assigned_to_id int not null,
 	created_by_id int not null,
 	sprint_id int not null,
+	epic_id int,
 	CONSTRAINT fk_user_stories_users_assigned FOREIGN KEY(assigned_to_id) REFERENCES users(id),
 	CONSTRAINT fk_user_stories_users_created FOREIGN KEY(created_by_id) REFERENCES users(id),
 	CONSTRAINT fk_user_stories_sprints FOREIGN KEY(sprint_id) REFERENCES sprints(id),
+	CONSTRAINT fk_user_stories_epics FOREIGN KEY(epic_id) REFERENCES epics(id),
 	CONSTRAINT pk_user_stories PRIMARY KEY(id)
 );
 

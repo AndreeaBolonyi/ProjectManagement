@@ -1,16 +1,17 @@
 package ro.ubb.pm.model.dtos;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 public class UserDTO {
 
     private Integer id;
     private String firstName;
     private String lastName;
-    @Email
+
+    @Email(message = "Invalid Email")
     private String email;
-    @NotNull
+    @NotBlank(message = "Invalid Password")
     private String password;
     private int roleId;
     private String roleTitle;
