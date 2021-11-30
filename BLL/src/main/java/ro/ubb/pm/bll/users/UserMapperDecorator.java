@@ -1,6 +1,7 @@
-package ro.ubb.pm.bll.user;
+package ro.ubb.pm.bll.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import ro.ubb.pm.bll.users.UserMapper;
 import ro.ubb.pm.dal.RolesRepository;
 import ro.ubb.pm.model.Role;
 import ro.ubb.pm.model.User;

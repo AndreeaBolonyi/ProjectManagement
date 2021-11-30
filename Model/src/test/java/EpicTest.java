@@ -77,6 +77,7 @@ public class EpicTest {
         Assert.assertEquals("ProjectManagement", epic.getProject().getTitle());
         project.setId(5);
         Assert.assertNotEquals(2, epic.getProject().getId());
+        Assert.assertEquals(project, epic.getProject());
 
     }
 

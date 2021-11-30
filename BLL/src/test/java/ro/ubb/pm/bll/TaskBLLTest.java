@@ -6,11 +6,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.ubb.pm.bll.task.TaskBLL;
-import ro.ubb.pm.model.Task;
+import ro.ubb.pm.bll.tasks.TaskBLL;
 import ro.ubb.pm.model.dtos.TaskDTO;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @SpringBootTest(classes = BLLTest.class)

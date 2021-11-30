@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll.task;
+package ro.ubb.pm.bll.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

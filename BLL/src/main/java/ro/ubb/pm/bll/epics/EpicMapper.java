@@ -4,11 +4,8 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ro.ubb.pm.bll.user.UserMapperDecorator;
 import ro.ubb.pm.model.Epic;
-import ro.ubb.pm.model.Sprint;
 import ro.ubb.pm.model.dtos.EpicDTO;
-import ro.ubb.pm.model.dtos.SprintDTO;
 
 @Mapper
 @DecoratedWith(EpicMapperDecorator.class)
