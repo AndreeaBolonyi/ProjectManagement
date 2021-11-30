@@ -3,8 +3,8 @@ package ro.ubb.pm.bll;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import ro.ubb.pm.bll.task.TaskFactory;
-import ro.ubb.pm.bll.user.UserFactory;
+import ro.ubb.pm.bll.tasks.TaskFactory;
+import ro.ubb.pm.bll.users.UserFactory;
 
 @Configuration
 @Import({UserFactory.class, TaskFactory.class})

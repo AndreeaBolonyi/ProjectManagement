@@ -3,7 +3,7 @@ package ro.ubb.pm.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.ubb.pm.bll.task.TaskBLL;
+import ro.ubb.pm.bll.tasks.TaskBLL;
 import ro.ubb.pm.model.dtos.TaskDTO;
 
 import java.util.List;

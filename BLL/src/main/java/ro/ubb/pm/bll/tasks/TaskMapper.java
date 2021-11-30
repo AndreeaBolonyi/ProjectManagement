@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll.task;
+package ro.ubb.pm.bll.tasks;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;

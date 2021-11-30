@@ -1,4 +1,4 @@
-package ro.ubb.pm.bll.task;
+package ro.ubb.pm.bll.tasks;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
