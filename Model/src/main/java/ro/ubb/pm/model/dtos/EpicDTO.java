@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class EpicDTO {
 
-    private  Integer id;
+    private Integer id;
 
     @NotNull
     private String title;
@@ -13,8 +13,7 @@ public class EpicDTO {
     @NotNull
     private LocalDate created;
 
-    private Integer projectId;
-
+    private ProjectDTO projectDTO;
 
     public Integer getId() {
         return id;
@@ -40,11 +39,11 @@ public class EpicDTO {
         this.created = created;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public ProjectDTO getProjectDTO() {
+        return projectDTO;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setProjectDTO(ProjectDTO projectDTO) {
+        this.projectDTO = projectDTO;
     }
 }

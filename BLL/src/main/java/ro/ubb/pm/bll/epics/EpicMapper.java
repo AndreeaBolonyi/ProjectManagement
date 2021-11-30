@@ -11,12 +11,13 @@ import ro.ubb.pm.model.dtos.EpicDTO;
 @DecoratedWith(EpicMapperDecorator.class)
 public interface EpicMapper {
 
-    EpicMapper INSTANCE = Mappers.getMapper(ro.ubb.pm.bll.epics.EpicMapper.class);
+    EpicMapper INSTANCE = Mappers.getMapper(EpicMapper.class);
 
-    @Mapping(source = "project.id", target = "projectId")
+    @Mapping(source = "project", target = "projectDTO")
     EpicDTO epicToEpicDTO(Epic epic);
 
     @Mapping(target = "sprints", ignore = true)
     @Mapping(target = "project", ignore = true)
+    @Mapping(target = "userStories", ignore = true)
     Epic epicDTOToEpic(EpicDTO epicDTO);
 }

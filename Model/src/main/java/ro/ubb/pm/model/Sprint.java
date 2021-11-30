@@ -25,7 +25,7 @@ public class Sprint extends Entity {
     @OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY)
     private List<UserStory> userStories = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "epic_id")
     private Epic epic;
 

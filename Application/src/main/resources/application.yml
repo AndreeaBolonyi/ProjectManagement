@@ -1,7 +1,7 @@
 spring.datasource:
   url: "jdbc:postgresql://localhost:5432/ProjectManagement"
   username: "postgres"
-  password: "2001"
+  password: "postgres"
   driver-class-name: org.postgresql.Driver
   properties:
     hibernate:

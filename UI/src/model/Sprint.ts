@@ -1,5 +1,4 @@
 import { Epic } from "./Epic";
-import { UserStory } from "./UserStory";
 
 export interface Sprint {
     id: number;

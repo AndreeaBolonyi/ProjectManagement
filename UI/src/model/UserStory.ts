@@ -1,5 +1,4 @@
 import { Sprint } from "./Sprint";
-import { Task } from "./Task";
 import { User } from "./User";
 
 export interface UserStory {

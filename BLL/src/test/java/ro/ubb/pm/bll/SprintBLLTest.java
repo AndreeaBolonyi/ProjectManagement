@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
+/*
 @SpringBootTest(classes = SprintBLL.class)
 @ExtendWith(MockitoExtension.class)
 class SprintBLLTest {
@@ -76,4 +77,4 @@ class SprintBLLTest {
         catch(Exception ignored){
         }
     }
-}
+}*/
