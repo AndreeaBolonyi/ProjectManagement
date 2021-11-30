@@ -26,6 +26,9 @@ public class Epic extends Entity implements Serializable {
     @OneToMany(mappedBy = "epic", fetch = FetchType.LAZY)
     private List<Sprint> sprints = new ArrayList<>();
 
+    @OneToMany(mappedBy = "epic", fetch = FetchType.LAZY)
+    private List<UserStory> userStories = new ArrayList<>();
+
     public Epic() {}
 
     public String getTitle() {
@@ -58,5 +61,13 @@ public class Epic extends Entity implements Serializable {
 
     public void setSprints(List<Sprint> sprints) {
         this.sprints = sprints;
+    }
+
+    public List<UserStory> getUserStories() {
+        return userStories;
+    }
+
+    public void setUserStories(List<UserStory> userStories) {
+        this.userStories = userStories;
     }
 }

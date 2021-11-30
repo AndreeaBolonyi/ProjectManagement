@@ -33,6 +33,10 @@ public class UserStory extends Entity implements Serializable {
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "epic_id")
+    private Epic epic;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "status")
@@ -46,6 +50,14 @@ public class UserStory extends Entity implements Serializable {
     private List<Task> tasks = new ArrayList<>();
 
     public UserStory() {}
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
+    }
 
     public Sprint getSprint() {
         return sprint;
