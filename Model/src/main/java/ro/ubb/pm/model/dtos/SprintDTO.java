@@ -7,7 +7,7 @@ public class SprintDTO {
 
     private Integer id;
 
-    private Integer epicId;
+    private EpicDTO epicDTO;
 
     @NotNull
     private String title;
@@ -26,12 +26,12 @@ public class SprintDTO {
         this.id = id;
     }
 
-    public Integer getEpicId() {
-        return epicId;
+    public EpicDTO getEpicDTO() {
+        return epicDTO;
     }
 
-    public void setEpicId(Integer epicId) {
-        this.epicId = epicId;
+    public void setEpicDTO(EpicDTO epicDTO) {
+        this.epicDTO = epicDTO;
     }
 
     public String getTitle() {
