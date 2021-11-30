@@ -55,10 +55,10 @@ insert into sprints(title, start_date, end_date, epic_id)
 values
 ('IE Sprint 1', '2021-11-05', '2021-11-19', 1);
 
-insert into user_stories(title, description, status, created, assigned_to_id, created_by_id, sprint_id)
+insert into user_stories(title, description, status, created, assigned_to_id, created_by_id, sprint_id, epic_id)
 values
-('US - Login', 'As an user, I want to be able to access my account, so that I can view my backlog and progress.', 'IN_PROGRESS', '2021-11-05', 4, 1, 1),
-('US - Architecture', 'Layered Architecture', 'DONE', '2021-11-05', 1, 2, 1);
+('US - Login', 'As an user, I want to be able to access my account, so that I can view my backlog and progress.', 'IN_PROGRESS', '2021-11-05', 4, 1, 1, 1),
+('US - Architecture', 'Layered Architecture', 'DONE', '2021-11-05', 1, 2, 1, 1);
 
 insert into tasks(title, description, created, assigned_to_id, created_by_id, user_story_id)
 values
