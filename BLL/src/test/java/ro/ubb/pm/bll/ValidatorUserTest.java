@@ -31,21 +31,21 @@ public class ValidatorUserTest {
         Throwable exception;
         exception = Assert.assertThrows(InvalidCredentialsException.class,
                 ()->{ validator.validate(user);} );
-        Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!Parola este invalida!");
+        Assert.assertEquals(exception.getMessage(), "The email is not valid!The password cannot be empty!");
 
 
         user.setEmail("test");
         user.setPassword("notanemptypassword");
-        exception = Assert.assertThrows(InvalidCredentialsException.class,
-                ()->{ validator.validate(user);} );
+        try{
+            validator.validate(user);
+        } catch (InvalidCredentialsException e) {
+          Assert.assertNull(e);
+        }
 
-        Assert.assertEquals(exception.getMessage(), "Adresa de e-mail este invalida!");
         user.setEmail("myemailaccountisvalid");
-        //validator.validate(user);
-
         user.setPassword("");
         exception = Assert.assertThrows(InvalidCredentialsException.class,
                 ()->{ validator.validate(user);} );
-        Assert.assertEquals(exception.getMessage(), "Parola este invalida!");
+        Assert.assertEquals(exception.getMessage(), "The password cannot be empty!");
     }
 }
