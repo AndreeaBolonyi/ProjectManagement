@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.userstories.UserStoryBLL;
-import ro.ubb.pm.model.UserStory;
+import ro.ubb.pm.model.dtos.UserStoryDTO;
 
 import java.util.List;
 
@@ -24,18 +24,11 @@ public class UserStoryController {
     /**
      * get all user stories that are associated with the sprint id
      * @param sprintId - int
-     * @return ResponseEntity<List<UserStory>> if sprintId is a valid number, else ResponseEntity<String> with the error message
+     * @return ResponseEntity<List<UserStoryDTO>>
      */
     @RequestMapping(value = "/get-all-by-sprint/{sprintId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllUserStoriesBySprint(@PathVariable String sprintId) {
-        List<UserStory> userStories;
-        try {
-            userStories = userStoryBLL.getAllUserStoriesBySprintId(Integer.parseInt(sprintId));
-        }
-        catch(NumberFormatException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(userStories, HttpStatus.OK);
+    public ResponseEntity<List<UserStoryDTO>> getAllUserStoriesBySprint(@PathVariable int sprintId) {
+        return new ResponseEntity<>(userStoryBLL.getAllUserStoriesBySprintId(sprintId), HttpStatus.OK);
     }
+
 }

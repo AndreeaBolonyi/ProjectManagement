@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ro.ubb.pm.bll.sprints.SprintMapper;
 import ro.ubb.pm.bll.users.UserMapper;
 import ro.ubb.pm.dal.RolesRepository;
-import ro.ubb.pm.model.Role;
-import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.SprintDTO;
 import ro.ubb.pm.model.dtos.UserDTO;
@@ -40,6 +38,7 @@ public abstract class UserStoryMapperDecorator implements UserStoryMapper {
     public UserStoryDTO userStoryToUserStoryDTO(UserStory userStory) {
 
         UserStoryDTO userStoryDTO = userStoryMapper.userStoryToUserStoryDTO(userStory);
+        userStoryDTO.setStatus(userStory.getStatus().name());
         UserDTO assignedToUserDTO = userMapper.userToUserDTO(userStory.getAssignedTo());
         userStoryDTO.setAssignedTo(assignedToUserDTO);
 
