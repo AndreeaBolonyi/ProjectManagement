@@ -22,13 +22,8 @@ public class SprintController {
 
     /**
      * get current sprint based on startDate and endDate
-     * @return ResponseEntity<Sprint>
+     * @return ResponseEntity<SprintDTO>
      */
-    /*@RequestMapping(value = "/get-current-sprint", method = RequestMethod.GET)
-    public ResponseEntity<Sprint> getCurrentSprint() throws ResourceNotFoundException {
-        Sprint sprint = sprintBLL.getCurrentSprint();
-        return new ResponseEntity<>(sprint, HttpStatus.OK);
-    }*/
     @RequestMapping(value = "/get-current-sprint", method = RequestMethod.GET)
     public ResponseEntity<SprintDTO> getCurrentSprint() throws ResourceNotFoundException {
         return new ResponseEntity<>(sprintBLL.getCurrentSprintDTO(), HttpStatus.OK);

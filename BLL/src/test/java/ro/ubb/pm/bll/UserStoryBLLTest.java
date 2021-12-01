@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class UserStoryBLLTest {
 
-    List<UserStory> allUserStories;
+    /*List<UserStory> allUserStories;
 
     @MockBean
     private UserStoriesRepository userStoriesRepository;
@@ -91,5 +91,5 @@ class UserStoryBLLTest {
         }
         catch(Exception ignored){
         }
-    }
+    }*/
 }
