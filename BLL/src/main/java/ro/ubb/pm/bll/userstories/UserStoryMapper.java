@@ -4,10 +4,7 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ro.ubb.pm.bll.users.UserMapperDecorator;
-import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
-import ro.ubb.pm.model.dtos.UserDTO;
 import ro.ubb.pm.model.dtos.UserStoryDTO;
 
 @Mapper
