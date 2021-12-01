@@ -1,5 +1,5 @@
-import { User } from "./User";
-import { UserStory } from "./UserStory";
+import { User } from "./IUser";
+import { UserStory } from "./IUserStory";
 
 export interface Task {
     id: number;
