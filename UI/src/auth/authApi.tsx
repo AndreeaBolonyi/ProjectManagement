@@ -1,6 +1,6 @@
 import axios from "axios";
 import { config, getLogger } from "../core";
-import { User } from "../model/User";
+import { User } from "../model/IUser";
 import { projectBaseUrl } from "../utils/generalConstants";
 
 const log = getLogger("userApi");

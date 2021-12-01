@@ -1,8 +1,8 @@
-import { Project } from "./Project";
+import { Project } from "./IProject";
 
 export interface Epic {
     id: number;
     title: string;
     created: Date;
-    project: Project;
+    projectDTO: Project;
 }

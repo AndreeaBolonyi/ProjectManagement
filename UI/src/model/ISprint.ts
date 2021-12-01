@@ -1,9 +1,9 @@
-import { Epic } from "./Epic";
+import { Epic } from "./IEpic";
 
 export interface Sprint {
     id: number;
     title: string;
     startDate: Date;
     endDate: Date;
-    epic: Epic;
+    epicDTO: Epic;
 }

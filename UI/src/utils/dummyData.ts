@@ -1,8 +1,8 @@
-import { Epic } from "../model/Epic";
-import { Project } from "../model/Project";
-import { Sprint } from "../model/Sprint";
-import { User } from "../model/User";
-import { UserStory } from "../model/UserStory";
+import { Epic } from "../model/IEpic";
+import { Project } from "../model/IProject";
+import { Sprint } from "../model/ISprint";
+import { User } from "../model/IUser";
+import { UserStory } from "../model/IUserStory";
 
 export const getDummyProject = (): Project => {
     return {
@@ -16,7 +16,7 @@ export const getDummyEpic = (): Epic => {
       id: 1,
       title: "Demo 1",
       created: new Date("2021-11-20"),
-      project: getDummyProject()
+      projectDTO: getDummyProject()
     };
   };
 
@@ -26,7 +26,7 @@ export const getDummySprint = (): Sprint => {
       title: "IE Sprint 2",
       startDate: new Date("2021-11-20"),
       endDate: new Date("2021-12-04"),
-      epic: getDummyEpic()
+      epicDTO: getDummyEpic()
     };
   };
 
@@ -37,7 +37,7 @@ return {
     description: "layered arhitecture",
     assignedTo: getDummyUser(),
     createdBy: getDummyUser(),
-    sprint: getDummySprint(),
+    sprintDTO: getDummySprint(),
     status: "DONE",
     created: new Date("2021-11-20")
     };
@@ -49,7 +49,7 @@ export const getDummyUser = (): User => {
     firstName: "Andreea",
     lastName: "Bolonyi",
     roleId: 3,
-    email: "andreea@yahoo.com",
-    password: "andreea"
+    email: "",
+    password: ""
   };
 };

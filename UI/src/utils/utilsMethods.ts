@@ -1,8 +1,8 @@
-import { Epic } from "../model/Epic";
-import { Project } from "../model/Project";
-import { Sprint } from "../model/Sprint";
-import { User } from "../model/User";
-import { UserStory } from "../model/UserStory";
+import { Epic } from "../model/IEpic";
+import { Project } from "../model/IProject";
+import { Sprint } from "../model/ISprint";
+import { User } from "../model/IUser";
+import { UserStory } from "../model/IUserStory";
 
 export const getViewportAsPixels = (pageSizePx: number, viewportSize: number): number => {
     return (viewportSize * pageSizePx) / 100;
@@ -46,7 +46,7 @@ export const getDefaultEpic = (): Epic => {
     id: 0,
     title: "",
     created: new Date(),
-    project: getDefaultProject()
+    projectDTO: getDefaultProject()
   };
 };
 
@@ -56,7 +56,7 @@ export const getDefaultSprint = (): Sprint => {
     title: "",
     startDate: new Date(),
     endDate: new Date(),
-    epic: getDefaultEpic()
+    epicDTO: getDefaultEpic()
   };
 };
 
@@ -67,7 +67,7 @@ export const getDefaultUserStory = (): UserStory => {
     description: "",
     assignedTo: getDefaultUser(),
     createdBy: getDefaultUser(),
-    sprint: getDefaultSprint(),
+    sprintDTO: getDefaultSprint(),
     status: "",
     created: new Date()
   };

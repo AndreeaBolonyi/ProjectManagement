@@ -1,5 +1,5 @@
-import { Sprint } from "./Sprint";
-import { User } from "./User";
+import { Sprint } from "./ISprint";
+import { User } from "./IUser";
 
 export interface UserStory {
     id: number;
@@ -7,7 +7,7 @@ export interface UserStory {
     description: string;
     assignedTo: User;
     createdBy: User;
-    sprint: Sprint;
+    sprintDTO: Sprint;
     status: string;
     created: Date;
 }
