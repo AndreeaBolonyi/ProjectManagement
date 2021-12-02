@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EntityTest {
 
-    Entity entity;
+    private Entity entity;
 
     @BeforeEach
     void setUp() {

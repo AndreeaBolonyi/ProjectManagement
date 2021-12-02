@@ -10,10 +10,10 @@ import ro.ubb.pm.model.dtos.ProjectDTO;
 
 public class ProjectFactoryTest {
 
-    ProjectFactory projectFactory;
-    ProjectMapper projectMapper;
-    ProjectDTO projectDTOToTest;
-    Project projectToTest;
+    private ProjectFactory projectFactory;
+    private ProjectMapper projectMapper;
+    private ProjectDTO projectDTOToTest;
+    private Project projectToTest;
 
     @Before
     public void initData(){

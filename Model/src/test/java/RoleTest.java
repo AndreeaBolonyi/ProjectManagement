@@ -9,7 +9,7 @@ import ro.ubb.pm.model.Role;
  */
 public class RoleTest {
 
-    Role role;
+    private Role role;
 
     /**
      * Some data that will be tested is initialized in this method, that is executed

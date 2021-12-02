@@ -7,8 +7,7 @@ import java.time.LocalDate;
 
 public class SprintDTOTest {
 
-    SprintDTO sprintDTO;
-    EpicDTO epicDTO;
+    private SprintDTO sprintDTO;
 
     @Test
     public void testSprintDTO(){
@@ -38,7 +37,7 @@ public class SprintDTOTest {
 
         //test epicDTO
         Assert.assertNull(sprintDTO.getEpicDTO());
-        epicDTO = new EpicDTO();
+        EpicDTO epicDTO = new EpicDTO();
         sprintDTO.setEpicDTO(epicDTO);
 
         //test epicDTO title

@@ -14,10 +14,10 @@ import java.time.LocalDate;
 
 public class TaskFactoryTest {
 
-    TaskFactory taskFactory;
-    TaskMapper taskMapper;
-    Task taskToTest;
-    TaskDTO taskDTOToTest;
+    private TaskFactory taskFactory;
+    private TaskMapper taskMapper;
+    private Task taskToTest;
+    private TaskDTO taskDTOToTest;
 
     @Before
     public void initData(){
