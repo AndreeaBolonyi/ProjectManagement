@@ -6,11 +6,10 @@ import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { config, getLogger } from "../core";
 import { IDashboardProps } from "../model/IDashboardProps";
-import { Sprint } from "../model/Sprint";
-import { UserStory } from "../model/UserStory";
-import { UserStoryDetailsListItem } from "../model/UserStoryDetailsListItem";
-import { getDummySprint, getDummyUserStory } from "../utils/dummyData";
-import { SprintsService } from "../utils/service";
+import { Sprint } from "../model/ISprint";
+import { UserStory } from "../model/IUserStory";
+import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
+import { SprintsService, UserStoriesService } from "../utils/service";
 import { getDefaultSprint, formatDate, getViewportAsPixels } from "../utils/utilsMethods";
 import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
 
@@ -84,7 +83,9 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   const [selectedItems, setSelectedItems] = useState<Object[] | undefined>(undefined);
   const [selection] = useState<Selection>(() => new Selection({
     onSelectionChanged: () => {
-        setSelectedItems(selection.getSelection());
+        const selectedItems: IObjectWithKey[] = selection.getSelection();
+        console.log(selectedItems);
+        setSelectedItems(selectedItems);
     }
   }));
   const columns: IColumn[] = getColumns(props.pageWidth, [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN]);
@@ -98,22 +99,24 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
   useEffect(() => {
     getCurrentSprint();
-    setItems(getUserStoriesForCurrentSprint());
   }, []);
 
   const getCurrentSprint = async () => {
     const sprint: Sprint = await getByRequestUrl(SprintsService.GET_CURRENT_SPRINT);
-    const dummySprint: Sprint = getDummySprint();
-    setCurrentSprint(dummySprint);
+    const allUserStories = await getByRequestUrl(`${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprint.id}`);
+
+    setCurrentSprint(sprint);
+    setItems(getUserStoriesForCurrentSprint(allUserStories));
+
+    console.log(allUserStories);
   };
 
-  const getUserStoriesForCurrentSprint = (): UserStoryDetailsListItem[] => {
-    const dummyUserStories: UserStory[] = [ getDummyUserStory(), getDummyUserStory() ];
-    return dummyUserStories.map((item) => getListItemFromUserStory(item) );
+  const getUserStoriesForCurrentSprint = (allUserStories: UserStory[]): UserStoryDetailsListItem[] => {
+    return allUserStories.map((item) => getListItemFromUserStory(item) );
   };
 
   const getTitle = (): string => {
-    return `${"Projects"}${" / "}${currentSprint.epic.project.title}`;
+    return `${"Projects"}${" / "}${currentSprint.epicDTO.projectDTO.title}`;
   };
 
   const getSubtitle = (): string => {
