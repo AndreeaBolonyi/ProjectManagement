@@ -7,9 +7,7 @@ import ro.ubb.pm.model.User;
 
 public class EnrollmentTest {
 
-    Enrollment enrollment;
-    User user;
-    Project project;
+    private  Enrollment enrollment;
 
     @Before
     public void initData(){
@@ -25,7 +23,7 @@ public class EnrollmentTest {
 
         //testing the project property
         Assert.assertNull(enrollment.getProject());
-        project = new Project();
+        Project project = new Project();
         project.setTitle("HugeProject");
         enrollment.setProject(project);
         Assert.assertNotNull(enrollment.getProject());
@@ -35,7 +33,7 @@ public class EnrollmentTest {
 
         //testing the user property
         Assert.assertNull(enrollment.getUser());
-        user = new User();
+        User user = new User();
         user.setLastName("Philips");
         enrollment.setUser(user);
         Assert.assertNotNull(enrollment.getUser());

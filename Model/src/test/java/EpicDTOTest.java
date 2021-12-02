@@ -7,8 +7,7 @@ import java.time.LocalDate;
 
 public class EpicDTOTest {
 
-    EpicDTO epicDTO;
-    ProjectDTO projectDTO;
+    private EpicDTO epicDTO;
 
     @Test
     public void testEpicDTO(){
@@ -34,7 +33,7 @@ public class EpicDTOTest {
 
         //test projectDTO
         Assert.assertNull(epicDTO.getProjectDTO());
-        projectDTO = new ProjectDTO();
+        ProjectDTO projectDTO = new ProjectDTO();
         epicDTO.setProjectDTO(projectDTO);
         Assert.assertNotNull(epicDTO.getProjectDTO());
         Assert.assertEquals(projectDTO, epicDTO.getProjectDTO());

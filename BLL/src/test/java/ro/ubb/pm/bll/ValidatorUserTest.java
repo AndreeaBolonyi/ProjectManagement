@@ -16,9 +16,9 @@ import ro.ubb.pm.model.User;
 public class ValidatorUserTest {
 
     @Autowired
-    Validator<User> validator;
+    private Validator<User> validator;
 
-    User user;
+    private User user;
 
     @Before
     public void initData(){

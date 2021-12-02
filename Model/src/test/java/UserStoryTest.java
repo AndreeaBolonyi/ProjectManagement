@@ -12,12 +12,11 @@ import java.util.List;
  */
 public class UserStoryTest {
 
-    UserStory userStory;
-    Epic epic;
-    User user;
-    Sprint sprint;
-    List<Task> taskList;
-    LocalDate date;
+    private UserStory userStory;
+    private User user;
+    private  Sprint sprint;
+    private  List<Task> taskList;
+    private LocalDate date;
 
     /**
      * Some data that will be tested is initialized in this method, that is executed
@@ -27,7 +26,6 @@ public class UserStoryTest {
     public void initData(){
         userStory = new UserStory();
         user= new User();
-        epic = new Epic();
         sprint = new Sprint();
         taskList = new ArrayList<>();
         date= LocalDate.of(2020,10,10);

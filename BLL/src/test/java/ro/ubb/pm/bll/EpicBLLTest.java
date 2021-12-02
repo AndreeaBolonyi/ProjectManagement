@@ -18,7 +18,7 @@ public class EpicBLLTest {
     @Autowired
     EpicBLL epicBLL;
 
-    List<Epic> result;
+    private List<Epic> result;
 
     @Test
     public void testGetAllEpicsByProjectId(){

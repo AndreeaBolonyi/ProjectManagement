@@ -9,9 +9,8 @@ import java.time.LocalDate;
 
 public class UserStoryDTOTest {
 
-    UserStoryDTO userStoryDTO;
-    UserDTO userDTO;
-    SprintDTO sprintDTO;
+    private  UserStoryDTO userStoryDTO;
+    private UserDTO userDTO;
 
     @Test
     public void testUserStoryDTO(){
@@ -45,7 +44,7 @@ public class UserStoryDTOTest {
 
         //test sprintDTO
         Assert.assertNull(userStoryDTO.getSprintDTO());
-        sprintDTO = new SprintDTO();
+        SprintDTO sprintDTO = new SprintDTO();
         userStoryDTO.setSprintDTO(sprintDTO);
         Assert.assertNotNull(userStoryDTO.getSprintDTO());
         sprintDTO.setId(121);

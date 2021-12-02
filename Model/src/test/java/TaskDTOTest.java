@@ -1,5 +1,4 @@
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import ro.ubb.pm.model.dtos.TaskDTO;
 
@@ -7,7 +6,7 @@ import java.time.LocalDate;
 
 public class TaskDTOTest {
 
-    TaskDTO taskDTO;
+    private TaskDTO taskDTO;
 
 
     @Test

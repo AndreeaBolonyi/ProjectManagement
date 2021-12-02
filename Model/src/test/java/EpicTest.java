@@ -4,8 +4,6 @@ import org.junit.Test;
 import ro.ubb.pm.model.Epic;
 import ro.ubb.pm.model.Project;
 import ro.ubb.pm.model.Sprint;
-import ro.ubb.pm.model.UserStory;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,9 @@ import java.util.List;
  */
 public class EpicTest {
 
-    Epic epic;
-    Project project;
-    List<Sprint> sprintList;
+    private Epic epic;
+    private Project project;
+    private List<Sprint> sprintList;
 
 
     /**

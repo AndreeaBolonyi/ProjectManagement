@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class ProjectTest {
 
-    Project project;
-    List<Epic> epicList;
+    private Project project;
+    private List<Epic> epicList;
 
 
     /**

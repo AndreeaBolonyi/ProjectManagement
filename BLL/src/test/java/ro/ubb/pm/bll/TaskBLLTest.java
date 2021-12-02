@@ -17,7 +17,7 @@ public class TaskBLLTest {
     @Autowired
     TaskBLL taskBLL;
 
-    List<TaskDTO> result;
+    private List<TaskDTO> result;
 
     @Test
     public void testGetAllTasksForASprint(){

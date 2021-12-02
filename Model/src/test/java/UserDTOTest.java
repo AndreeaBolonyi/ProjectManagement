@@ -4,7 +4,7 @@ import ro.ubb.pm.model.dtos.UserDTO;
 
 public class UserDTOTest {
 
-    UserDTO userDTO;
+    private UserDTO userDTO;
 
     @Test
     public void testProperties(){
