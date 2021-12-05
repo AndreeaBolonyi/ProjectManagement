@@ -14,15 +14,15 @@ public class TaskDTO {
     private String description;
 
     @NotNull
-    private Integer assignedToId;
+    private UserDTO assignedToDTO;
 
     @NotNull
-    private Integer createdById;
+    private UserDTO createdByDTO;
 
     @NotNull
     private LocalDate created;
 
-    private Integer userStoryId;
+    private UserStoryDTO userStoryDTO;
 
     public Integer getId() {
         return id;
@@ -48,20 +48,28 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public Integer getAssignedToId() {
-        return assignedToId;
+    public UserDTO getAssignedToDTO() {
+        return assignedToDTO;
     }
 
-    public void setAssignedToId(Integer assignedToId) {
-        this.assignedToId = assignedToId;
+    public void setAssignedToDTO(UserDTO assignedToDTO) {
+        this.assignedToDTO = assignedToDTO;
     }
 
-    public Integer getCreatedById() {
-        return createdById;
+    public UserDTO getCreatedByDTO() {
+        return createdByDTO;
     }
 
-    public void setCreatedById(Integer createdById) {
-        this.createdById = createdById;
+    public void setCreatedByDTO(UserDTO createdByDTO) {
+        this.createdByDTO = createdByDTO;
+    }
+
+    public UserStoryDTO getUserStoryDTO() {
+        return userStoryDTO;
+    }
+
+    public void setUserStoryDTO(UserStoryDTO userStoryDTO) {
+        this.userStoryDTO = userStoryDTO;
     }
 
     public LocalDate getCreated() {
@@ -72,11 +80,5 @@ public class TaskDTO {
         this.created = created;
     }
 
-    public Integer getUserStoryId() {
-        return userStoryId;
-    }
 
-    public void setUserStoryId(Integer userStoryId) {
-        this.userStoryId = userStoryId;
-    }
 }

@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
 import ro.ubb.pm.model.dtos.TaskDTO;
+import ro.ubb.pm.model.dtos.UserDTO;
+import ro.ubb.pm.model.dtos.UserStoryDTO;
 
 import java.time.LocalDate;
 
@@ -8,9 +10,8 @@ public class TaskDTOTest {
 
     private TaskDTO taskDTO;
 
-
     @Test
-    public void testTaskDTOProperties(){
+    public void testTaskDTO(){
         Assert.assertNull(taskDTO);
 
         taskDTO = new TaskDTO();
@@ -29,17 +30,34 @@ public class TaskDTOTest {
         taskDTO.setDescription("TaskDesc");
         Assert.assertEquals("TaskDesc",taskDTO.getDescription());
 
-        //test assignedToId
-        taskDTO.setAssignedToId(1);
-        Assert.assertEquals(String.valueOf(1), String.valueOf(taskDTO.getAssignedToId()));
+        //test assignedToDTO
+        Assert.assertNull(taskDTO.getAssignedToDTO());
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName("Tim");
+        userDTO.setId(1);
+        taskDTO.setAssignedToDTO(userDTO);
+        Assert.assertNotNull(taskDTO.getAssignedToDTO());
+        Assert.assertEquals(String.valueOf(1), String.valueOf(taskDTO.getAssignedToDTO().getId()));
+        Assert.assertEquals("Tim",taskDTO.getAssignedToDTO().getFirstName());
 
-        //test createdById
-        taskDTO.setCreatedById(11);
-        Assert.assertEquals(String.valueOf(11), String.valueOf(taskDTO.getCreatedById()));
+        //test createdByDTO
+        Assert.assertNull(taskDTO.getCreatedByDTO());
+        taskDTO.setCreatedByDTO(userDTO);
+        Assert.assertNotNull(taskDTO.getCreatedByDTO());
+        Assert.assertEquals(String.valueOf(1), String.valueOf(taskDTO.getCreatedByDTO().getId()));
+        Assert.assertEquals("Tim",taskDTO.getCreatedByDTO().getFirstName());
 
-        //test userStoryId
-        taskDTO.setUserStoryId(10);
-        Assert.assertEquals(String.valueOf(10),String.valueOf(taskDTO.getUserStoryId()));
+
+        //test userStoryDTO
+        Assert.assertNull(taskDTO.getUserStoryDTO());
+        UserStoryDTO userStoryDTO = new UserStoryDTO();
+        userStoryDTO.setId(12);
+        userStoryDTO.setDescription("MyDescription");
+        taskDTO.setUserStoryDTO(userStoryDTO);
+        Assert.assertNotNull(taskDTO.getUserStoryDTO());
+        Assert.assertEquals(String.valueOf(12),String.valueOf(taskDTO.getUserStoryDTO().getId()));
+        Assert.assertEquals("MyDescription",taskDTO.getUserStoryDTO().getDescription());
+
 
         //test id
         taskDTO.setId(1);

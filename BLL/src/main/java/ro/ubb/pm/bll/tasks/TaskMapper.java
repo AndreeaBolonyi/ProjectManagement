@@ -13,9 +13,9 @@ public interface TaskMapper {
 
     TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
 
-    @Mapping(source = "assignedTo.id", target = "assignedToId")
-    @Mapping(source = "createdBy.id", target = "createdById")
-    @Mapping(source = "userStory.id", target = "userStoryId")
+    @Mapping(source = "assignedTo", target = "assignedToDTO")
+    @Mapping(source = "createdBy", target = "createdByDTO")
+    @Mapping(source = "userStory", target = "userStoryDTO")
     TaskDTO taskToTaskDTO(Task task);
 
     @Mapping(target = "assignedTo", ignore = true)
