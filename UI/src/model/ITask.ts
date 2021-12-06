@@ -5,8 +5,8 @@ export interface Task {
     id: number;
     title: string;
     description: string;
-    assignedTo: User;
-    createdBy: User;
+    assignedToDTO: User;
+    createdByDTO: User;
     created: Date;
     userStory: UserStory;
 }

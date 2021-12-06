@@ -3,6 +3,8 @@ import { Project } from "../model/IProject";
 import { Sprint } from "../model/ISprint";
 import { User } from "../model/IUser";
 import { UserStory } from "../model/IUserStory";
+import {UserStoryDetailsListItem} from "../model/IUserStoryDetailsListItem";
+import {Task} from "../model/ITask";
 
 export const getViewportAsPixels = (pageSizePx: number, viewportSize: number): number => {
     return (viewportSize * pageSizePx) / 100;
@@ -73,6 +75,18 @@ export const getDefaultUserStory = (): UserStory => {
   };
 };
 
+export const getDefaultTask = (): Task => {
+  return {
+    id: 0,
+    title: "",
+    description: "",
+    assignedToDTO: getDefaultUser(),
+    createdByDTO: getDefaultUser(),
+    userStory: getDefaultUserStory(),
+    created: new Date()
+  };
+};
+
 export const getDefaultUser = (): User => {
   return {
     id: 0,
@@ -81,5 +95,15 @@ export const getDefaultUser = (): User => {
     roleId: 0,
     email: "",
     password: ""
+  };
+};
+
+export const getDefaultUserStoryDetailsListItem = (): UserStoryDetailsListItem => {
+  return {
+    id: 0,
+    title: "",
+    description:"",
+    assignedTo: "",
+    createdBy: ""
   };
 };

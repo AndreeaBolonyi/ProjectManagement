@@ -25,10 +25,10 @@ public class TaskController {
      * Retrieves all the tasks associated to an user story.
      * @param userStoryId - int
      *                    - id of the sprint
-     * @return ResponseEntity<List<SprintDTO>> - all
+     * @return ResponseEntity<List<TaskDTO>> - all
      */
-    @GetMapping
-    public ResponseEntity<List<TaskDTO>> getAllTasksByUserStoryId(@RequestParam("userStoryId") int userStoryId) {
+    @RequestMapping(value = "/get-all-by-user-story/{userStoryId}", method = RequestMethod.GET)
+    public ResponseEntity<List<TaskDTO>> getAllTasksByUserStoryId(@PathVariable int userStoryId) {
         return new ResponseEntity<>(taskBLL.getAllTasksForAUserStory(userStoryId), HttpStatus.OK);
     }
 
