@@ -1,17 +1,22 @@
 import { DetailsList, IColumn, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { config, getLogger } from "../core";
-import { IDashboardProps } from "../model/IDashboardProps";
+import { IDashboardProps} from "../model/IDashboardProps";
 import { Sprint } from "../model/ISprint";
 import { UserStory } from "../model/IUserStory";
 import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
 import { SprintsService, UserStoriesService } from "../utils/service";
-import { getDefaultSprint, formatDate, getViewportAsPixels } from "../utils/utilsMethods";
+import {
+    getDefaultSprint,
+    formatDate,
+    getViewportAsPixels,
+} from "../utils/utilsMethods";
 import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
+import Tasks from "../taskspage/Tasks";
 
 const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
@@ -58,6 +63,7 @@ const getColumns = (pageWidth: number, names: string[]): IColumn[] => {
 
 const getListItemFromUserStory = (userStory: UserStory): UserStoryDetailsListItem => {
   return {
+    id: userStory.id,
     title: userStory.title,
     description: userStory.description,
     assignedTo: `${userStory.assignedTo.firstName}${" "}${userStory.assignedTo.lastName}`,
@@ -80,11 +86,10 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   const navigate = useNavigate();
   const [currentSprint, setCurrentSprint] = useState<Sprint>(getDefaultSprint());
   const [items, setItems] = useState<UserStoryDetailsListItem[]>([]);
-  const [selectedItems, setSelectedItems] = useState<Object[] | undefined>(undefined);
+  const [selectedItems, setSelectedItems] = useState<IObjectWithKey[] | undefined>(undefined);
   const [selection] = useState<Selection>(() => new Selection({
     onSelectionChanged: () => {
         const selectedItems: IObjectWithKey[] = selection.getSelection();
-        console.log(selectedItems);
         setSelectedItems(selectedItems);
     }
   }));
@@ -97,9 +102,16 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     }
   }, [isAuthenticated]);
 
+    useEffect(() => {
+        if(selectedItems !== undefined){
+            navigate("/tasks");
+        }
+    }, [selectedItems]);
+
   useEffect(() => {
     getCurrentSprint();
   }, []);
+
 
   const getCurrentSprint = async () => {
     const sprint: Sprint = await getByRequestUrl(SprintsService.GET_CURRENT_SPRINT);
@@ -107,8 +119,6 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
     setCurrentSprint(sprint);
     setItems(getUserStoriesForCurrentSprint(allUserStories));
-
-    console.log(allUserStories);
   };
 
   const getUserStoriesForCurrentSprint = (allUserStories: UserStory[]): UserStoryDetailsListItem[] => {
@@ -123,12 +133,12 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     return `${currentSprint.title}${" / "}${formatDate(currentSprint.startDate)}${" - "}${formatDate(currentSprint.endDate)}`;
   };
 
-  //a se folosi atunci cand se apasa pe un user story si vrem sa afisam tasks ce tin de el
-  const getSelectedItem = (): IObjectWithKey => {
-    return selectedItems![0];
+  const getSelectedItem = (): UserStoryDetailsListItem => {
+    return selectedItems![0] as UserStoryDetailsListItem;
   };
 
-  return (
+  // @ts-ignore
+    return (
       <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
           <Stack tokens={setGapBetweenHeaders}>
             <p className="title has-text-white is-size-5 has-text-left marginFH1"> {getTitle()} </p>
@@ -149,6 +159,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
             </DetailsList>
           </ThemeProvider>
         </StackItem>
+          {selectedItems !== undefined &&
+          <Tasks pageHeight={props.pageHeight} pageWidth={props.pageWidth} selectedUserStory = {getSelectedItem()} />}
       </Stack>
   );
 };
