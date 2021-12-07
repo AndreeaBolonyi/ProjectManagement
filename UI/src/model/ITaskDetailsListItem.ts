@@ -2,7 +2,7 @@ export interface ITaskDetailsListItem {
     id: number;
     title: string;
     description: string;
-    assignedToDTO: string;
-    createdByDTO: string;
+    assignedTo: string;
+    createdBy: string;
     created: string;
 }

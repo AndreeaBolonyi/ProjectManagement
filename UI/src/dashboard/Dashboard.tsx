@@ -1,22 +1,16 @@
 import { DetailsList, IColumn, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
-import axios from "axios";
 import React, { useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { config, getLogger } from "../core";
+import { getLogger } from "../core";
 import { IDashboardProps} from "../model/IDashboardProps";
 import { Sprint } from "../model/ISprint";
 import { UserStory } from "../model/IUserStory";
 import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
 import { SprintsService, UserStoriesService } from "../utils/service";
-import {
-    getDefaultSprint,
-    formatDate,
-    getViewportAsPixels,
-} from "../utils/utilsMethods";
+import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory } from "../utils/utilsMethods";
 import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
-import Tasks from "../taskspage/Tasks";
 
 const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
@@ -24,18 +18,6 @@ const DESCRIPTION_COLUMN: string = "Description";
 const ASSIGNED_TO_COLUMN: string = "Assigned to";
 const CREATED_BY_COLUMN: string = "Created by";
 const BACKLOG_TITLE: string = "Backlog";
-
-const getByRequestUrl = (requestUrl: string) => {
-  return axios
-  .get(requestUrl, config)
-  .then((res) => {
-    return Promise.resolve(res.data);
-  })
-  .catch((err) => {
-    log(err);
-    return Promise.reject(err);
-  });
-};
 
 const getColumnName = (title: string, description: string, assignedTo: string, createdBy: string, name: string): string => {
   return name === title ? title : name === description ? description : name === assignedTo ? assignedTo : name === createdBy ? createdBy : name;
@@ -53,6 +35,7 @@ const getColumn = (pageWidth: number, name: string): IColumn => {
       minWidth: getViewportAsPixels(pageWidth, 25),
       maxWidth: getViewportAsPixels(pageWidth, 30),
       isResizable: true,
+      isMultiline: true,
       styles: detailsListColumnStyle
   };
 };
@@ -90,6 +73,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   const [selection] = useState<Selection>(() => new Selection({
     onSelectionChanged: () => {
         const selectedItems: IObjectWithKey[] = selection.getSelection();
+        const selected: UserStoryDetailsListItem = selectedItems[0] as UserStoryDetailsListItem;
+        setSelectedUserStory(selected);
         setSelectedItems(selectedItems);
     }
   }));
@@ -103,7 +88,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   }, [isAuthenticated]);
 
     useEffect(() => {
-        if(selectedItems !== undefined){
+        if(selectedItems !== undefined) {
             navigate("/tasks");
         }
     }, [selectedItems]);
@@ -111,7 +96,6 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   useEffect(() => {
     getCurrentSprint();
   }, []);
-
 
   const getCurrentSprint = async () => {
     const sprint: Sprint = await getByRequestUrl(SprintsService.GET_CURRENT_SPRINT);
@@ -133,11 +117,10 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     return `${currentSprint.title}${" / "}${formatDate(currentSprint.startDate)}${" - "}${formatDate(currentSprint.endDate)}`;
   };
 
-  const getSelectedItem = (): UserStoryDetailsListItem => {
-    return selectedItems![0] as UserStoryDetailsListItem;
+  const getSelectedItem = (): IObjectWithKey => {
+    return selectedItems![0];
   };
 
-  // @ts-ignore
     return (
       <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
           <Stack tokens={setGapBetweenHeaders}>
@@ -146,21 +129,19 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
             <p className="subtitle has-text-white is-size-3 marginFH2"> {BACKLOG_TITLE} </p>
           </Stack>
         <StackItem>
-        <ThemeProvider theme={transparentTheme}>
-            <DetailsList className="hero is-fullheight has-background-dark" 
-                        items={items} 
-                        setKey="set"
-                        columns={columns}
-                        selectionMode={SelectionMode.single}
-                        layoutMode={DetailsListLayoutMode.justified}
-                        selection={selection}
-                        selectionPreservedOnEmptyClick={true}
-                        onRenderItemColumn={renderItemColumn}>
-            </DetailsList>
+          <ThemeProvider theme={transparentTheme}>
+              <DetailsList className="hero is-fullheight has-background-dark" 
+                          items={items} 
+                          setKey="set"
+                          columns={columns}
+                          selectionMode={SelectionMode.single}
+                          layoutMode={DetailsListLayoutMode.justified}
+                          selection={selection}
+                          selectionPreservedOnEmptyClick={true}
+                          onRenderItemColumn={renderItemColumn}>
+              </DetailsList>
           </ThemeProvider>
         </StackItem>
-          {selectedItems !== undefined &&
-          <Tasks pageHeight={props.pageHeight} pageWidth={props.pageWidth} selectedUserStory = {getSelectedItem()} />}
       </Stack>
   );
 };

@@ -5,6 +5,20 @@ import { User } from "../model/IUser";
 import { UserStory } from "../model/IUserStory";
 import {UserStoryDetailsListItem} from "../model/IUserStoryDetailsListItem";
 import {Task} from "../model/ITask";
+import axios from "axios";
+import { config } from "../core";
+
+export const getByRequestUrl = (requestUrl: string) => {
+  return axios
+  .get(requestUrl, config)
+  .then((res) => {
+    return Promise.resolve(res.data);
+  })
+  .catch((err) => {
+    console.log(err);
+    return Promise.reject(err);
+  });
+};
 
 export const getViewportAsPixels = (pageSizePx: number, viewportSize: number): number => {
     return (viewportSize * pageSizePx) / 100;
@@ -106,4 +120,10 @@ export const getDefaultUserStoryDetailsListItem = (): UserStoryDetailsListItem =
     assignedTo: "",
     createdBy: ""
   };
+};
+
+export let selectedUserStory: UserStoryDetailsListItem = getDefaultUserStoryDetailsListItem();
+
+export const setSelectedUserStory = (value: UserStoryDetailsListItem) => {
+  selectedUserStory = value;
 };
