@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, Stack, StackItem, ThemeProvider } from "@fluentui/react";
+import { CommandBar, DetailsList, IColumn, IContextualMenuItem, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import React, { useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
@@ -8,9 +8,10 @@ import { IDashboardProps} from "../model/IDashboardProps";
 import { Sprint } from "../model/ISprint";
 import { UserStory } from "../model/IUserStory";
 import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
+import { ADD, DELETE, EDIT, VIEW_TASKS } from "../utils/generalConstants";
 import { SprintsService, UserStoriesService } from "../utils/service";
 import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory } from "../utils/utilsMethods";
-import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, itemStyle, enabledMenuItemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Dashboard.styles";
 
 const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
@@ -64,6 +65,18 @@ const renderItemColumn = (item: any, index?: number, column?: IColumn): React.Re
   );
 };
 
+const getMenuItem = (name: string): IContextualMenuItem => {
+  return {
+      key: name,
+      text: name,
+      iconProps: { iconName: name }
+  }
+};
+
+const getMenuItems = (names: string[]): IContextualMenuItem[] => {
+  return names.map((name: string) => getMenuItem(name));
+};
+
 const Dashboard = (props: IDashboardProps): JSX.Element => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -79,6 +92,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     }
   }));
   const columns: IColumn[] = getColumns(props.pageWidth, [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN]);
+  const menuItems: IContextualMenuItem[] = getMenuItems([VIEW_TASKS, ADD, EDIT, DELETE]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -86,12 +100,6 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
       navigate("/login");
     }
   }, [isAuthenticated]);
-
-    useEffect(() => {
-        if(selectedItems !== undefined) {
-            navigate("/tasks");
-        }
-    }, [selectedItems]);
 
   useEffect(() => {
     getCurrentSprint();
@@ -121,6 +129,66 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     return selectedItems![0];
   };
 
+  const isEditOrDeleteDisabled = (checkEdit: boolean): boolean => {
+    if (!selectedItems)
+        return true;
+
+    if (checkEdit) {
+        if (selectedItems.length !== 1)
+            return true;
+    }
+    else
+        if (selectedItems.length < 1)
+            return true;
+    return false;
+  };
+
+  const onEditClicked = (): void => {
+    
+  };
+
+  const onAddClicked = (): void => {
+    
+  };
+
+  const onDeleteClicked = (): void => {
+
+  };
+
+  const onViewClicked= (): void => {
+    if(selectedItems !== undefined) {
+      navigate("/tasks");
+    }
+  };
+
+  const updateMenuItems = (): IContextualMenuItem[] => {
+    return menuItems.map((item: IContextualMenuItem) => {
+        switch (item.key) {
+            case VIEW_TASKS:
+                item.disabled = !(selectedItems?.length === 1);
+                item.onClick = () => onViewClicked();
+                item.style = selectedItems?.length === 1 ? enabledMenuItemStyle : defaultMenuItemStyle;
+                break;
+            case ADD:
+                item.onClick = () => onAddClicked();
+                item.style = enabledMenuItemStyle;
+                break;
+            case EDIT:
+                item.disabled = isEditOrDeleteDisabled(true);
+                item.onClick = () => onEditClicked();
+                item.style = selectedItems?.length === 1 ? enabledMenuItemStyle : defaultMenuItemStyle;
+                break;
+            case DELETE:
+                item.disabled = isEditOrDeleteDisabled(false);
+                item.onClick = () => onDeleteClicked();
+                item.style = selectedItems?.length === 1 ? enabledMenuItemStyle : defaultMenuItemStyle;
+                break;
+            default: return item;
+        }
+        return item;
+    });
+  };
+
     return (
       <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
           <Stack tokens={setGapBetweenHeaders}>
@@ -130,6 +198,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
           </Stack>
         <StackItem>
           <ThemeProvider theme={transparentTheme}>
+              <CommandBar items={updateMenuItems()} styles={commandBarStyles} />
               <DetailsList className="hero is-fullheight has-background-dark" 
                           items={items} 
                           setKey="set"

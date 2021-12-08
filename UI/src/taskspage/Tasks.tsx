@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, Stack, StackItem, ThemeProvider } from "@fluentui/react";
+import { CommandBar, DetailsList, IColumn, IContextualMenuItem, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import React, { useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
@@ -8,8 +8,9 @@ import { Task } from "../model/ITask";
 import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
 import { TasksService } from "../utils/service";
 import {formatDate, getByRequestUrl, getViewportAsPixels, selectedUserStory} from "../utils/utilsMethods";
-import { detailsListColumnStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
 import {ITaskProps} from "../model/ITaskProps";
+import { ADD, DELETE, EDIT } from "../utils/generalConstants";
 
 const log = getLogger("Tasks");
 const TITLE_COLUMN: string = "Title";
@@ -69,6 +70,18 @@ const getTaskForCurrentUserStory = (allTasks: Task[]): ITaskDetailsListItem[] =>
     return allTasks.map((item) => getListItemFromTask(item) );
 };
 
+const getMenuItem = (name: string): IContextualMenuItem => {
+    return {
+        key: name,
+        text: name,
+        iconProps: { iconName: name }
+    }
+  };
+  
+  const getMenuItems = (names: string[]): IContextualMenuItem[] => {
+    return names.map((name: string) => getMenuItem(name));
+  };
+
 const Tasks = (props: ITaskProps): JSX.Element => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -81,6 +94,7 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         }
     }));
     const columns: IColumn[] = getColumns(props.pageWidth, [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN, CREATED_COLUMN]);
+    const menuItems: IContextualMenuItem[] = getMenuItems([ADD, EDIT, DELETE]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -106,6 +120,55 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         return `${"Selected user story: "}${selectedUserStory.title}`;
     };
 
+    const isEditOrDeleteDisabled = (checkEdit: boolean): boolean => {
+        if (!selectedItems)
+            return true;
+    
+        if (checkEdit) {
+            if (selectedItems.length !== 1)
+                return true;
+        }
+        else
+            if (selectedItems.length < 1)
+                return true;
+        return false;
+      };
+
+    const onAddClicked = (): void => {
+
+    };
+
+    const onEditClicked = (): void => {
+
+    };
+
+    const onDeleteClicked = (): void => {
+
+    };
+
+    const updateMenuItems = (): IContextualMenuItem[] => {
+        return menuItems.map((item: IContextualMenuItem) => {
+            switch (item.key) {
+                case ADD:
+                    item.onClick = () => onAddClicked();
+                    item.style = enabledMenuItemStyle;
+                    break;
+                case EDIT:
+                    item.disabled = isEditOrDeleteDisabled(true);
+                    item.onClick = () => onEditClicked();
+                    item.style = selectedItems?.length === 1 ? enabledMenuItemStyle : defaultMenuItemStyle;
+                    break;
+                case DELETE:
+                    item.disabled = isEditOrDeleteDisabled(false);
+                    item.onClick = () => onDeleteClicked();
+                    item.style = selectedItems?.length === 1 ? enabledMenuItemStyle : defaultMenuItemStyle;
+                    break;
+                default: return item;
+            }
+            return item;
+        });
+    };
+
     return (
         <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
             <Stack tokens={setGapBetweenHeaders}>
@@ -114,6 +177,7 @@ const Tasks = (props: ITaskProps): JSX.Element => {
             </Stack>
             <StackItem>
                 <ThemeProvider theme={transparentTheme}>
+                    <CommandBar items={updateMenuItems()} styles={commandBarStyles} />
                     <DetailsList className="hero is-fullheight has-background-dark"
                         items={items}
                         setKey="set"
