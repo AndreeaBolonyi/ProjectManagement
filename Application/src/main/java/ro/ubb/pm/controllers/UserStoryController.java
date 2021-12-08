@@ -36,8 +36,8 @@ public class UserStoryController {
         return new ResponseEntity<>(userStoryBLL.addUserStory(userStoryDTO), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/update}")
-    public ResponseEntity<UserStoryDTO> updateUserStory(@RequestBody UserStoryDTO userStoryDTO) {
+    @RequestMapping(value = "/update/{userStoryId}")
+    public ResponseEntity<UserStoryDTO> updateUserStory(@PathVariable int userStoryId, @RequestBody UserStoryDTO userStoryDTO) {
         return new ResponseEntity<>(userStoryBLL.updateUserStory(userStoryDTO), HttpStatus.OK);
     }
 
