@@ -31,4 +31,20 @@ public class UserStoryController {
         return new ResponseEntity<>(userStoryBLL.getAllUserStoriesBySprintId(sprintId), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/create")
+    public ResponseEntity<UserStoryDTO> createUserStory(@RequestBody UserStoryDTO userStoryDTO) {
+        return new ResponseEntity<>(userStoryBLL.addUserStory(userStoryDTO), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/update/{userStoryId}")
+    public ResponseEntity<UserStoryDTO> updateUserStory(@PathVariable int userStoryId, @RequestBody UserStoryDTO userStoryDTO) {
+        return new ResponseEntity<>(userStoryBLL.updateUserStory(userStoryDTO), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/delete/{userStoryId}")
+    public ResponseEntity<String> deleteUserStory(@PathVariable int userStoryId) {
+        userStoryBLL.deleteUserStory(userStoryId);
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
+    }
+
 }

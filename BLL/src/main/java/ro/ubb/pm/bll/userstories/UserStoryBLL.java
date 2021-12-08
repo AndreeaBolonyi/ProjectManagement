@@ -2,6 +2,7 @@ package ro.ubb.pm.bll.userstories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.pm.dal.UserStoriesRepository;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.UserStoryDTO;
@@ -32,13 +33,31 @@ public class UserStoryBLL {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public UserStoryDTO addUserStory(UserStoryDTO userStoryDTO){
-        UserStory userStory =userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
+        UserStory userStory = userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
         userStory = userStoriesRepository.save(userStory);
         userStoryDTO.setId(userStory.getId());
         return userStoryDTO;
     }
 
+    @Transactional
+    public UserStoryDTO updateUserStory(UserStoryDTO userStoryDTO) {
+        UserStory userStory = userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
+        userStoriesRepository.update(
+                userStory.getId(),
+                userStory.getTitle(),
+                userStory.getDescription(),
+                userStory.getAssignedTo(),
+                userStory.getCreatedBy(),
+                userStory.getEpic(),
+                userStory.getSprint(),
+                userStory.getCreated(),
+                userStory.getStatus());
+        return userStoryMapper.userStoryToUserStoryDTO(userStoriesRepository.findById(userStory.getId()).orElse(null));
+    }
+
+    @Transactional
     public void deleteUserStory(int id){
         userStoriesRepository.deleteById(id);
     }
@@ -46,4 +65,5 @@ public class UserStoryBLL {
     public UserStory findUserStoryById(int userStoryId) {
         return userStoriesRepository.getById(userStoryId);
     }
+
 }
