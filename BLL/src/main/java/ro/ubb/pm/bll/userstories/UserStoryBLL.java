@@ -32,7 +32,20 @@ public class UserStoryBLL {
                 .collect(Collectors.toList());
     }
 
+    public UserStoryDTO addUserStory(UserStoryDTO userStoryDTO) {
+        return null;
+    }
+
+    public UserStoryDTO updateUserStory(UserStoryDTO userStoryDTO) {
+        return null;
+    }
+
+    public void deleteUserStory(int userStoryId) {
+        return ;
+    }
+
     public UserStory findUserStoryById(int userStoryId) {
         return userStoriesRepository.getById(userStoryId);
     }
+
 }
