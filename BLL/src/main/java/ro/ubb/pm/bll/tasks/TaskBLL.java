@@ -3,6 +3,7 @@ package ro.ubb.pm.bll.tasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.dal.TasksRepository;
+import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.dtos.TaskDTO;
 
 import java.util.List;
@@ -29,5 +30,17 @@ public class TaskBLL {
                 .stream()
                 .map(taskMapper::taskToTaskDTO)
                 .collect(Collectors.toList());
+    }
+
+    public TaskDTO addTask(TaskDTO taskDTO){
+
+        Task task = taskMapper.taskDTOToTask(taskDTO);
+        task =tasksRepository.save(task);
+        taskDTO.setId(task.getId());
+        return taskDTO;
+    }
+
+    public void deleteTask(int id){
+        tasksRepository.deleteById(id);
     }
 }
