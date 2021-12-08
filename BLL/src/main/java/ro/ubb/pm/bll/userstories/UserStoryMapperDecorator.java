@@ -1,22 +1,32 @@
 package ro.ubb.pm.bll.userstories;
 
+import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
+import ro.ubb.pm.bll.epics.EpicMapper;
 import ro.ubb.pm.bll.sprints.SprintMapper;
 import ro.ubb.pm.bll.users.UserMapper;
 import ro.ubb.pm.dal.RolesRepository;
+import ro.ubb.pm.model.Epic;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.SprintDTO;
 import ro.ubb.pm.model.dtos.UserDTO;
 import ro.ubb.pm.model.dtos.UserStoryDTO;
+import ro.ubb.pm.model.enums.Status;
 
 public abstract class UserStoryMapperDecorator implements UserStoryMapper {
 
     private final UserStoryMapper userStoryMapper;
     private UserMapper userMapper;
+    private EpicMapper epicMapper;
     private SprintMapper sprintMapper;
 
     @Autowired
     private RolesRepository rolesRepository;
+
+    @Autowired
+    public void setEpicMapper(EpicMapper epicMapper) {
+        this.epicMapper = epicMapper;
+    }
 
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
@@ -49,5 +59,17 @@ public abstract class UserStoryMapperDecorator implements UserStoryMapper {
         userStoryDTO.setSprintDTO(sprintDTO);
 
         return userStoryDTO;
+    }
+
+    @Override
+    public UserStory userStoryDTOToUserStory(UserStoryDTO userStoryDTO) {
+        UserStory userStory = userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
+        Epic epic = epicMapper.epicDTOToEpic(userStoryDTO.getSprintDTO().getEpicDTO());
+        userStory.setEpic(epic);
+        userStory.setSprint(sprintMapper.sprintDTOToSprint(userStoryDTO.getSprintDTO()));
+        userStory.setStatus(Status.valueOf(userStoryDTO.getStatus()));
+        userStory.setCreatedBy(userMapper.userDTOToUser(userStoryDTO.getCreatedBy()));
+        userStory.setAssignedTo(userMapper.userDTOToUser(userStoryDTO.getAssignedTo()));
+        return userStory;
     }
 }

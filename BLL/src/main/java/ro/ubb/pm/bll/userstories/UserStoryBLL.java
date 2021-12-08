@@ -32,16 +32,19 @@ public class UserStoryBLL {
                 .collect(Collectors.toList());
     }
 
-    public UserStoryDTO addUserStory(UserStoryDTO userStoryDTO) {
-        return null;
-    }
-
     public UserStoryDTO updateUserStory(UserStoryDTO userStoryDTO) {
         return null;
     }
 
-    public void deleteUserStory(int userStoryId) {
-        return ;
+    public UserStoryDTO addUserStory(UserStoryDTO userStoryDTO){
+        UserStory userStory =userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
+        userStory = userStoriesRepository.save(userStory);
+        userStoryDTO.setId(userStory.getId());
+        return userStoryDTO;
+    }
+
+    public void deleteUserStory(int id){
+        userStoriesRepository.deleteById(id);
     }
 
     public UserStory findUserStoryById(int userStoryId) {
