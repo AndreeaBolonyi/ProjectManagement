@@ -39,4 +39,13 @@ public abstract class TaskMapperDecorator implements TaskMapper {
         taskDTO.setUserStoryDTO(userStoryDTO);
         return taskDTO;
     }
+
+    @Override
+    public Task taskDTOToTask(TaskDTO taskDTO) {
+        Task task = taskMapper.taskDTOToTask(taskDTO);
+        task.setAssignedTo(userMapper.userDTOToUser(taskDTO.getAssignedToDTO()));
+        task.setCreatedBy(userMapper.userDTOToUser(taskDTO.getCreatedByDTO()));
+        task.setUserStory(userStoryMapper.userStoryDTOToUserStory(taskDTO.getUserStoryDTO()));
+        return task;
+    }
 }

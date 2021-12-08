@@ -1,6 +1,4 @@
 package ro.ubb.pm.bll.userstories;
-
-import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.ubb.pm.bll.epics.EpicMapper;
 import ro.ubb.pm.bll.sprints.SprintMapper;
@@ -20,8 +18,6 @@ public abstract class UserStoryMapperDecorator implements UserStoryMapper {
     private EpicMapper epicMapper;
     private SprintMapper sprintMapper;
 
-    @Autowired
-    private RolesRepository rolesRepository;
 
     @Autowired
     public void setEpicMapper(EpicMapper epicMapper) {
