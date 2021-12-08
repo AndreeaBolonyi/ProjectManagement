@@ -3,6 +3,7 @@ package ro.ubb.pm.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.ubb.pm.bll.exceptions.InternalServerException;
 import ro.ubb.pm.bll.userstories.UserStoryBLL;
 import ro.ubb.pm.model.dtos.UserStoryDTO;
 
@@ -37,7 +38,7 @@ public class UserStoryController {
     }
 
     @RequestMapping(value = "/update/{userStoryId}")
-    public ResponseEntity<UserStoryDTO> updateUserStory(@PathVariable int userStoryId, @RequestBody UserStoryDTO userStoryDTO) {
+    public ResponseEntity<UserStoryDTO> updateUserStory(@PathVariable int userStoryId, @RequestBody UserStoryDTO userStoryDTO) throws InternalServerException {
         return new ResponseEntity<>(userStoryBLL.updateUserStory(userStoryDTO), HttpStatus.OK);
     }
 

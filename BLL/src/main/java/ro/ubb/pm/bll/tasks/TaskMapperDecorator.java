@@ -3,6 +3,7 @@ package ro.ubb.pm.bll.tasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.ubb.pm.bll.users.UserMapper;
 import ro.ubb.pm.bll.userstories.UserStoryMapper;
+import ro.ubb.pm.dal.TasksRepository;
 import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.dtos.*;
 
@@ -11,6 +12,7 @@ public abstract class TaskMapperDecorator implements TaskMapper {
     private final TaskMapper taskMapper;
     private UserMapper userMapper;
     private UserStoryMapper userStoryMapper;
+    private TasksRepository tasksRepository;
 
     public TaskMapperDecorator(TaskMapper taskMapper) {
         this.taskMapper = taskMapper;
@@ -24,6 +26,11 @@ public abstract class TaskMapperDecorator implements TaskMapper {
     @Autowired
     public void setUserStoryMapper(UserStoryMapper userStoryMapper) {
         this.userStoryMapper = userStoryMapper;
+    }
+
+    @Autowired
+    public void setTasksRepository(TasksRepository tasksRepository) {
+        this.tasksRepository = tasksRepository;
     }
 
     @Override
