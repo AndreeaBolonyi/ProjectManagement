@@ -3,6 +3,7 @@ package ro.ubb.pm.bll.userstories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.pm.bll.exceptions.InternalServerException;
 import ro.ubb.pm.dal.UserStoriesRepository;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.UserStoryDTO;
@@ -42,7 +43,7 @@ public class UserStoryBLL {
     }
 
     @Transactional
-    public UserStoryDTO updateUserStory(UserStoryDTO userStoryDTO) {
+    public UserStoryDTO updateUserStory(UserStoryDTO userStoryDTO) throws InternalServerException {
         UserStory userStory = userStoryMapper.userStoryDTOToUserStory(userStoryDTO);
         userStoriesRepository.update(
                 userStory.getId(),
@@ -54,7 +55,7 @@ public class UserStoryBLL {
                 userStory.getSprint(),
                 userStory.getCreated(),
                 userStory.getStatus());
-        return userStoryMapper.userStoryToUserStoryDTO(userStoriesRepository.findById(userStory.getId()).orElse(null));
+        return userStoryMapper.userStoryToUserStoryDTO(userStoriesRepository.findById(userStory.getId()).orElseThrow(() -> new InternalServerException("Update went wrong")));
     }
 
     @Transactional
