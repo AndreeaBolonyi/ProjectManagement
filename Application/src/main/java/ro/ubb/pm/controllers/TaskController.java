@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.exceptions.InternalServerException;
 import ro.ubb.pm.bll.tasks.TaskBLL;
 import ro.ubb.pm.model.dtos.TaskDTO;
-import ro.ubb.pm.model.dtos.UserStoryDTO;
 
 import java.util.List;
 
