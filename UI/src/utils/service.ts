@@ -10,6 +10,7 @@ export namespace SprintsService {
 
 export namespace UserStoriesService {
     export const GET_ALL_BY_SPRINT_ID: string = `${userStoriesBaseUrl}${"get-all-by-sprint/"}`;
+    export const DELETE_BY_ID: string = `${userStoriesBaseUrl}${"delete/"}`;
 }
 
 export namespace TasksService {

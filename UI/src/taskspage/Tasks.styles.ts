@@ -1,4 +1,4 @@
-import { createTheme, IDetailsColumnStyles, IStackTokens, mergeStyles, Theme } from "@fluentui/react";
+import { createTheme, ICommandBarStyles, IDetailsColumnStyles, IStackTokens, mergeStyles, Theme } from "@fluentui/react";
 
 export const setGapBetweenHeaders: IStackTokens = {
     childrenGap: "2vw"
@@ -37,3 +37,19 @@ export const itemStyle = mergeStyles({
     display: 'block',
     borderRight: "0.2vh groove"
 });
+
+export const commandBarStyles: ICommandBarStyles = {
+    root: { 
+        paddingLeft: '0px'
+    }
+};
+
+export const defaultMenuItemStyle : React.CSSProperties = {
+   backgroundColor: 'transparent',
+   color: 'grey'
+};
+
+export const enabledMenuItemStyle : React.CSSProperties = {
+    backgroundColor: 'transparent',
+   color: 'white'
+};
