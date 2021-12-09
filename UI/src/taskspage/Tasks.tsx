@@ -85,6 +85,7 @@ const getMenuItem = (name: string): IContextualMenuItem => {
 const Tasks = (props: ITaskProps): JSX.Element => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const [deleteItemId, setDeleteItemId] = useState<number>(0);
     const [items, setItems] = useState<ITaskDetailsListItem[]>([]);
     const [selectedItems, setSelectedItems] = useState<IObjectWithKey[] | undefined>(undefined);
     const [selection] = useState<Selection>(() => new Selection({
@@ -107,9 +108,30 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         getAllTasksForCurrentUserStory();
     }, []);
 
+    useEffect(() => {
+        if(deleteItemId === 0) {
+          return;
+        }
+    
+        deleteTask();
+      }, [deleteItemId]);
+
     const getAllTasksForCurrentUserStory = async () => {
         const allTasks: Task[] = await getByRequestUrl(`${TasksService.GET_ALL_BY_USER_STORY_ID}${selectedUserStory.id}`);
         setItems(getTaskForCurrentUserStory(allTasks));
+    };
+
+    const deleteTask = async () => {
+        const task: ITaskDetailsListItem = getSelectedItem() as ITaskDetailsListItem;
+        const requestUrl: string = `${TasksService.DELETE_BY_ID}${task.id}`;
+        const message: string = await getByRequestUrl(requestUrl);
+    
+        if(message === "Success") {
+            getAllTasksForCurrentUserStory();
+        }
+        else {
+          alert("An error has occurred on delete operation");
+        }
     };
 
     const getSelectedItem = (): IObjectWithKey => {
@@ -143,7 +165,8 @@ const Tasks = (props: ITaskProps): JSX.Element => {
     };
 
     const onDeleteClicked = (): void => {
-
+        const deleteTask: ITaskDetailsListItem = getSelectedItem() as ITaskDetailsListItem;
+        setDeleteItemId(deleteTask.id);
     };
 
     const updateMenuItems = (): IContextualMenuItem[] => {
