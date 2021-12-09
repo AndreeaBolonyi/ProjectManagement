@@ -20,18 +20,6 @@ export const getByRequestUrl = (requestUrl: string) => {
   });
 };
 
-export const deleteByRequestUrl = (requestUrl: string) => {
-  return axios
-    .delete(requestUrl, config)
-    .then((res) => {
-      return Promise.resolve(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
-};
-
 export const getViewportAsPixels = (pageSizePx: number, viewportSize: number): number => {
     return (viewportSize * pageSizePx) / 100;
 };

@@ -81,6 +81,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [currentSprint, setCurrentSprint] = useState<Sprint>(getDefaultSprint());
+  const [deleteItemId, setDeleteItemId] = useState<number>(0);
   const [items, setItems] = useState<UserStoryDetailsListItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<IObjectWithKey[] | undefined>(undefined);
   const [selection] = useState<Selection>(() => new Selection({
@@ -105,16 +106,41 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     getCurrentSprint();
   }, []);
 
+  useEffect(() => {
+    if(deleteItemId === 0) {
+      return;
+    }
+
+    deleteUserStory();
+  }, [deleteItemId]);
+
   const getCurrentSprint = async () => {
     const sprint: Sprint = await getByRequestUrl(SprintsService.GET_CURRENT_SPRINT);
-    const allUserStories = await getByRequestUrl(`${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprint.id}`);
+    getUserStories(sprint.id);
 
     setCurrentSprint(sprint);
+  };
+
+  const getUserStories = async (sprintId: number) => {
+    const allUserStories = await getByRequestUrl(`${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprintId}`);
     setItems(getUserStoriesForCurrentSprint(allUserStories));
   };
 
+  const deleteUserStory = async () => {
+    const userStory: UserStoryDetailsListItem = getSelectedItem() as UserStoryDetailsListItem;
+    const requestUrl: string = `${UserStoriesService.DELETE_BY_ID}${userStory.id}`;
+    const message: string = await getByRequestUrl(requestUrl);
+
+    if(message === "Success") {
+      getUserStories(currentSprint.id);
+    }
+    else {
+      alert("An error has occurred on delete operation");
+    }
+  };
+
   const getUserStoriesForCurrentSprint = (allUserStories: UserStory[]): UserStoryDetailsListItem[] => {
-    return allUserStories.map((item) => getListItemFromUserStory(item) );
+    return allUserStories.map((item) => getListItemFromUserStory(item));
   };
 
   const getTitle = (): string => {
@@ -152,7 +178,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const onDeleteClicked = (): void => {
-
+    const deleteUserStory: UserStoryDetailsListItem = getSelectedItem() as UserStoryDetailsListItem;
+    setDeleteItemId(deleteUserStory.id);
   };
 
   const onViewClicked= (): void => {
