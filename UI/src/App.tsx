@@ -7,19 +7,22 @@ import { IAppProps } from "./model/IAppProps";
 import "./styles/bulma.css";
 import "./styles/custom.css";
 import Dashboard from "./dashboard/Dashboard";
+import { UserStoryProvider } from "./dashboard/userStory/UserStoryProvider";
 
 
 const App = (props: IAppProps) => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard pageHeight={props.pageHeight} pageWidth={props.pageWidth}  />} />
-            <Route path="/tasks" element={<Tasks pageHeight={props.pageHeight} pageWidth={props.pageWidth} />} />
-            <Route path="/" element={<Login/>}></Route>
-        </Routes>
-      </BrowserRouter>
+      <UserStoryProvider>
+        <BrowserRouter>
+          <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard pageHeight={props.pageHeight} pageWidth={props.pageWidth}  />} />
+              <Route path="/tasks" element={<Tasks pageHeight={props.pageHeight} pageWidth={props.pageWidth} />} />
+              <Route path="/" element={<Login/>}></Route>
+          </Routes>
+        </BrowserRouter>
+      </UserStoryProvider>
     </AuthProvider>
   );
 };

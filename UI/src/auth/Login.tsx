@@ -81,7 +81,7 @@ const Login: React.FC = () => {
               <div className="py-2">
                 {authenticationError && (
                   <div className="info has-text-white mt-2">
-                    {"Wrong credentials"}{" "}
+                    {authenticationError.message}{" "}
                     <br />
                     Please retry
                   </div>

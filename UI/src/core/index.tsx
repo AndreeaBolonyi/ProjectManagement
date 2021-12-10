@@ -5,6 +5,6 @@ export const getLogger: (tag: string) => (args: any) => void = (tag) => (
 export const config = {
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
   },
 };

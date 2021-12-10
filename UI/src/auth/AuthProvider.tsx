@@ -5,9 +5,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { getLogger } from "../core";
 import { loginApi } from "./authApi";
+import { User } from "../model/IUser";
 
 const log = getLogger("AuthContext");
 
@@ -18,7 +19,6 @@ const initialState: AuthState = {
   isAuthenticating: false,
   authenticationError: null,
   pendingAuthentication: false,
-  token: "",
 };
 
 export interface AuthState {
@@ -28,11 +28,11 @@ export interface AuthState {
   pendingAuthentication?: boolean;
   email?: string;
   password?: string;
-  token: string;
+  user?: User;
   login?: LoginFn;
 }
 
-const AuthContext = createContext(initialState);
+export const AuthContext = createContext(initialState);
 
 interface AuthProviderProps {
   children: PropTypes.ReactNodeLike;
@@ -44,12 +44,13 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
+  log(state);
   const {
     isAuthenticated,
     isAuthenticating,
     authenticationError,
     pendingAuthentication,
-    token,
+    user,
   } = state;
   const login = useCallback<LoginFn>(loginCallback, [state]);
   useEffect(authenticationEffect, [pendingAuthentication]);
@@ -57,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated,
     isAuthenticating,
     authenticationError,
-    token,
+    user,
     login,
   };
 
@@ -77,10 +78,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let canceled = false;
     authenticate();
     return () => {
+      log("cancelled");
       canceled = true;
     };
 
     async function authenticate() {
+      log("authenticate");
       if (!pendingAuthentication) {
         log("pendingAuthentication is false");
         return;
@@ -100,11 +103,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         log("authenticate succeeded");
         setState({
           ...state,
-          token,
           pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,
+          user,
         });
+        log(`set state to user ${state.user?.id}`);
       } catch (error: any) {
         if (canceled) {
           return;
