@@ -3,7 +3,6 @@ import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from 
 import React, { useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { getLogger } from "../core";
 import { Task } from "../model/ITask";
 import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
 import { TasksService } from "../utils/service";
@@ -12,7 +11,6 @@ import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabled
 import {ITaskProps} from "../model/ITaskProps";
 import { ADD, DELETE, EDIT } from "../utils/generalConstants";
 
-const log = getLogger("Tasks");
 const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
 const ASSIGNED_TO_COLUMN: string = "Assigned to";
@@ -99,7 +97,6 @@ const Tasks = (props: ITaskProps): JSX.Element => {
 
     useEffect(() => {
         if (!isAuthenticated) {
-            log("isAuthenticated false");
             navigate("/login");
         }
     }, [isAuthenticated]);

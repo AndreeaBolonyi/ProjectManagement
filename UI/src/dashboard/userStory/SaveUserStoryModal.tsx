@@ -1,15 +1,13 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../auth/AuthProvider";
-import { getLogger } from "../../core";
 import { Sprint } from "../../model/ISprint";
 import { User } from "../../model/IUser";
 import { UserStory } from "../../model/IUserStory";
 import { UserStoryDetailsListItem } from "../../model/IUserStoryDetailsListItem";
 import { STATUS_TO_DO } from "../../utils/generalConstants";
 import { getListItemFromUserStory } from "../Dashboard";
+import { getTeamMembers } from "./userStoryApi";
 import { UserStoryContext } from "./UserStoryProvider";
-
-const log = getLogger("SaveUserStpryModel");
 
 export interface SaveUserStoryModalProps {
   switchMode: () => void;
@@ -26,6 +24,7 @@ interface SaveUserStoryModalState {
   sprintDTO: Sprint;
   status: string;
   created?: Date;
+  teamMembers?: User[];
 }
 
 const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
@@ -44,12 +43,19 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
   };
   const [state, setState] = useState<SaveUserStoryModalState>(initialState);
 
+  useEffect(() => {
+    setTeamMembers(state.sprintDTO.epicDTO.projectDTO.id);
+  }, [state.sprintDTO.epicDTO.projectDTO.id]);
+
+  const setTeamMembers = async (projectId: number) => {
+    const teamMembers: User[] = await getTeamMembers(projectId);
+    setState({ ...state, teamMembers });
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     state.created = new Date();
-    log(state);
     saveUserStory?.(state).then((userStory: UserStory) => {
-      log(userStory)
       if (userStory) {
         const newItems: UserStoryDetailsListItem[] = items;
         newItems.splice(items.length, 0, getListItemFromUserStory(userStory));
@@ -102,8 +108,23 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
                 </label>
                 <div className="control is-expanded is-fullwidth">
                   <span className="select is-fullwidth">
-                    <select className="has-text-weight-normal">
-                      <option>{`${state.createdBy?.firstName} ${state.createdBy?.lastName}`}</option>
+                    <select
+                      className="has-text-weight-normal"
+                      onChange={(e) => {
+                        const selectedIndex =
+                          e.currentTarget.options.selectedIndex;
+                        setState({
+                          ...state,
+                          assignedTo: state.teamMembers?.[selectedIndex],
+                        });
+                      }}
+                      value={`${state.assignedTo?.firstName} ${state.assignedTo?.lastName}`}
+                    >
+                      {state.teamMembers?.map((user) => (
+                        <option key={user.id}>
+                          {`${user.firstName} ${user.lastName}`}
+                        </option>
+                      ))}
                     </select>
                   </span>
                 </div>

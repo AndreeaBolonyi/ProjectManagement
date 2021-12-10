@@ -1,10 +1,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import { getLogger } from "../core";
 import LoginFoot from "../images/foot.svg";
-
-const log = getLogger("Login");
 
 interface LoginState {
   email?: string;
@@ -24,13 +21,11 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    log("handleSubmit");
     login?.(email, password);
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      log("isAuthenticated true");
       navigate("/dashboard");
     }
   }, [isAuthenticated]);
@@ -81,8 +76,7 @@ const Login: React.FC = () => {
               <div className="py-2">
                 {authenticationError && (
                   <div className="info has-text-white mt-2">
-                    {authenticationError.message}{" "}
-                    <br />
+                    {authenticationError.message} <br />
                     Please retry
                   </div>
                 )}

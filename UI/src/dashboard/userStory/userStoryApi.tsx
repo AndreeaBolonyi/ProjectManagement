@@ -1,7 +1,8 @@
 import axios from "axios";
 import { config } from "../../core";
+import { User } from "../../model/IUser";
 import { UserStory } from "../../model/IUserStory";
-import { UserStoriesService } from "../../utils/service";
+import { UsersService, UserStoriesService } from "../../utils/service";
 
 export const createUserStory: (userStory: UserStory) => Promise<UserStory> = (
   userStory
@@ -21,6 +22,19 @@ export const updateUserStory: (userStory: UserStory) => Promise<UserStory> = (
 ) => {
   return axios
     .put(`${UserStoriesService.UPDATE}${userStory.id}`, userStory, config)
+    .then((res) => {
+      return Promise.resolve(res.data);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+};
+
+export const getTeamMembers: (projectId: number) => Promise<User[]> = (
+  projectId
+) => {
+  return axios
+    .get(`${UsersService.GET_ALL_FOR_PROJECT}${projectId}`, config)
     .then((res) => {
       return Promise.resolve(res.data);
     })

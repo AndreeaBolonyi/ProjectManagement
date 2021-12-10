@@ -6,11 +6,8 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import { getLogger } from "../core";
 import { loginApi } from "./authApi";
 import { User } from "../model/IUser";
-
-const log = getLogger("AuthContext");
 
 type LoginFn = (email?: string, password?: string) => void;
 
@@ -44,7 +41,6 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
-  log(state);
   const {
     isAuthenticated,
     isAuthenticating,
@@ -65,7 +61,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 
   function loginCallback(email?: string, password?: string): void {
-    log("login");
     setState({
       ...state,
       pendingAuthentication: true,
@@ -78,29 +73,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let canceled = false;
     authenticate();
     return () => {
-      log("cancelled");
       canceled = true;
     };
 
     async function authenticate() {
-      log("authenticate");
       if (!pendingAuthentication) {
-        log("pendingAuthentication is false");
         return;
       }
       try {
-        log("authenticating");
         setState({
           ...state,
           isAuthenticating: true,
         });
         const { email, password } = state;
         const user = await loginApi(email, password);
-        log(`authenticated with user ${user.id}`);
         if (canceled) {
           return;
         }
-        log("authenticate succeeded");
         setState({
           ...state,
           pendingAuthentication: false,
@@ -108,12 +97,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           isAuthenticating: false,
           user,
         });
-        log(`set state to user ${state.user?.id}`);
       } catch (error: any) {
         if (canceled) {
           return;
         }
-        log("authenticate failed");
         setState({
           ...state,
           authenticationError: error,

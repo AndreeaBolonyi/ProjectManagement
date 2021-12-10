@@ -1,10 +1,11 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { Sprint } from "../../model/ISprint";
 import { User } from "../../model/IUser";
 import { UserStory } from "../../model/IUserStory";
 import { UserStoryDetailsListItem } from "../../model/IUserStoryDetailsListItem";
 import { Status } from "../../model/Status";
 import { getListItemFromUserStory } from "../Dashboard";
+import { getTeamMembers } from "./userStoryApi";
 import { UserStoryContext } from "./UserStoryProvider";
 
 export interface EditUserStoryModalProps {
@@ -20,11 +21,12 @@ interface EditUserStoryModalState {
   id: number;
   title: string;
   description: string;
-  assignedTo: User;
+  assignedTo?: User;
   createdBy: User;
   sprintDTO: Sprint;
   status: string;
   created: Date;
+  teamMembers?: User[];
 }
 
 const CreateUserStoryModal: React.FC<EditUserStoryModalProps> = ({
@@ -38,6 +40,15 @@ const CreateUserStoryModal: React.FC<EditUserStoryModalProps> = ({
   const { saving, savingError, saveUserStory } = useContext(UserStoryContext);
   const initialState = userStory;
   const [state, setState] = useState<EditUserStoryModalState>(initialState);
+
+  useEffect(() => {
+    setTeamMembers(state.sprintDTO.epicDTO.projectDTO.id);
+  }, [state.sprintDTO.epicDTO.projectDTO.id]);
+
+  const setTeamMembers = async (projectId: number) => {
+    const teamMembers: User[] = await getTeamMembers(projectId);
+    setState({ ...state, teamMembers });
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -110,8 +121,23 @@ const CreateUserStoryModal: React.FC<EditUserStoryModalProps> = ({
                 </label>
                 <div className="control is-expanded is-fullwidth">
                   <span className="select is-fullwidth">
-                    <select className="has-text-weight-normal">
-                      <option>{`${state.createdBy.firstName} ${state.createdBy.lastName}`}</option>
+                    <select
+                      className="has-text-weight-normal"
+                      onChange={(e) => {
+                        const selectedIndex =
+                          e.currentTarget.options.selectedIndex;
+                        setState({
+                          ...state,
+                          assignedTo: state.teamMembers?.[selectedIndex],
+                        });
+                      }}
+                      value={`${state.assignedTo?.firstName} ${state.assignedTo?.lastName}`}
+                    >
+                      {state.teamMembers?.map((user) => (
+                        <option key={user.id}>
+                          {`${user.firstName} ${user.lastName}`}
+                        </option>
+                      ))}
                     </select>
                   </span>
                 </div>

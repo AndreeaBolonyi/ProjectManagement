@@ -8,6 +8,8 @@ import ro.ubb.pm.bll.users.UserBLL;
 import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
 import ro.ubb.pm.model.dtos.UserDTO;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping(UserController.BASE_URL)
@@ -36,5 +38,15 @@ public class UserController {
             throw new InvalidCredentialsException(ex.getMessage());
         }
         return new ResponseEntity<>(userFound, HttpStatus.OK);
+    }
+
+    /**
+     * get all users that are associated with the project id
+     * @param projectId - int
+     * @return ResponseEntity<List<UserData>>
+     */
+    @RequestMapping(value = "/get-all-by-project/{projectId}", method = RequestMethod.GET)
+    public ResponseEntity<List<UserDTO>> getAllUserStoriesBySprint(@PathVariable int projectId) {
+        return new ResponseEntity<>(userBLL.getAllByProject(projectId), HttpStatus.OK);
     }
 }

@@ -9,6 +9,9 @@ import ro.ubb.pm.dal.*;
 import ro.ubb.pm.model.*;
 import ro.ubb.pm.model.dtos.UserDTO;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class UserBLL {
 
@@ -42,5 +45,12 @@ public class UserBLL {
             throw new InvalidCredentialsException(ExceptionMessages.incorrectPasswordMessage);
 
         return userMapper.userToUserDTO(userFound);
+    }
+
+    public List<UserDTO> getAllByProject(int projectId){
+        return usersRepository.findAllByProject(projectId)
+                .stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -8,6 +8,10 @@ export namespace SprintsService {
   export const GET_CURRENT_SPRINT: string = `${sprintsBaseUrl}${"get-current-sprint"}`;
 }
 
+export namespace UsersService {
+  export const GET_ALL_FOR_PROJECT: string = `${projectBaseUrl}${"get-all-by-project/"}`;
+}
+
 export namespace UserStoriesService {
   export const GET_ALL_BY_SPRINT_ID: string = `${userStoriesBaseUrl}${"get-all-by-sprint/"}`;
   export const DELETE_BY_ID: string = `${userStoriesBaseUrl}${"delete/"}`;

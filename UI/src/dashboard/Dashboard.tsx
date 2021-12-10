@@ -16,7 +16,6 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { getLogger } from "../core";
 import { IDashboardProps } from "../model/IDashboardProps";
 import { Sprint } from "../model/ISprint";
 import { UserStory } from "../model/IUserStory";
@@ -44,13 +43,15 @@ import {
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
 import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
+import { getLogger } from "../core";
 
-const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
 const ASSIGNED_TO_COLUMN: string = "Assigned to";
 const CREATED_BY_COLUMN: string = "Created by";
 const BACKLOG_TITLE: string = "Backlog";
+
+const log = getLogger("dash");
 
 const getColumnName = (
   title: string,
@@ -197,7 +198,6 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      log("isAuthenticated false");
       navigate("/login");
     }
   }, [isAuthenticated]);
@@ -278,7 +278,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const onEditClicked = (): void => {
-    switchEditingMode();
+    if (userStories.find((us) => us.id === selectedUserStory.id) !== undefined)
+      switchEditingMode();
   };
 
   const onAddClicked = (): void => {

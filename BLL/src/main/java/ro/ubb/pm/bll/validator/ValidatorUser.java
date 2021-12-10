@@ -15,7 +15,6 @@ public class ValidatorUser implements Validator<User> {
     public void validate(User user) throws InvalidCredentialsException {
 
         List<String> errors = new ArrayList<>();
-        System.out.println(user.getEmail() + " " + user.getPassword());
         if(user.getEmail() == null || user.getEmail().trim().equals(""))
             errors.add(ExceptionMessages.invalidEmailMessage);
 
