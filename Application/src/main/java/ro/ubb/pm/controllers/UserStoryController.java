@@ -9,7 +9,7 @@ import ro.ubb.pm.model.dtos.UserStoryDTO;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping(UserStoryController.BASE_URL)
 public class UserStoryController {
 
