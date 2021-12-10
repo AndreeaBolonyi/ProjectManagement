@@ -1,5 +1,6 @@
 import React, { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../../auth/AuthProvider";
+import { getLogger } from "../../core";
 import { Sprint } from "../../model/ISprint";
 import { User } from "../../model/IUser";
 import { UserStory } from "../../model/IUserStory";
@@ -7,6 +8,8 @@ import { UserStoryDetailsListItem } from "../../model/IUserStoryDetailsListItem"
 import { STATUS_TO_DO } from "../../utils/generalConstants";
 import { getListItemFromUserStory } from "../Dashboard";
 import { UserStoryContext } from "./UserStoryProvider";
+
+const log = getLogger("SaveUserStpryModel");
 
 export interface SaveUserStoryModalProps {
   switchMode: () => void;
@@ -44,7 +47,9 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     state.created = new Date();
+    log(state);
     saveUserStory?.(state).then((userStory: UserStory) => {
+      log(userStory)
       if (userStory) {
         const newItems: UserStoryDetailsListItem[] = items;
         newItems.splice(items.length, 0, getListItemFromUserStory(userStory));
@@ -98,7 +103,7 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
                 <div className="control is-expanded is-fullwidth">
                   <span className="select is-fullwidth">
                     <select className="has-text-weight-normal">
-                      <option>None</option>
+                      <option>{`${state.createdBy?.firstName} ${state.createdBy?.lastName}`}</option>
                     </select>
                   </span>
                 </div>

@@ -135,9 +135,11 @@ const CreateUserStoryModal: React.FC<EditUserStoryModalProps> = ({
                         })
                         .map((item) =>
                           item === state.status ? (
-                            <option selected>{item}</option>
+                            <option key={item} selected>
+                              {item}
+                            </option>
                           ) : (
-                            <option>{item}</option>
+                            <option key={item}>{item}</option>
                           )
                         )}
                     </select>

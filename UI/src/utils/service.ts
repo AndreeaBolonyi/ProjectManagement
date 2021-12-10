@@ -17,4 +17,5 @@ export namespace UserStoriesService {
 
 export namespace TasksService {
   export const GET_ALL_BY_USER_STORY_ID: string = `${tasksBaseUrl}${"get-all-by-user-story/"}`;
+  export const DELETE_BY_ID: string = `${tasksBaseUrl}${"delete/"}`;
 }

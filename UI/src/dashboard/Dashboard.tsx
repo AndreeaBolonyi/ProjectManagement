@@ -41,9 +41,9 @@ import {
   setGapBetweenHeadersAndDetailsList,
   transparentTheme,
 } from "./Dashboard.styles";
-import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
+import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
 
 const log = getLogger("Dashboard");
 const TITLE_COLUMN: string = "Title";
@@ -155,6 +155,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   const [currentSprint, setCurrentSprint] = useState<Sprint>(
     getDefaultSprint()
   );
+  const [deleteItemId, setDeleteItemId] = useState<number>(0);
   const [items, setItems] = useState<UserStoryDetailsListItem[]>([]);
   const [userStories, setUserStories] = useState<UserStory[]>([]);
   const [selectedItems, setSelectedItems] = useState<
@@ -196,6 +197,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
   useEffect(() => {
     if (!isAuthenticated) {
+      log("isAuthenticated false");
       navigate("/login");
     }
   }, [isAuthenticated]);
@@ -204,16 +206,41 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     getCurrentSprint();
   }, []);
 
+  useEffect(() => {
+    if (deleteItemId === 0) {
+      return;
+    }
+
+    deleteUserStory();
+  }, [deleteItemId]);
+
   const getCurrentSprint = async () => {
     const sprint: Sprint = await getByRequestUrl(
       SprintsService.GET_CURRENT_SPRINT
     );
-    const allUserStories = await getByRequestUrl(
-      `${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprint.id}`
-    );
-    setUserStories(allUserStories);
+    getUserStories(sprint.id);
+
     setCurrentSprint(sprint);
+  };
+
+  const getUserStories = async (sprintId: number) => {
+    const allUserStories = await getByRequestUrl(
+      `${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprintId}`
+    );
     setItems(getUserStoriesForCurrentSprint(allUserStories));
+    setUserStories(allUserStories);
+  };
+
+  const deleteUserStory = async () => {
+    const userStory: UserStoryDetailsListItem = getSelectedItem() as UserStoryDetailsListItem;
+    const requestUrl: string = `${UserStoriesService.DELETE_BY_ID}${userStory.id}`;
+    const message: string = await getByRequestUrl(requestUrl);
+
+    if (message === "Success") {
+      getUserStories(currentSprint.id);
+    } else {
+      alert("An error has occurred on delete operation");
+    }
   };
 
   const getUserStoriesForCurrentSprint = (
@@ -230,6 +257,10 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     return `${currentSprint.title}${" / "}${formatDate(
       currentSprint.startDate
     )}${" - "}${formatDate(currentSprint.endDate)}`;
+  };
+
+  const getSelectedItem = (): IObjectWithKey => {
+    return selectedItems![0];
   };
 
   const getSelectedUserStory = (): UserStory => {
@@ -254,7 +285,10 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     switchSavingMode();
   };
 
-  const onDeleteClicked = (): void => {};
+  const onDeleteClicked = (): void => {
+    const deleteUserStory: UserStoryDetailsListItem = getSelectedItem() as UserStoryDetailsListItem;
+    setDeleteItemId(deleteUserStory.id);
+  };
 
   const onViewClicked = (): void => {
     if (selectedItems !== undefined) {
