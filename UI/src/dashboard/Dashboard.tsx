@@ -43,15 +43,12 @@ import {
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
 import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
-import { getLogger } from "../core";
 
 const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
 const ASSIGNED_TO_COLUMN: string = "Assigned to";
 const CREATED_BY_COLUMN: string = "Created by";
 const BACKLOG_TITLE: string = "Backlog";
-
-const log = getLogger("dash");
 
 const getColumnName = (
   title: string,
@@ -278,8 +275,11 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const onEditClicked = (): void => {
-    if (userStories.find((us) => us.id === selectedUserStory.id) !== undefined)
+    if (
+      userStories.find((us) => us.id === selectedUserStory.id) !== undefined
+    ) {
       switchEditingMode();
+    }
   };
 
   const onAddClicked = (): void => {
@@ -343,6 +343,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
           sprint={currentSprint}
           items={items}
           setItems={setItems}
+          userStories={userStories}
+          setUserStories={setUserStories}
         />
       )}
       {isEditing && (

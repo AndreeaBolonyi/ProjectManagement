@@ -54,6 +54,7 @@ const CreateUserStoryModal: React.FC<EditUserStoryModalProps> = ({
     e.preventDefault();
     state.created = new Date();
     saveUserStory?.(state).then((userStory: UserStory) => {
+      console.log(userStory);
       if (userStory) {
         const index = items.findIndex((it) => it.id === userStory.id);
         if (index !== -1) {

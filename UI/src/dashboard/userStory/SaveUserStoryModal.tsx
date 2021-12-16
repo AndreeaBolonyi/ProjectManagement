@@ -14,6 +14,8 @@ export interface SaveUserStoryModalProps {
   sprint: Sprint;
   items: UserStoryDetailsListItem[];
   setItems: (items: UserStoryDetailsListItem[]) => void;
+  userStories: UserStory[];
+  setUserStories: (items: UserStory[]) => void;
 }
 
 interface SaveUserStoryModalState {
@@ -32,6 +34,8 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
   sprint,
   items,
   setItems,
+  userStories,
+  setUserStories,
 }) => {
   const { saving, savingError, saveUserStory } = useContext(UserStoryContext);
   const { user } = useContext(AuthContext);
@@ -56,10 +60,13 @@ const SaveUserStoryModal: React.FC<SaveUserStoryModalProps> = ({
     e.preventDefault();
     state.created = new Date();
     saveUserStory?.(state).then((userStory: UserStory) => {
+      console.log(userStory);
       if (userStory) {
         const newItems: UserStoryDetailsListItem[] = items;
         newItems.splice(items.length, 0, getListItemFromUserStory(userStory));
+        userStories.splice(userStories.length, 0, userStory);
         setItems(newItems);
+        setUserStories(userStories);
         switchMode();
       }
     });
