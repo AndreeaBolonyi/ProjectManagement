@@ -7,7 +7,7 @@ import { Task } from "../model/ITask";
 import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
 import { TasksService } from "../utils/service";
 import {formatDate, getByRequestUrl, getViewportAsPixels, selectedUserStory} from "../utils/utilsMethods";
-import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, itemStyleForLastColumn, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
 import {ITaskProps} from "../model/ITaskProps";
 import { ADD, DELETE, EDIT } from "../utils/generalConstants";
 
@@ -31,8 +31,8 @@ const getColumn = (pageWidth: number, name: string): IColumn => {
         key: name,
         name: getColumnName(TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN, CREATED_COLUMN, name),
         fieldName: getFieldName(name),
-        minWidth: getViewportAsPixels(pageWidth, 25),
-        maxWidth: getViewportAsPixels(pageWidth, 30),
+        minWidth: getViewportAsPixels(pageWidth, 15),
+        maxWidth: getViewportAsPixels(pageWidth, 20),
         isResizable: true,
         isMultiline: true,
         styles: detailsListColumnStyle
@@ -59,8 +59,11 @@ const renderItemColumn = (item: any, index?: number, column?: IColumn): React.Re
     
     return (
         <React.Fragment>
-            <span className={itemStyle}>{fieldContent}</span>
-        </React.Fragment>
+      {column!.fieldName !== "created"
+        ? <span className={itemStyle}>{fieldContent}</span>
+        : <span className={itemStyleForLastColumn}>{fieldContent}</span>
+      }
+    </React.Fragment>
     );
 };
 

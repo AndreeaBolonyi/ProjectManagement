@@ -36,21 +36,31 @@ export const itemStyle = mergeStyles({
     fontSize: "16px",
     height: '100%', 
     display: 'block',
-    borderRight: "0.2vh groove"
+    borderRight: "0.2vh groove",
+    marginRight: "-8px"
+});
+
+export const itemStyleForLastColumn = mergeStyles({ 
+    color: "white", 
+    fontSize: "16px",
+    height: '100%', 
+    display: 'block'
 });
 
 export const commandBarStyles: ICommandBarStyles = {
     root: { 
-        paddingLeft: '0px'
+        paddingLeft: '35px'
     }
 };
 
 export const defaultMenuItemStyle : React.CSSProperties = {
    backgroundColor: 'transparent',
-   color: 'grey'
+   color: 'grey',
+   fontSize: "19px"
 };
 
 export const enabledMenuItemStyle : React.CSSProperties = {
     backgroundColor: 'transparent',
-   color: 'white'
+   color: 'white',
+   fontSize: "19px"
 };

@@ -4,4 +4,6 @@ export interface UserStoryDetailsListItem {
     description: string;
     assignedTo: string;
     createdBy: string;
+    status: string;
+    created: string;
 }

@@ -118,7 +118,9 @@ export const getDefaultUserStoryDetailsListItem = (): UserStoryDetailsListItem =
     title: "",
     description:"",
     assignedTo: "",
-    createdBy: ""
+    createdBy: "",
+    status: "",
+    created: ""
   };
 };
 

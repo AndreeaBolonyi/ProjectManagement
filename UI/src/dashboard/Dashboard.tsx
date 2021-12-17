@@ -1,18 +1,5 @@
-import {
-  CommandBar,
-  DetailsList,
-  IColumn,
-  IContextualMenuItem,
-  Stack,
-  StackItem,
-  ThemeProvider,
-} from "@fluentui/react";
-import {
-  DetailsListLayoutMode,
-  IObjectWithKey,
-  Selection,
-  SelectionMode,
-} from "@fluentui/react/lib/DetailsList";
+import { CommandBar, DetailsList, IColumn, IContextualMenuItem, Stack, StackItem, ThemeProvider } from "@fluentui/react";
+import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from "@fluentui/react/lib/DetailsList";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
@@ -22,24 +9,8 @@ import { UserStory } from "../model/IUserStory";
 import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
 import { ADD, DELETE, EDIT, VIEW_TASKS } from "../utils/generalConstants";
 import { SprintsService, UserStoriesService } from "../utils/service";
-import {
-  getDefaultSprint,
-  formatDate,
-  getViewportAsPixels,
-  getByRequestUrl,
-  setSelectedUserStory,
-  selectedUserStory,
-} from "../utils/utilsMethods";
-import {
-  commandBarStyles,
-  defaultMenuItemStyle,
-  detailsListColumnStyle,
-  itemStyle,
-  enabledMenuItemStyle,
-  setGapBetweenHeaders,
-  setGapBetweenHeadersAndDetailsList,
-  transparentTheme,
-} from "./Dashboard.styles";
+import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory, selectedUserStory } from "../utils/utilsMethods";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, itemStyle, enabledMenuItemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme, itemStyleForLastColumn } from "./Dashboard.styles";
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
 import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
@@ -48,15 +19,11 @@ const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
 const ASSIGNED_TO_COLUMN: string = "Assigned to";
 const CREATED_BY_COLUMN: string = "Created by";
+const STATUS_COLUMN: string = "Status";
+const CREATED_COLUMN: string = "Created at";
 const BACKLOG_TITLE: string = "Backlog";
 
-const getColumnName = (
-  title: string,
-  description: string,
-  assignedTo: string,
-  createdBy: string,
-  name: string
-): string => {
+const getColumnName = (title: string, description: string, assignedTo: string, createdBy: string, status: string, created: string, name: string): string => {
   return name === title
     ? title
     : name === description
@@ -65,6 +32,10 @@ const getColumnName = (
     ? assignedTo
     : name === createdBy
     ? createdBy
+    : name === status
+    ? status
+    : name === created
+    ? created
     : name;
 };
 
@@ -77,22 +48,20 @@ const getFieldName = (columnName: string): string => {
     ? "assignedTo"
     : columnName === CREATED_BY_COLUMN
     ? "createdBy"
+    : columnName === STATUS_COLUMN
+    ? "status"
+    : columnName === CREATED_COLUMN
+    ? "created"
     : "";
 };
 
 const getColumn = (pageWidth: number, name: string): IColumn => {
   return {
     key: name,
-    name: getColumnName(
-      TITLE_COLUMN,
-      DESCRIPTION_COLUMN,
-      ASSIGNED_TO_COLUMN,
-      CREATED_BY_COLUMN,
-      name
-    ),
+    name: getColumnName(TITLE_COLUMN,DESCRIPTION_COLUMN,ASSIGNED_TO_COLUMN,CREATED_BY_COLUMN,STATUS_COLUMN,CREATED_COLUMN,name),
     fieldName: getFieldName(name),
-    minWidth: getViewportAsPixels(pageWidth, 25),
-    maxWidth: getViewportAsPixels(pageWidth, 30),
+    minWidth: getViewportAsPixels(pageWidth, 10),
+    maxWidth: getViewportAsPixels(pageWidth, 20),
     isResizable: true,
     isMultiline: true,
     styles: detailsListColumnStyle,
@@ -103,34 +72,27 @@ const getColumns = (pageWidth: number, names: string[]): IColumn[] => {
   return names.map((name: string) => getColumn(pageWidth, name));
 };
 
-export const getListItemFromUserStory = (
-  userStory: UserStory
-): UserStoryDetailsListItem => {
+export const getListItemFromUserStory = (userStory: UserStory): UserStoryDetailsListItem => {
   return {
     id: userStory.id,
     title: userStory.title,
     description: userStory.description,
-    assignedTo: `${userStory.assignedTo.firstName}${" "}${
-      userStory.assignedTo.lastName
-    }`,
-    createdBy: `${userStory.createdBy.firstName}${" "}${
-      userStory.createdBy.lastName
-    }`,
+    assignedTo: `${userStory.assignedTo.firstName}${" "}${userStory.assignedTo.lastName}`,
+    createdBy: `${userStory.createdBy.firstName}${" "}${userStory.createdBy.lastName}`,
+    status: userStory.status,
+    created: formatDate(userStory.created)
   };
 };
 
-const renderItemColumn = (
-  item: any,
-  index?: number,
-  column?: IColumn
-): React.ReactFragment => {
-  const fieldContent = item[
-    column!.fieldName as keyof UserStoryDetailsListItem
-  ] as string;
+const renderItemColumn = (item: any, index?: number, column?: IColumn): React.ReactFragment => {
+  const fieldContent = item[column!.fieldName as keyof UserStoryDetailsListItem] as string;
 
   return (
     <React.Fragment>
-      <span className={itemStyle}>{fieldContent}</span>
+      {column!.fieldName !== "created"
+        ? <span className={itemStyle}>{fieldContent}</span>
+        : <span className={itemStyleForLastColumn}>{fieldContent}</span>
+      }
     </React.Fragment>
   );
 };
@@ -150,15 +112,11 @@ const getMenuItems = (names: string[]): IContextualMenuItem[] => {
 const Dashboard = (props: IDashboardProps): JSX.Element => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [currentSprint, setCurrentSprint] = useState<Sprint>(
-    getDefaultSprint()
-  );
+  const [currentSprint, setCurrentSprint] = useState<Sprint>(getDefaultSprint());
   const [deleteItemId, setDeleteItemId] = useState<number>(0);
   const [items, setItems] = useState<UserStoryDetailsListItem[]>([]);
   const [userStories, setUserStories] = useState<UserStory[]>([]);
-  const [selectedItems, setSelectedItems] = useState<
-    IObjectWithKey[] | undefined
-  >(undefined);
+  const [selectedItems, setSelectedItems] = useState<IObjectWithKey[] | undefined>(undefined);
   const [selection] = useState<Selection>(
     () =>
       new Selection({
@@ -180,18 +138,8 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     () => setIsEditing((isEditing) => !isEditing),
     []
   );
-  const columns: IColumn[] = getColumns(props.pageWidth, [
-    TITLE_COLUMN,
-    DESCRIPTION_COLUMN,
-    ASSIGNED_TO_COLUMN,
-    CREATED_BY_COLUMN,
-  ]);
-  const menuItems: IContextualMenuItem[] = getMenuItems([
-    VIEW_TASKS,
-    ADD,
-    EDIT,
-    DELETE,
-  ]);
+  const columns: IColumn[] = getColumns(props.pageWidth, [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN, STATUS_COLUMN, CREATED_COLUMN]);
+  const menuItems: IContextualMenuItem[] = getMenuItems([VIEW_TASKS, ADD, EDIT, DELETE]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -212,18 +160,15 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   }, [deleteItemId]);
 
   const getCurrentSprint = async () => {
-    const sprint: Sprint = await getByRequestUrl(
-      SprintsService.GET_CURRENT_SPRINT
-    );
+    const sprint: Sprint = await getByRequestUrl(SprintsService.GET_CURRENT_SPRINT);
     getUserStories(sprint.id);
 
     setCurrentSprint(sprint);
   };
 
   const getUserStories = async (sprintId: number) => {
-    const allUserStories = await getByRequestUrl(
-      `${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprintId}`
-    );
+    const allUserStories = await getByRequestUrl(`${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprintId}`);
+    console.log(allUserStories)
     setItems(getUserStoriesForCurrentSprint(allUserStories));
     setUserStories(allUserStories);
   };
@@ -240,9 +185,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     }
   };
 
-  const getUserStoriesForCurrentSprint = (
-    allUserStories: UserStory[]
-  ): UserStoryDetailsListItem[] => {
+  const getUserStoriesForCurrentSprint = (allUserStories: UserStory[]): UserStoryDetailsListItem[] => {
     return allUserStories.map((item) => getListItemFromUserStory(item));
   };
 
@@ -251,9 +194,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const getSubtitle = (): string => {
-    return `${currentSprint.title}${" / "}${formatDate(
-      currentSprint.startDate
-    )}${" - "}${formatDate(currentSprint.endDate)}`;
+    return `${currentSprint.title}${" / "}${formatDate(currentSprint.startDate)}${" - "}${formatDate(currentSprint.endDate)}`;
   };
 
   const getSelectedItem = (): IObjectWithKey => {
@@ -275,9 +216,7 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const onEditClicked = (): void => {
-    if (
-      userStories.find((us) => us.id === selectedUserStory.id) !== undefined
-    ) {
+    if (userStories.find((us) => us.id === selectedUserStory.id) !== undefined) {
       switchEditingMode();
     }
   };
