@@ -16,7 +16,8 @@ public interface UserStoryMapper {
     @Mapping(source = "sprint", target = "sprintDTO")
     UserStoryDTO userStoryToUserStoryDTO(UserStory userStory);
 
-    @Mapping(target = "epic", ignore = true)
+    @Mapping(source = "sprintDTO.epicDTO", target = "epic")
+    @Mapping(source = "sprintDTO", target = "sprint")
     @Mapping(target = "tasks", ignore = true)
     UserStory userStoryDTOToUserStory(UserStoryDTO userStoryDTO);
 }
