@@ -13,6 +13,7 @@ import ro.ubb.pm.model.Task;
 import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.UserStory;
 import ro.ubb.pm.model.dtos.UserDTO;
+import ro.ubb.pm.security.AuthService;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class Controller {
     private UserBLL userBLL;
     @Autowired
     private UserStoryBLL userStoryBLL;
+    @Autowired
+    private transient AuthService authService;
 
     /**
      * Retrieves all the sprints.
@@ -57,14 +60,16 @@ public class Controller {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
-        User userFound;
+/*        User userFound;
         try {
             userFound = userBLL.login(userDTO.getEmail(), userDTO.getPassword());
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userFound, HttpStatus.OK);
+
+        return new ResponseEntity<>(userFound, HttpStatus.OK);*/
+        return authService.authenticate(userDTO);
     }
 
     /**
