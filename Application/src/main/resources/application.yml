@@ -20,5 +20,6 @@ spring.datasource:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
-
+jwt:
+  secret: "ubbproject"
 
