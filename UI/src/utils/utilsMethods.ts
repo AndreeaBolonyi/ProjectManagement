@@ -108,7 +108,8 @@ export const getDefaultUser = (): User => {
     lastName: "",
     roleId: 0,
     email: "",
-    password: ""
+    password: "",
+    roleTitle: ""
   };
 };
 
@@ -128,4 +129,10 @@ export let selectedUserStory: UserStoryDetailsListItem = getDefaultUserStoryDeta
 
 export const setSelectedUserStory = (value: UserStoryDetailsListItem) => {
   selectedUserStory = value;
+};
+
+export let currentUser: User = getDefaultUser();
+
+export const setCurrentUser = (user: User) => {
+  currentUser = user;
 };
