@@ -9,7 +9,7 @@ import { UserStory } from "../model/IUserStory";
 import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
 import { ADD, DELETE, EDIT, VIEW_TASKS } from "../utils/generalConstants";
 import { SprintsService, UserStoriesService } from "../utils/service";
-import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory, selectedUserStory } from "../utils/utilsMethods";
+import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory, selectedUserStory, currentUser } from "../utils/utilsMethods";
 import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, itemStyle, enabledMenuItemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme, itemStyleForLastColumn } from "./Dashboard.styles";
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
@@ -139,7 +139,9 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
     []
   );
   const columns: IColumn[] = getColumns(props.pageWidth, [TITLE_COLUMN, DESCRIPTION_COLUMN, ASSIGNED_TO_COLUMN, CREATED_BY_COLUMN, STATUS_COLUMN, CREATED_COLUMN]);
-  const menuItems: IContextualMenuItem[] = getMenuItems([VIEW_TASKS, ADD, EDIT, DELETE]);
+  const menuItems: IContextualMenuItem[] = currentUser.roleTitle !== "Team Member" 
+                                              ? getMenuItems([VIEW_TASKS, ADD, EDIT, DELETE])
+                                              : getMenuItems([VIEW_TASKS]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -207,11 +209,17 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
   };
 
   const isEditOrDeleteDisabled = (checkEdit: boolean): boolean => {
-    if (!selectedItems) return true;
+    if (!selectedItems) 
+    return true;
 
     if (checkEdit) {
-      if (selectedItems.length !== 1) return true;
-    } else if (selectedItems.length < 1) return true;
+      if (selectedItems.length !== 1) 
+        return true;
+    } 
+    else 
+      if (selectedItems.length < 1) 
+        return true;
+
     return false;
   };
 
