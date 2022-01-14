@@ -67,11 +67,6 @@ const Login: React.FC = () => {
                   required
                 />
               </div>
-              <div className="field py-2">
-                <Link to="/forgot" className="has-text-primary">
-                  Forgot password?
-                </Link>
-              </div>
               <button className="button is-primary is-fullwidth">Log in</button>
               <div className="py-2">
                 {authenticationError && (
