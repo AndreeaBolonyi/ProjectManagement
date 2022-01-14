@@ -1,5 +1,6 @@
 package ro.ubb.pm.security;
 
+<<<<<<< HEAD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,16 @@ import org.springframework.stereotype.Service;
 import ro.ubb.pm.bll.users.UserBLL;
 import ro.ubb.pm.model.User;
 import ro.ubb.pm.model.dtos.UserDTO;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import ro.ubb.pm.bll.UserBLL;
+import ro.ubb.pm.model.dtos.UserDTO;
+import ro.ubb.pm.model.User;
+>>>>>>> origin/edo
 
 @Service
 public class AuthService {
@@ -31,7 +42,11 @@ public class AuthService {
      *     UNAUTHORIZED if user was not authenticated, OK otherwise.
      */
     public ResponseEntity<String> authenticate(UserDTO user) {
+<<<<<<< HEAD
         UserDetails userResult = userService.loadUserByUsername(user.getEmail());
+=======
+        User userResult = userService.getUser(user.getEmail());
+>>>>>>> origin/edo
 
         if (userResult == null) {
             return new ResponseEntity<String>("Wrong Email", HttpStatus.UNAUTHORIZED);

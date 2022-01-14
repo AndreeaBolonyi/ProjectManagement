@@ -1,6 +1,10 @@
 package ro.ubb.pm.security;
 
+<<<<<<< HEAD
 
+=======
+;
+>>>>>>> origin/edo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+<<<<<<< HEAD
 import ro.ubb.pm.bll.users.UserBLL;
+=======
+import ro.ubb.pm.bll.UserBLL;
+
+>>>>>>> origin/edo
 
 @Configuration
 public class AuthConfig extends WebSecurityConfigurerAdapter {
@@ -30,7 +39,11 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private transient UserBLL userService;
 
     @Autowired
+<<<<<<< HEAD
     private transient JwtRequestConfig jwtRequestConfig;
+=======
+    private transient JwRequestConfig jwtRequestConfig;
+>>>>>>> origin/edo
 
     @Bean
     public PasswordEncoder passwordEncoder() {
