@@ -1,9 +1,9 @@
 import React, { FormEvent, useContext, useEffect, useState } from "react";
-import { Sprint } from "../../model/ISprint";
-import { User } from "../../model/IUser";
-import { UserStory } from "../../model/IUserStory";
-import { UserStoryDetailsListItem } from "../../model/IUserStoryDetailsListItem";
-import { Status } from "../../model/Status";
+import { Sprint } from "../../models/ISprint";
+import { User } from "../../models/IUser";
+import { UserStory } from "../../models/IUserStory";
+import { UserStoryDetailsListItem } from "../../models/IUserStoryDetailsListItem";
+import { Status } from "../../models/Status";
 import { getListItemFromUserStory } from "../Dashboard";
 import { getTeamMembers } from "./userStoryApi";
 import { UserStoryContext } from "./UserStoryProvider";

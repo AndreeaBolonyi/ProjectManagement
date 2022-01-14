@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "../core";
-import { User } from "../model/IUser";
-import { Task } from "../model/ITask";
+import { User } from "../models/IUser";
+import { Task } from "../models/ITask";
 import { UsersService, TasksService } from "../utils/service";
 
 export const createTask: (task: Task) => Promise<Task> = (task) => {

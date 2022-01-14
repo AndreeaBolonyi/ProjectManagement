@@ -1,6 +1,6 @@
-import { Sprint } from "../model/ISprint";
-import { User } from "../model/IUser"
-import { UserStory } from "../model/IUserStory";
+import { Sprint } from "../models/ISprint";
+import { User } from "../models/IUser"
+import { UserStory } from "../models/IUserStory";
 
 export interface TaskProps {
   id?: number;

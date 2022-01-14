@@ -63,3 +63,18 @@ export const enabledMenuItemStyle : React.CSSProperties = {
    color: 'white',
    fontSize: "19px"
 };
+
+export const setGapBetweenHeadersAndUserInfo: IStackTokens = {
+    childrenGap: "60vw"
+};
+
+export const setStyleForUserName: React.CSSProperties = {
+    color: 'white',
+    fontSize: "19px",
+    marginTop: "70px"
+};
+
+export const setStyleForUserRole: React.CSSProperties = {
+    color: 'white',
+    fontSize: "19px"
+};

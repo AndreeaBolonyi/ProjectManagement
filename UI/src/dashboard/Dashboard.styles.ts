@@ -60,7 +60,22 @@ export const defaultMenuItemStyle : React.CSSProperties = {
 };
 
 export const enabledMenuItemStyle : React.CSSProperties = {
-    backgroundColor: 'transparent',
+   backgroundColor: 'transparent',
    color: 'white',
    fontSize: "19px"
+};
+
+export const setGapBetweenHeadersAndUserInfo: IStackTokens = {
+    childrenGap: "58vw"
+};
+
+export const setStyleForUserName: React.CSSProperties = {
+    color: 'white',
+    fontSize: "19px",
+    marginTop: "70px"
+};
+
+export const setStyleForUserRole: React.CSSProperties = {
+    color: 'white',
+    fontSize: "19px"
 };

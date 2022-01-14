@@ -3,16 +3,16 @@ import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from 
 import React, { useCallback, useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { Task } from "../model/ITask";
-import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
+import { Task } from "../models/ITask";
+import { ITaskDetailsListItem } from "../models/ITaskDetailsListItem";
 import { SprintsService, TasksService } from "../utils/service";
-import {formatDate, getByRequestUrl, getDefaultSprint, getViewportAsPixels, selectedTask, selectedUserStory, setSelectedTask} from "../utils/utilsMethods";
-import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, itemStyleForLastColumn, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
-import {ITaskProps} from "../model/ITaskProps";
+import {currentUser, formatDate, getByRequestUrl, getDefaultSprint, getViewportAsPixels, selectedTask, selectedUserStory, setSelectedTask} from "../utils/utilsMethods";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, itemStyleForLastColumn, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, setGapBetweenHeadersAndUserInfo, setStyleForUserName, setStyleForUserRole, transparentTheme } from "./Tasks.styles";
+import {ITaskProps} from "../models/ITaskProps";
 import { ADD, DELETE, EDIT } from "../utils/generalConstants";
 import SaveTaskModal from "./SaveTaskModal";
 import EditTaskModal from "./EditTaskModal";
-import { Sprint } from "../model/ISprint";
+import { Sprint } from "../models/ISprint";
 
 const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
@@ -173,8 +173,6 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         }
     };
 
-
-
     const getSelectedItem = (): IObjectWithKey => {
         return selectedItems![0];
     };
@@ -182,6 +180,7 @@ const Tasks = (props: ITaskProps): JSX.Element => {
     const getTitle = (): string => {
         return `${"Selected user story: "}${selectedUserStory.title}`;
     };
+
     const isEditOrDeleteDisabled = (checkEdit: boolean): boolean => {
         if (!selectedItems)
             return true;
@@ -194,14 +193,13 @@ const Tasks = (props: ITaskProps): JSX.Element => {
             if (selectedItems.length < 1)
                 return true;
         return false;
-      };
+    };
 
     const onAddClicked = (): void => {
         switchSavingMode();
     };
 
     const onEditClicked = (): void => {
-        console.log("selected task id", tasks)
         if (tasks.find((us) => us.id === selectedTask.id) !== undefined)
             switchEditingMode();
     };
@@ -211,14 +209,6 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         setDeleteItemId(deleteTask.id);
     };
 
-    const getTasksForCurrentSprint = (
-        allTasks: Task[]
-      ): ITaskDetailsListItem[] => {
-        return allTasks.map((item) => getListItemFromTask(item));
-      };
-
-    
-    
     const updateMenuItems = (): IContextualMenuItem[] => {
         return menuItems.map((item: IContextualMenuItem) => {
             switch (item.key) {
@@ -265,9 +255,15 @@ const Tasks = (props: ITaskProps): JSX.Element => {
             />
             )}
         <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
-            <Stack tokens={setGapBetweenHeaders}>
-                <p className="title has-text-white is-size-5 has-text-left marginFH1"> {getTitle()} </p>
-                <p className="subtitle has-text-white is-size-3 marginFH2"> {BACKLOG_TITLE} </p>
+            <Stack horizontal tokens={setGapBetweenHeadersAndUserInfo}>
+                <StackItem tokens={setGapBetweenHeaders}>
+                    <p className="title has-text-white is-size-5 has-text-left marginFH1"> {getTitle()} </p>
+                    <p className="subtitle has-text-white is-size-3 marginFH2"> {BACKLOG_TITLE} </p>
+                </StackItem>
+                <StackItem>
+                    <p style={setStyleForUserName}>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
+                    <p style={setStyleForUserRole}>{currentUser.roleTitle}</p>
+                </StackItem>
             </Stack>
             <StackItem>
                 <ThemeProvider theme={transparentTheme}>

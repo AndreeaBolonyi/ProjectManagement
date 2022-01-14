@@ -1,5 +1,5 @@
-import { Sprint } from "../../model/ISprint";
-import { User } from "../../model/IUser";
+import { Sprint } from "../../models/ISprint";
+import { User } from "../../models/IUser";
 
 export interface UserStoryProps {
   id?: number;

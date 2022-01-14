@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "../../core";
-import { User } from "../../model/IUser";
-import { UserStory } from "../../model/IUserStory";
+import { User } from "../../models/IUser";
+import { UserStory } from "../../models/IUserStory";
 import { UsersService, UserStoriesService } from "../../utils/service";
 
 export const createUserStory: (userStory: UserStory) => Promise<UserStory> = (
