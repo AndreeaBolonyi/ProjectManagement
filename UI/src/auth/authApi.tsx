@@ -1,6 +1,6 @@
 import axios from "axios";
 import { config } from "../core";
-import { User } from "../model/IUser";
+import { User } from "../models/IUser";
 import { projectBaseUrl } from "../utils/generalConstants";
 import { currentUser, setCurrentUser } from "../utils/utilsMethods";
 

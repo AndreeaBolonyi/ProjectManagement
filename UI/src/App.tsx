@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthProvider";
 import Login from "./auth/Login";
 import Tasks from "./taskspage/Tasks";
-import { IAppProps } from "./model/IAppProps";
+import { IAppProps } from "./models/IAppProps";
 import "./styles/bulma.css";
 import "./styles/custom.css";
 import Dashboard from "./dashboard/Dashboard";

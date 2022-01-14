@@ -1,14 +1,14 @@
 import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/AuthProvider";
-import { Task } from "../model/ITask";
-import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
-import { User } from "../model/IUser";
-import { UserStory } from "../model/IUserStory";
+import { Task } from "../models/ITask";
+import { ITaskDetailsListItem } from "../models/ITaskDetailsListItem";
+import { User } from "../models/IUser";
+import { UserStory } from "../models/IUserStory";
 import { getListItemFromTask } from "./Tasks";
 import { getTeamMembers } from "./taskApi";
 import { TaskContext } from "./TaskProvider";
 import { getByRequestUrl, getDefaultUserStory, selectedUserStory } from "../utils/utilsMethods";
-import { Sprint } from "../model/ISprint";
+import { Sprint } from "../models/ISprint";
 import { UserStoriesService } from "../utils/service";
 
 

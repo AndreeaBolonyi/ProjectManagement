@@ -1,13 +1,13 @@
-import { Epic } from "../model/IEpic";
-import { Project } from "../model/IProject";
-import { Sprint } from "../model/ISprint";
-import { User } from "../model/IUser";
-import { UserStory } from "../model/IUserStory";
-import {UserStoryDetailsListItem} from "../model/IUserStoryDetailsListItem";
-import {Task} from "../model/ITask";
+import { Epic } from "../models/IEpic";
+import { Project } from "../models/IProject";
+import { Sprint } from "../models/ISprint";
+import { User } from "../models/IUser";
+import { UserStory } from "../models/IUserStory";
+import {UserStoryDetailsListItem} from "../models/IUserStoryDetailsListItem";
+import {Task} from "../models/ITask";
 import axios from "axios";
 import { config } from "../core";
-import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
+import { ITaskDetailsListItem } from "../models/ITaskDetailsListItem";
 
 export const getByRequestUrl = (requestUrl: string) => {
   return axios
@@ -27,7 +27,8 @@ export const getViewportAsPixels = (pageSizePx: number, viewportSize: number): n
 
 export const getMonthFromString = (month: string): string => {
   return (new Date(Date.parse(month +" 1, 2021")).getMonth() + 1).toString();
-}
+};
+
 export const formatDate = (date: Date): string => {
   const dateAsString: string = date.toString();
   let day: string = "";

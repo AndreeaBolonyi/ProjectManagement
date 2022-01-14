@@ -3,14 +3,14 @@ import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from 
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { IDashboardProps } from "../model/IDashboardProps";
-import { Sprint } from "../model/ISprint";
-import { UserStory } from "../model/IUserStory";
-import { UserStoryDetailsListItem } from "../model/IUserStoryDetailsListItem";
+import { IDashboardProps } from "../models/IDashboardProps";
+import { Sprint } from "../models/ISprint";
+import { UserStory } from "../models/IUserStory";
+import { UserStoryDetailsListItem } from "../models/IUserStoryDetailsListItem";
 import { ADD, DELETE, EDIT, VIEW_TASKS } from "../utils/generalConstants";
 import { SprintsService, UserStoriesService } from "../utils/service";
 import { getDefaultSprint, formatDate, getViewportAsPixels, getByRequestUrl, setSelectedUserStory, selectedUserStory, currentUser } from "../utils/utilsMethods";
-import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, itemStyle, enabledMenuItemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme, itemStyleForLastColumn } from "./Dashboard.styles";
+import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, itemStyle, enabledMenuItemStyle, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme, itemStyleForLastColumn, setGapBetweenHeadersAndUserInfo, setStyleForUserRole, setStyleForUserName } from "./Dashboard.styles";
 import LoginFoot from "../images/foot.svg";
 import EditUserStoryModal from "./userStory/EditUserStoryModal";
 import SaveUserStoryModal from "./userStory/SaveUserStoryModal";
@@ -307,19 +307,27 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
         className="hero is-fullheight has-background-dark"
         tokens={setGapBetweenHeadersAndDetailsList}
       >
-        <Stack tokens={setGapBetweenHeaders}>
-          <p className="title has-text-white is-size-5 has-text-left marginFH1">
-            {" "}
-            {getTitle()}{" "}
-          </p>
-          <p className="title has-text-white is-size-5 has-text-left marginFH1">
-            {" "}
-            {getSubtitle()}{" "}
-          </p>
-          <p className="subtitle has-text-white is-size-3 marginFH2">
-            {" "}
-            {BACKLOG_TITLE}{" "}
-          </p>
+        <Stack horizontal tokens={setGapBetweenHeadersAndUserInfo}>
+          <StackItem>
+            <Stack tokens={setGapBetweenHeaders}>
+            <p className="title has-text-white is-size-5 has-text-left marginFH1">
+              {" "}
+              {getTitle()}{" "}
+            </p>
+            <p className="title has-text-white is-size-5 has-text-left marginFH1">
+              {" "}
+              {getSubtitle()}{" "}
+            </p>
+            <p className="subtitle has-text-white is-size-3 marginFH2">
+              {" "}
+              {BACKLOG_TITLE}{" "}
+            </p>
+          </Stack>
+          </StackItem>
+          <StackItem>
+            <p style={setStyleForUserName}>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
+            <p style={setStyleForUserRole}>{currentUser.roleTitle}</p>
+          </StackItem>
         </Stack>
         <StackItem>
           <ThemeProvider theme={transparentTheme}>

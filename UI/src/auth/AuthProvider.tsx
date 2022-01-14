@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import { loginApi } from "./authApi";
-import { User } from "../model/IUser";
+import { User } from "../models/IUser";
 
 type LoginFn = (email?: string, password?: string) => void;
 
