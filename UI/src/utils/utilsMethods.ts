@@ -7,6 +7,7 @@ import {UserStoryDetailsListItem} from "../model/IUserStoryDetailsListItem";
 import {Task} from "../model/ITask";
 import axios from "axios";
 import { config } from "../core";
+import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
 
 export const getByRequestUrl = (requestUrl: string) => {
   return axios
@@ -96,7 +97,7 @@ export const getDefaultTask = (): Task => {
     description: "",
     assignedToDTO: getDefaultUser(),
     createdByDTO: getDefaultUser(),
-    userStory: getDefaultUserStory(),
+    userStoryDTO: getDefaultUserStory(),
     created: new Date()
   };
 };
@@ -125,14 +126,31 @@ export const getDefaultUserStoryDetailsListItem = (): UserStoryDetailsListItem =
   };
 };
 
+export const getDefaultTaskDetailsListItem = (): ITaskDetailsListItem => {
+  return {
+    id: 0,
+    title: "",
+    description: "",
+    assignedTo: "",
+    createdBy: "",
+    created: "",
+  };
+};
+
 export let selectedUserStory: UserStoryDetailsListItem = getDefaultUserStoryDetailsListItem();
 
 export const setSelectedUserStory = (value: UserStoryDetailsListItem) => {
   selectedUserStory = value;
 };
 
+export let selectedTask: ITaskDetailsListItem = getDefaultTaskDetailsListItem();
+
+export const setSelectedTask = (value: ITaskDetailsListItem) => {
+  selectedTask = value;
+};
+
 export let currentUser: User = getDefaultUser();
 
-export const setCurrentUser = (user: User) => {
-  currentUser = user;
+export const setCurrentUser = (value: User) => {
+  currentUser = value;
 };

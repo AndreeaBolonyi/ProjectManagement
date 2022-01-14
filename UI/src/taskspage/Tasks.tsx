@@ -1,15 +1,18 @@
 import { CommandBar, DetailsList, IColumn, IContextualMenuItem, Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import { DetailsListLayoutMode, IObjectWithKey, Selection, SelectionMode } from '@fluentui/react/lib/DetailsList';
-import React, { useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState} from "react";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { Task } from "../model/ITask";
 import { ITaskDetailsListItem } from "../model/ITaskDetailsListItem";
-import { TasksService } from "../utils/service";
-import {formatDate, getByRequestUrl, getViewportAsPixels, selectedUserStory} from "../utils/utilsMethods";
+import { SprintsService, TasksService } from "../utils/service";
+import {formatDate, getByRequestUrl, getDefaultSprint, getViewportAsPixels, selectedTask, selectedUserStory, setSelectedTask} from "../utils/utilsMethods";
 import { commandBarStyles, defaultMenuItemStyle, detailsListColumnStyle, enabledMenuItemStyle, itemStyle, itemStyleForLastColumn, setGapBetweenHeaders, setGapBetweenHeadersAndDetailsList, transparentTheme } from "./Tasks.styles";
 import {ITaskProps} from "../model/ITaskProps";
 import { ADD, DELETE, EDIT } from "../utils/generalConstants";
+import SaveTaskModal from "./SaveTaskModal";
+import EditTaskModal from "./EditTaskModal";
+import { Sprint } from "../model/ISprint";
 
 const TITLE_COLUMN: string = "Title";
 const DESCRIPTION_COLUMN: string = "Description";
@@ -43,7 +46,8 @@ const getColumns = (pageWidth: number, names: string[]): IColumn[] => {
     return names.map((name: string) => getColumn(pageWidth, name));
 };
 
-const getListItemFromTask = (task : Task): ITaskDetailsListItem => {
+
+export const getListItemFromTask = (task : Task): ITaskDetailsListItem => {
     return {
         id: task.id,
         title: task.title,
@@ -86,12 +90,18 @@ const getMenuItem = (name: string): IContextualMenuItem => {
 const Tasks = (props: ITaskProps): JSX.Element => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const [currentSprint, setCurrentSprint] = useState<Sprint>(
+        getDefaultSprint()
+      );
     const [deleteItemId, setDeleteItemId] = useState<number>(0);
     const [items, setItems] = useState<ITaskDetailsListItem[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [selectedItems, setSelectedItems] = useState<IObjectWithKey[] | undefined>(undefined);
     const [selection] = useState<Selection>(() => new Selection({
         onSelectionChanged: () => {
             const selectedItems: IObjectWithKey[] = selection.getSelection();
+            const selected: ITaskDetailsListItem = selectedItems[0] as ITaskDetailsListItem
+            setSelectedTask(selected)
             setSelectedItems(selectedItems);
         }
     }));
@@ -106,8 +116,19 @@ const Tasks = (props: ITaskProps): JSX.Element => {
 
     useEffect(() => {
         getAllTasksForCurrentUserStory();
-    }, []);
+    }, [tasks]);
 
+    const [isSaving, setIsSaving] = useState(false);
+    const switchSavingMode = useCallback(
+        () => setIsSaving((isSaving) => !isSaving),
+        []
+    );
+
+    const [isEditing, setIsEditing] = useState(false);
+    const switchEditingMode = useCallback(
+        () => setIsEditing((isEditing) => !isEditing),
+        []
+    );
     useEffect(() => {
         if(deleteItemId === 0) {
           return;
@@ -119,8 +140,26 @@ const Tasks = (props: ITaskProps): JSX.Element => {
     const getAllTasksForCurrentUserStory = async () => {
         const allTasks: Task[] = await getByRequestUrl(`${TasksService.GET_ALL_BY_USER_STORY_ID}${selectedUserStory.id}`);
         setItems(getTaskForCurrentUserStory(allTasks));
+        setTasks(allTasks)
     };
 
+    useEffect(() => {
+        getCurrentSprint();
+    }, []);
+
+    const getCurrentSprint = async () => {
+        const sprint: Sprint = await getByRequestUrl(
+          SprintsService.GET_CURRENT_SPRINT
+        );
+        
+        setCurrentSprint(sprint);
+    };
+      
+    const getSelectedTask = (): Task => {
+        const index = tasks.findIndex((it) => it.id === selectedTask.id);
+        return tasks[index];
+    };
+    
     const deleteTask = async () => {
         const task: ITaskDetailsListItem = getSelectedItem() as ITaskDetailsListItem;
         const requestUrl: string = `${TasksService.DELETE_BY_ID}${task.id}`;
@@ -134,6 +173,8 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         }
     };
 
+
+
     const getSelectedItem = (): IObjectWithKey => {
         return selectedItems![0];
     };
@@ -141,7 +182,6 @@ const Tasks = (props: ITaskProps): JSX.Element => {
     const getTitle = (): string => {
         return `${"Selected user story: "}${selectedUserStory.title}`;
     };
-
     const isEditOrDeleteDisabled = (checkEdit: boolean): boolean => {
         if (!selectedItems)
             return true;
@@ -157,11 +197,13 @@ const Tasks = (props: ITaskProps): JSX.Element => {
       };
 
     const onAddClicked = (): void => {
-
+        switchSavingMode();
     };
 
     const onEditClicked = (): void => {
-
+        console.log("selected task id", tasks)
+        if (tasks.find((us) => us.id === selectedTask.id) !== undefined)
+            switchEditingMode();
     };
 
     const onDeleteClicked = (): void => {
@@ -169,6 +211,14 @@ const Tasks = (props: ITaskProps): JSX.Element => {
         setDeleteItemId(deleteTask.id);
     };
 
+    const getTasksForCurrentSprint = (
+        allTasks: Task[]
+      ): ITaskDetailsListItem[] => {
+        return allTasks.map((item) => getListItemFromTask(item));
+      };
+
+    
+    
     const updateMenuItems = (): IContextualMenuItem[] => {
         return menuItems.map((item: IContextualMenuItem) => {
             switch (item.key) {
@@ -193,6 +243,27 @@ const Tasks = (props: ITaskProps): JSX.Element => {
     };
 
     return (
+        <div>
+            {isSaving && (
+            <SaveTaskModal
+                switchMode={switchSavingMode}
+                items={items}
+                sprint={currentSprint}
+                setItems={setItems}
+            />
+            )}
+            
+            {isEditing && (
+            <EditTaskModal
+                sprint={currentSprint}
+                switchMode={switchEditingMode}
+                task={getSelectedTask()}
+                items={items}
+                setItems={setItems}
+                tasks={tasks}
+                setTasks={setTasks}
+            />
+            )}
         <Stack className="hero is-fullheight has-background-dark" tokens={setGapBetweenHeadersAndDetailsList}>
             <Stack tokens={setGapBetweenHeaders}>
                 <p className="title has-text-white is-size-5 has-text-left marginFH1"> {getTitle()} </p>
@@ -214,7 +285,8 @@ const Tasks = (props: ITaskProps): JSX.Element => {
                 </ThemeProvider>
             </StackItem>
         </Stack>
-    );
+        </div>  
+    );      
 };
 
 export default Tasks;

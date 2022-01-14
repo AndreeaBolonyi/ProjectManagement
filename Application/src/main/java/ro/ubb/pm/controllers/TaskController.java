@@ -10,7 +10,7 @@ import ro.ubb.pm.model.dtos.TaskDTO;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping(TaskController.BASE_URL)
 public class TaskController {
 

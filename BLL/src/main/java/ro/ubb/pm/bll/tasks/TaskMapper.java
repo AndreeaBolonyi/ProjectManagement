@@ -18,8 +18,8 @@ public interface TaskMapper {
     @Mapping(source = "userStory", target = "userStoryDTO")
     TaskDTO taskToTaskDTO(Task task);
 
-    @Mapping(target = "assignedTo", ignore = true)
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "userStory", ignore = true)
+    @Mapping(target = "assignedTo", source = "assignedToDTO")
+    @Mapping(target = "createdBy", source = "createdByDTO")
+    @Mapping(target = "userStory", source = "userStoryDTO")
     Task taskDTOToTask(TaskDTO taskDTO);
 }

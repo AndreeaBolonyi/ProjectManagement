@@ -170,7 +170,6 @@ const Dashboard = (props: IDashboardProps): JSX.Element => {
 
   const getUserStories = async (sprintId: number) => {
     const allUserStories = await getByRequestUrl(`${UserStoriesService.GET_ALL_BY_SPRINT_ID}${sprintId}`);
-    console.log(allUserStories)
     setItems(getUserStoriesForCurrentSprint(allUserStories));
     setUserStories(allUserStories);
   };
