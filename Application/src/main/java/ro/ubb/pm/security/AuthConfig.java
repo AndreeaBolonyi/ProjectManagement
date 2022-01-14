@@ -1,6 +1,6 @@
 package ro.ubb.pm.security;
 
-;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ro.ubb.pm.bll.UserBLL;
-
+import ro.ubb.pm.bll.users.UserBLL;
 
 @Configuration
 public class AuthConfig extends WebSecurityConfigurerAdapter {
@@ -22,16 +21,16 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] REQUESTS_USER = {
-            "/dashboard"
+            "/dashboard", "/project_management/get-all-by-project/{projectId}", "/project_management/sprints/get-current-sprint",
+            "project_management/user-stories/get-all-by-sprint/{sprintId}", "project_management/user-stories/create",
+            "/project_management/user-stories/update/{userStoryId}", "/project_management/user-stories/delete/{userStoryId}"
     };
-
-
 
     @Autowired
     private transient UserBLL userService;
 
     @Autowired
-    private transient JwRequestConfig jwtRequestConfig;
+    private transient JwtRequestConfig jwtRequestConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,7 +49,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, REQUESTS_NO_AUTH).permitAll()
                 .and().authorizeRequests()
-                .antMatchers(REQUESTS_USER).hasAuthority("USER")
+                .antMatchers(REQUESTS_USER).permitAll()//hasAuthority("Scrum Master")
                 .and().authorizeRequests();
         http.addFilterBefore(jwtRequestConfig, UsernamePasswordAuthenticationFilter.class);
     }

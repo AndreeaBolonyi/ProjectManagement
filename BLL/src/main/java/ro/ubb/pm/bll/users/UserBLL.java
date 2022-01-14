@@ -1,6 +1,9 @@
 package ro.ubb.pm.bll.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ro.ubb.pm.bll.exceptions.ExceptionMessages;
 import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
@@ -13,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class UserBLL {
+public class UserBLL  implements UserDetailsService {
 
     private UsersRepository usersRepository;
     private ValidatorUser validatorUser;
@@ -52,5 +55,10 @@ public class UserBLL {
                 .stream()
                 .map(userMapper::userToUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return  usersRepository.findByEmail(s);
     }
 }

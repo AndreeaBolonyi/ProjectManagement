@@ -1,23 +1,25 @@
 package ro.ubb.pm.security;
 
+
 import io.jsonwebtoken.ExpiredJwtException;
-import java.io.IOException;
-import java.util.Iterator;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ro.ubb.pm.bll.UserBLL;
+import ro.ubb.pm.bll.users.UserBLL;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
-public class JwRequestConfig extends OncePerRequestFilter {
+public class JwtRequestConfig extends OncePerRequestFilter {
 
     @Autowired
     private transient UserBLL jwtUserDetailsService;

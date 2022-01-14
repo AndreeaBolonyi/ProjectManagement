@@ -1,5 +1,7 @@
 package ro.ubb.pm.model;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -7,7 +9,7 @@ import java.io.Serializable;
 
 @javax.persistence.Entity
 @Table(name = "roles")
-public class Role extends Entity implements Serializable {
+public class Role extends Entity implements Serializable, GrantedAuthority {
 
     @NotNull
     @Column(name = "title")
@@ -21,5 +23,10 @@ public class Role extends Entity implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String getAuthority() {
+        return title;
     }
 }

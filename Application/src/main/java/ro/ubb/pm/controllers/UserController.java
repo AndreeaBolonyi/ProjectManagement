@@ -1,5 +1,6 @@
 package ro.ubb.pm.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.pm.bll.users.UserBLL;
 import ro.ubb.pm.bll.exceptions.InvalidCredentialsException;
 import ro.ubb.pm.model.dtos.UserDTO;
+import ro.ubb.pm.security.AuthService;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(UserController.BASE_URL)
 public class UserController {
+    @Autowired
+    private transient AuthService authService;
 
     protected static final String BASE_URL = "project_management";
 
@@ -30,14 +34,17 @@ public class UserController {
      * @throws InvalidCredentialsException - if the entered credentials are incorrect
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> login(@Validated @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
+    public ResponseEntity<?> login(@Validated @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
         UserDTO userFound;
         try {
             userFound = userBLL.login(userDTO);
         } catch (InvalidCredentialsException ex) {
             throw new InvalidCredentialsException(ex.getMessage());
         }
-        return new ResponseEntity<>(userFound, HttpStatus.OK);
+/*        System.out.println();*/
+/*        return new ResponseEntity<>(userFound, HttpStatus.OK);*/
+        System.out.println(authService.authenticate(userFound));
+        return authService.authenticate(userFound);
     }
 
     /**
