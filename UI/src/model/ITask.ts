@@ -8,5 +8,5 @@ export interface Task {
     assignedToDTO: User;
     createdByDTO: User;
     created: Date;
-    userStory: UserStory;
+    userStoryDTO: UserStory;
 }
